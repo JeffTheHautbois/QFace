@@ -1,5 +1,11 @@
+#include <emscripten.h>
+
 #include "../controllers/stubController.h"
 
-int stubViewFunction() {
+extern "C" {
+
+int EMSCRIPTEN_KEEPALIVE stubViewFunction() {
     return 1 + stubControllerFunction();
+}
+
 }

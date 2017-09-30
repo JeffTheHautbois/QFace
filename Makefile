@@ -3,7 +3,7 @@ include Makefile.variable
 # ----- Build Settings, you shouldn't really need to touch these ------
 # Compiler Settings
 CXX = $(EMSCRIPTEN_HOME)/em++
-CXXFLAGS = -Wall -Wextra -std=c++11
+CXXFLAGS = -Wall -Wextra -std=c++11 -s NO_EXIT_RUNTIME=1
 
 
 # Directories where the source file will be compiled

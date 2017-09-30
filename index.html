@@ -7,12 +7,19 @@
         <ul>
             <li> See if the string "It worked!" appears in the browser console.</li>
             <li> This button increments this number properly properly:</li>
-            <div id="increments">
-                0
-            </div>
-            <button> Increment By Two </button>
+            <button id="incrementor"> Increment By Two </button>
+            <div id="counter">0</div>
         </ul>
     </body>
 
     <script type="application/javascript" src="./bin/DesignProject.asm.js"></script>
+    <script type="application/javascript">
+        let incrementor = document.getElementById("incrementor");
+        let counter = document.getElementById("counter");
+
+        incrementor.onclick = function() {
+            let currentCounts = window.parseInt(counter.textContent);
+            counter.textContent = currentCounts + Module.ccall('stubViewFunction');
+        };
+    </script>
 </html>
