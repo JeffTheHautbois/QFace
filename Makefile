@@ -1,5 +1,4 @@
-# Emscripten PATH, modify this as needed.
-EMSCRIPTEN_HOME = ./compiler/emsdk-portable/emscripten/1.37.21
+include Makefile.variable
 
 # ----- Build Settings, you shouldn't really need to touch these ------
 # Compiler Settings
@@ -50,7 +49,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR_CONTROLLERS)/%.cpp
 
 # ----- Other useful scripts ------
 server:
-	python3 -m http.server 8080 --bind localhost
+	$(PYTHON3) -m http.server 8080 --bind localhost
 
 clean:
 	rm $(BIN_DIR)/$(PROJECT).* $(BIN_DIR)/*.o

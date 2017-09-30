@@ -10,3 +10,4 @@ compiler/**
 *.o
 
 .lvimrc
+Makefile.variable
