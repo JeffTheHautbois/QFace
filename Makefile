@@ -1,10 +1,6 @@
 include Makefile.variable
 
 # ----- Build Settings, you shouldn't really need to touch these ------
-# Compiler Settings
-CXX = $(EMSCRIPTEN_HOME)/em++
-CXXFLAGS = -Wall -Wextra -std=c++11 -s NO_EXIT_RUNTIME=1
-
 
 # Directories where the source file will be compiled
 BIN_DIR = ./bin
@@ -15,6 +11,10 @@ SRC_DIR = ./src/cpp
 SRC_DIR_MODELS = $(SRC_DIR)/models
 SRC_DIR_VIEWS = $(SRC_DIR)/views
 SRC_DIR_CONTROLLERS = $(SRC_DIR)/controllers
+
+# Compiler Settings
+CXX = $(EMSCRIPTEN_HOME)/em++
+CXXFLAGS = -Wall -Wextra -std=c++11 -s NO_EXIT_RUNTIME=1 -I$(SRC_DIR)
 
 # The source file themselves
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
@@ -53,3 +53,6 @@ server:
 
 clean:
 	rm $(BIN_DIR)/$(PROJECT).* $(BIN_DIR)/*.o
+
+lint:
+	$(CPPLINT) --filter=-legal/copyright --recursive src/cpp
