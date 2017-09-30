@@ -11,3 +11,7 @@ compiler/**
 
 .lvimrc
 Makefile.variable
+
+.cproject
+.project
+.settings/
