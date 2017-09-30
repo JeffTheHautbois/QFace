@@ -1,0 +1,12 @@
+tags
+tags.temp
+tags.lock
+.DS_Store
+
+bin/**
+compiler/**
+*.asm.js
+*.out
+*.o
+
+.lvimrc
