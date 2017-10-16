@@ -12,7 +12,7 @@ compiler/**
 lib/opencv/**
 
 .lvimrc
-Makefile.variable
+*.variable
 
 .cproject
 .project
