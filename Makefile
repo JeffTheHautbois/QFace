@@ -178,7 +178,7 @@ $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 
 # ----- Other useful scripts ------
 server:
-	$(PYTHON3) -m http.server 8080 --bind localhost
+	$(PYTHON3) server.py
 
 clean:
 	rm $(BIN_DIR)/$(PROJECT).* $(OBJ_DIR)/*.o $(OBJ_DIR)/*.d

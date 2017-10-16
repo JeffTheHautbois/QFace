@@ -10,4 +10,4 @@ Prerequisets:
 1. Download [emscripten](http://kripken.github.io/emscripten-site/). Reccomended: make a folder called "compiler" in this repo, and keep enscripten there.
 2. The C++ compiler binary is called `em++`. Update the Makefile.variable `EMSCRIPTEN_HOME` variable to the path of `em++` on your system.
 3. Run `make all` while being in the root directory to compile the C++ code to javascipt.
-4. Run `make server` or `python3 -m http.server 8080 --bind localhost` to start serving the web pages.
+4. Run `make server`
