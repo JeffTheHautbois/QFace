@@ -8,6 +8,8 @@ compiler/**
 *.asm.js
 *.out
 *.o
+*.asm.*
+lib/opencv/**
 
 .lvimrc
 Makefile.variable

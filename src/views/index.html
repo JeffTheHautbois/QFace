@@ -12,14 +12,14 @@
         </ul>
     </body>
 
-    <script type="application/javascript" src="./bin/DesignProject.asm.js"></script>
+    <script type="application/javascript" src="./Turbo.asm.js"></script>
     <script type="application/javascript">
         let incrementor = document.getElementById("incrementor");
         let counter = document.getElementById("counter");
 
         incrementor.onclick = function() {
             let currentCounts = window.parseInt(counter.textContent);
-            counter.textContent = currentCounts + Module.ccall('stubViewFunction');
+            counter.textContent = currentCounts + Module.stubViewFunction();
         };
     </script>
 </html>
