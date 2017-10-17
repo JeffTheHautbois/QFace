@@ -4,7 +4,8 @@
     </head>
     <body>
         <ul>
-            <li> Crop this duck! Check console to see base64 string conversion.</li>
+            <li> Crop this duck! Set the new length below:</li>
+            <input type="text" id="cropped-length" value=100>
             <button id="cropper"> Crop image </button>
         </ul>
         <img id="duck" src="./data/duck.bmp" alt="no-goose">
@@ -13,13 +14,13 @@
     <script type="application/javascript" src="./Turbo.asm.js"></script>
     <script type="application/javascript">
     let cropper = document.getElementById("cropper");
+    let croppedLengthInput = document.getElementById("cropped-length");
     let duck = document.getElementById("duck");
 
     cropper.onclick = function() {
-        let base64String = Module.stubViewFunction();
-        console.log(base64String);
-        duck.src = "data:image/png;base64,";
-        
+        let length = window.parseInt(croppedLengthInput.value);
+        let base64String = Module.duckCropper_cropDuckImageToSquare(length);
+        duck.src = "data:image/bmp;base64," + btoa(base64String);
     };
     </script>
 </html>
