@@ -1,6 +1,6 @@
 #ifndef SRC_CPP_CONTROLLERS_STUBCONTROLLER_H_
 #define SRC_CPP_CONTROLLERS_STUBCONTROLLER_H_
 
-int stubControllerFunction();
+std::string getCroppedDuckImage();
 
 #endif  // SRC_CPP_CONTROLLERS_STUBCONTROLLER_H_

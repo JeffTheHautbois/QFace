@@ -3,23 +3,23 @@
     <head>
     </head>
     <body>
-        <h3> Things to check: </h3>
         <ul>
-            <li> See if the string "It worked!" appears in the browser console.</li>
-            <li> This button increments this number properly properly:</li>
-            <button id="incrementor"> Increment By Two </button>
-            <div id="counter">0</div>
+            <li> Crop this duck! Check console to see base64 string conversion.</li>
+            <button id="cropper"> Crop image </button>
         </ul>
+        <img id="duck" src="./data/duck.bmp" alt="no-goose">
     </body>
 
     <script type="application/javascript" src="./Turbo.asm.js"></script>
     <script type="application/javascript">
-        let incrementor = document.getElementById("incrementor");
-        let counter = document.getElementById("counter");
+    let cropper = document.getElementById("cropper");
+    let duck = document.getElementById("duck");
 
-        incrementor.onclick = function() {
-            let currentCounts = window.parseInt(counter.textContent);
-            counter.textContent = currentCounts + Module.stubViewFunction();
-        };
+    cropper.onclick = function() {
+        let base64String = Module.stubViewFunction();
+        console.log(base64String);
+        duck.src = "data:image/png;base64,";
+        
+    };
     </script>
 </html>

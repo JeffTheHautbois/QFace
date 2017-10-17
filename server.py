@@ -23,7 +23,7 @@ class TurboServer(http.server.SimpleHTTPRequestHandler):
             "content-type": "application/javascript",
             "filename": "bin/Turbo.asm.js.mem",
             "response_code": 200
-        },
+        }
     }
 
     def do_GET(self):
@@ -37,10 +37,7 @@ class TurboServer(http.server.SimpleHTTPRequestHandler):
             file_content = open(route_options["filename"], "rb").read()
             self.wfile.write(file_content)
         else:
-            self.send_response(404)
-            self.send_header('content-type', 'text/html')
-            self.end_headers()
-            self.wfile.write(bytes("404 - file not found.", "UTF-8"))
+            super().do_GET()
 
 
 def run():
