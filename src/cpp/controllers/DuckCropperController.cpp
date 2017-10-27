@@ -1,11 +1,11 @@
-
 #include <iostream>
 #include <string>
+#include <emscripten.h>
 
 #include "controllers/DuckCropperController.h"
 #include "models/MatModel.h"
 #include "opencv2/core.hpp"
-#include "opencv2/opencv.hpp"
+#include "opencv2/objdetect.hpp"
 
 
 /*
@@ -13,7 +13,6 @@
  */
 std::string croppedDuckImageAsByteString(int length) {
   cv::Mat duckImage;
-  // This part should be handled by the Model.
   loadImageIntoMat("data/duck.bmp", &duckImage);
 
   if (duckImage.empty()) {
@@ -21,6 +20,12 @@ std::string croppedDuckImageAsByteString(int length) {
     std::string empty = "";
     return empty;
   }
+
+  // This part should be handled by the Model.
+  const std::string filePath = "data/haarcascade_frontalface_default.xml";
+  std::cout << filePath << std::endl;
+  cv::CascadeClassifier face;
+  face.load(filePath);
 
   // The actual cropping occurs here.
   cv::Rect regionOfInterest(0, 0, length, length);

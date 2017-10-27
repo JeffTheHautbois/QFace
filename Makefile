@@ -21,11 +21,16 @@ CXX = $(EMSCRIPTEN_HOME)/em++
 CXXFLAGS = -Wall \
        -Wextra \
        -std=c++11 \
-       -s NO_EXIT_RUNTIME=1 -s ASSERTIONS=1 \
        -I$(SRC_DIR) \
-       -O2 \
+       -O3 \
        --bind \
-       --preload-file data 
+
+LDFLAGS = \
+       --preload-file data \
+       -s NO_EXIT_RUNTIME=1 \
+       --llvm-lto 1 \
+       -s TOTAL_MEMORY=117440512# 112MB
+
 
 # The source file themselves
 MAIN = $(SRC_DIR)/main.cpp
@@ -49,123 +54,74 @@ TEST_OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(patsubst %.cpp, %.o, $(TEST_S
 # The executible file itself
 PROJECT = Turbo
 COMPILED_JS = $(BIN_DIR)/$(PROJECT).asm.js
+COMPILED_BC = $(BIN_DIR)/$(PROJECT).bc
 
 TEST_COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.asm.js
 
 # ----- OpenCV Dependencies ----- 
-OPENCV_DIR = $(LIB_DIR)/opencv
-OPENCV_SRC = $(OPENCV_DIR)/src
-OPENCV_BUILD = $(OPENCV_DIR)/build
-OPENCV_LIB = $(OPENCV_DIR)/lib
+OPENCV_DIR = $(LIB_DIR)/opencv_3.1.0
+OPENCV_INCLUDE = $(OPENCV_DIR)/modules
+OPENCV_LIB = $(OPENCV_DIR)/precompiled
 
 # Libs
 INCLUDE = \
-  -I$(OPENCV_LIB)/include \
-  -I$(OPENCV_LIB)/include/opencv
+  -I$(OPENCV_INCLUDE)/core/include \
+  -I$(OPENCV_INCLUDE)/flann/include \
+  -I$(OPENCV_INCLUDE)/ml/include \
+  -I$(OPENCV_INCLUDE)/photo/include \
+  -I$(OPENCV_INCLUDE)/shape/include \
+  -I$(OPENCV_INCLUDE)/imgproc/include \
+  -I$(OPENCV_INCLUDE)/calib3d/include \
+  -I$(OPENCV_INCLUDE)/features2d/include \
+  -I$(OPENCV_INCLUDE)/video/include \
+  -I$(OPENCV_INCLUDE)/objdetect/include \
+  -I$(OPENCV_INCLUDE)/imgcodecs/include \
+  -I$(OPENCV_INCLUDE)/hal/include \
 
 LIBS = \
-    -L$(OPENCV_LIB)/lib \
-    -llibopencv_core \
-    -llibopencv_highgui \
-    -llibopencv_imgcodecs \
-    -llibopencv_imgproc \
-    -llibopencv_objdetect \
-    -llibopencv_video \
-    -L$(OPENCV_LIB)/share/OpenCV/3rdparty/lib \
-    -lzlib \
-
-opencv: $(OPENCV_LIB)
-
-$(OPENCV_LIB): $(OPENCV_BUILD)
-
-$(OPENCV_BUILD): $(OPENCV_SRC)
-	$(EMSCRIPTEN_HOME)/emcmake \
-    cmake \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCPU_BASELINE='' \
-    -DCPU_DISPATCH='' \
-    -DCV_TRACE=OFF \
-    -DBUILD_SHARED_LIBS=OFF \
-    -DWITH_1394=OFF \
-    -DWITH_VTK=OFF \
-    -DWITH_CUDA=OFF \
-    -DWITH_CUFFT=OFF \
-    -DWITH_CUBLAS=OFF \
-    -DWITH_NVCUVID=OFF \
-    -DWITH_EIGEN=OFF \
-    -DWITH_FFMPEG=OFF \
-    -DWITH_GSTREAMER=OFF \
-    -DWITH_GTK=OFF \
-    -DWITH_GTK_2_X=OFF \
-    -DWITH_IPP=OFF \
-    -DWITH_JASPER=OFF \
-    -DWITH_JPEG=OFF \
-    -DWITH_WEBP=OFF \
-    -DWITH_OPENEXR=OFF \
-    -DWITH_OPENGL=OFF \
-    -DWITH_OPENVX=OFF \
-    -DWITH_OPENNI=OFF \
-    -DWITH_OPENNI2=OFF \
-    -DWITH_PNG=OFF \
-    -DWITH_TBB=OFF \
-    -DWITH_PTHREADS_PF=OFF \
-    -DWITH_TIFF=OFF \
-    -DWITH_V4L=OFF \
-    -DWITH_OPENCL=OFF \
-    -DWITH_OPENCL_SVM=OFF \
-    -DWITH_OPENCLAMDFFT=OFF \
-    -DWITH_OPENCLAMDBLAS=OFF \
-    -DWITH_MATLAB=OFF \
-    -DWITH_GPHOTO2=OFF \
-    -DWITH_LAPACK=OFF \
-    -DWITH_ITT=OFF \
-    -DBUILD_ZLIB=ON \
-    -DBUILD_opencv_apps=OFF \
-    -DBUILD_opencv_calib3d=OFF \
-    -DBUILD_opencv_dnn=OFF \
-    -DBUILD_opencv_features2d=OFF \
-    -DBUILD_opencv_flann=OFF \
-    -DBUILD_opencv_ml=OFF \
-    -DBUILD_opencv_photo=OFF \
-    -DBUILD_opencv_imgcodecs=ON \
-    -DBUILD_opencv_shape=OFF \
-    -DBUILD_opencv_videoio=OFF \
-    -DBUILD_opencv_videostab=OFF \
-    -DBUILD_opencv_superres=OFF \
-    -DBUILD_opencv_stitching=OFF \
-    -DBUILD_opencv_java=OFF \
-    -DBUILD_opencv_js=ON \
-    -DBUILD_opencv_python2=OFF \
-    -DBUILD_opencv_python3=OFF \
-    -DBUILD_EXAMPLES=OFF \
-    -DBUILD_PACKAGE=OFF \
-    -DBUILD_TESTS=OFF \
-    -DBUILD_PERF_TESTS=OFF \
-    -DBUILD_DOCS=OFF\
-    -B$(OPENCV_BUILD) \
-    -H$(OPENCV_SRC)
-	$(EMSCRIPTEN_HOME)/emmake make -C $(OPENCV_BUILD) install
-	mv $(OPENCV_BUILD)/install $(OPENCV_LIB)
-
-$(OPENCV_SRC):
-	git clone --depth 1 https://github.com/opencv/opencv $(OPENCV_SRC)
+    -Wl,--start-group \
+    $(OPENCV_LIB)/libopencv_core.a \
+    $(OPENCV_LIB)/libopencv_features2d.a \
+    $(OPENCV_LIB)/libopencv_flann.a \
+    $(OPENCV_LIB)/libopencv_highgui.a \
+    $(OPENCV_LIB)/libopencv_imgcodecs.a \
+    $(OPENCV_LIB)/libopencv_imgproc.a \
+    $(OPENCV_LIB)/libopencv_ml.a \
+    $(OPENCV_LIB)/libopencv_objdetect.a \
+    $(OPENCV_LIB)/libopencv_photo.a \
+    $(OPENCV_LIB)/libopencv_shape.a \
+    $(OPENCV_LIB)/libopencv_video.a \
+    $(OPENCV_LIB)/libopencv_videoio.a \
+    $(OPENCV_LIB)/share/OpenCV/3rdparty/lib/libzlib.a \
+    $(OPENCV_LIB)/share/OpenCV/3rdparty/lib/liblibjpeg.a \
+    $(OPENCV_LIB)/share/OpenCV/3rdparty/lib/liblibpng.a \
+    -Wl,--end-group \
 
 # ----- Actual Build targets. Add new ones as needed. ------
-all: opencv $(COMPILED_JS)
+all: $(COMPILED_JS)
 
-$(COMPILED_JS): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $(COMPILED_JS) $(LIBS)
+$(COMPILED_JS): $(COMPILED_BC)
+	$(info ---- Linking bitcode with OpenCV ----)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(COMPILED_BC) $(LIBS) -o $(COMPILED_JS)
+
+$(COMPILED_BC): $(OBJECTS)
+	$(info ---- Compiling bitcode ----)
+	$(CXX) $(CXXFLAGS) $^ -o $(COMPILED_BC)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(info ---- Compiling $^ ----)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -MMD $< -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR_MODELS)/%.cpp
+	$(info ---- Compiling $^ ----)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -MMD $< -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR_VIEWS)/%.cpp
+	$(info ---- Compiling $^ ----)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -MMD $< -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR_CONTROLLERS)/%.cpp
+	$(info ---- Compiling $^ ----)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -MMD $< -o $@
 
 # ----- Build targets for testing
@@ -181,7 +137,7 @@ server:
 	$(PYTHON3) server.py
 
 clean:
-	rm $(BIN_DIR)/$(PROJECT).* $(OBJ_DIR)/*.o $(OBJ_DIR)/*.d
+	rm $(BIN_DIR)/$(PROJECT).* $(OBJ_DIR)/*.o $(OBJ_DIR)/*.d $(OBJ_DIR)/*.bc
 
 lint:
 	$(CPPLINT) --filter=-legal/copyright --recursive src/cpp
