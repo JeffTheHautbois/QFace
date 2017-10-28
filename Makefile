@@ -92,9 +92,9 @@ LIBS = \
     $(OPENCV_LIB)/libopencv_shape.a \
     $(OPENCV_LIB)/libopencv_video.a \
     $(OPENCV_LIB)/libopencv_videoio.a \
-    $(OPENCV_LIB)/share/OpenCV/3rdparty/lib/libzlib.a \
-    $(OPENCV_LIB)/share/OpenCV/3rdparty/lib/liblibjpeg.a \
-    $(OPENCV_LIB)/share/OpenCV/3rdparty/lib/liblibpng.a \
+    $(OPENCV_DIR)/share/OpenCV/3rdparty/lib/libzlib.a \
+    $(OPENCV_DIR)/share/OpenCV/3rdparty/lib/liblibjpeg.a \
+    $(OPENCV_DIR)/share/OpenCV/3rdparty/lib/liblibpng.a \
     -Wl,--end-group \
 
 # ----- Actual Build targets. Add new ones as needed. ------
