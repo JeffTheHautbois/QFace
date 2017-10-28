@@ -22,15 +22,15 @@ CXXFLAGS = -Wall \
        -Wextra \
        -std=c++11 \
        -I$(SRC_DIR) \
-       -O3 \
+       -O1 \
        --bind \
 
 LDFLAGS = \
        --preload-file data \
        -s NO_EXIT_RUNTIME=1 \
+       -s ASSERTIONS=1 \
        --llvm-lto 1 \
        -s TOTAL_MEMORY=117440512# 112MB
-
 
 # The source file themselves
 MAIN = $(SRC_DIR)/main.cpp
@@ -62,6 +62,7 @@ TEST_COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.asm.js
 OPENCV_DIR = $(LIB_DIR)/opencv_3.1.0
 OPENCV_INCLUDE = $(OPENCV_DIR)/modules
 OPENCV_LIB = $(OPENCV_DIR)/precompiled
+OPENCV_3RD_PARTY = $(OPENCV_DIR)/share/OpenCV/3rdparty/lib
 
 # Libs
 INCLUDE = \
@@ -78,35 +79,47 @@ INCLUDE = \
   -I$(OPENCV_INCLUDE)/imgcodecs/include \
   -I$(OPENCV_INCLUDE)/hal/include \
 
+# Do NOT change the order of these libs. The order matters.
 LIBS = \
-    -Wl,--start-group \
-    $(OPENCV_LIB)/libopencv_core.a \
-    $(OPENCV_LIB)/libopencv_features2d.a \
-    $(OPENCV_LIB)/libopencv_flann.a \
-    $(OPENCV_LIB)/libopencv_highgui.a \
-    $(OPENCV_LIB)/libopencv_imgcodecs.a \
-    $(OPENCV_LIB)/libopencv_imgproc.a \
-    $(OPENCV_LIB)/libopencv_ml.a \
-    $(OPENCV_LIB)/libopencv_objdetect.a \
-    $(OPENCV_LIB)/libopencv_photo.a \
-    $(OPENCV_LIB)/libopencv_shape.a \
-    $(OPENCV_LIB)/libopencv_video.a \
     $(OPENCV_LIB)/libopencv_videoio.a \
-    $(OPENCV_DIR)/share/OpenCV/3rdparty/lib/libzlib.a \
-    $(OPENCV_DIR)/share/OpenCV/3rdparty/lib/liblibjpeg.a \
-    $(OPENCV_DIR)/share/OpenCV/3rdparty/lib/liblibpng.a \
-    -Wl,--end-group \
+    $(OPENCV_LIB)/libopencv_shape.a \
+    $(OPENCV_LIB)/libopencv_photo.a \
+    $(OPENCV_LIB)/libopencv_objdetect.a \
+    $(OPENCV_LIB)/libopencv_ml.a \
+    $(OPENCV_LIB)/libopencv_imgcodecs.a \
+    $(OPENCV_LIB)/libopencv_highgui.a \
+    $(OPENCV_LIB)/libopencv_features2d.a \
+    $(OPENCV_3RD_PARTY)/liblibpng.a \
+    $(OPENCV_3RD_PARTY)/liblibjpeg.a \
+    $(OPENCV_LIB)/libopencv_video.a \
+    $(OPENCV_LIB)/libopencv_imgproc.a \
+    $(OPENCV_LIB)/libopencv_flann.a \
+    $(OPENCV_LIB)/libopencv_core.a \
+    $(OPENCV_3RD_PARTY)/libzlib.a
 
 # ----- Actual Build targets. Add new ones as needed. ------
+
+ifeq ($(MAKECMDGOALS), debug)
+    CXXFLAGS +=-g
+endif
+
+ifeq ($(MAKECMDGOALS), release)
+    CXXFLAGS +=-O3
+endif
+
+debug: clean all
+
+release: clean all
+
 all: $(COMPILED_JS)
 
 $(COMPILED_JS): $(COMPILED_BC)
-	$(info ---- Linking bitcode with OpenCV ----)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(COMPILED_BC) $(LIBS) -o $(COMPILED_JS)
+	$(info ---- Compiling bitcode into asm.js ----)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(COMPILED_BC) -o $(COMPILED_JS)
 
 $(COMPILED_BC): $(OBJECTS)
-	$(info ---- Compiling bitcode ----)
-	$(CXX) $(CXXFLAGS) $^ -o $(COMPILED_BC)
+	$(info ---- Linking with 3rd party libs ----)
+	$(CXX) $(CXXFLAGS) $^ $(LIBS) -o $(COMPILED_BC)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(info ---- Compiling $^ ----)
@@ -137,7 +150,7 @@ server:
 	$(PYTHON3) server.py
 
 clean:
-	rm $(BIN_DIR)/$(PROJECT).* $(OBJ_DIR)/*.o $(OBJ_DIR)/*.d $(OBJ_DIR)/*.bc
+	-rm $(BIN_DIR)/$(PROJECT).* $(OBJ_DIR)/*.o $(OBJ_DIR)/*.d $(BIN_DIR)/*.bc
 
 lint:
 	$(CPPLINT) --filter=-legal/copyright --recursive src/cpp
