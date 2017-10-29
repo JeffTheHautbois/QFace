@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#include "opencv2/opencv.hpp"
+#include "opencv2/core.hpp"
 
 void loadImageIntoMat(const std::string& filename, cv::Mat* mat);
 std::string convertMatToByteString(const cv::Mat& mat);

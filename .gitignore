@@ -3,11 +3,12 @@ tags.temp
 tags.lock
 .DS_Store
 
-bin/**
 compiler/**
 *.asm.js
 *.out
 *.o
+*.bc
+*.d
 *.asm.*
 lib/opencv/**
 
