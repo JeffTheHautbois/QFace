@@ -16,7 +16,7 @@ void runTests() {
     tr.addTest([]() {
       cv::Mat image;
       loadImageIntoMat("test_data/duck.bmp", &image);
-      assert(image.empty() && "Image was empty.");
+      assert(!image.empty() && "Image was empty.");
     }, "Tests if an image can be loaded into a matrix.");
 
     tr.run();
