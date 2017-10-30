@@ -1,6 +1,7 @@
 include Makefile.variable
 
 # ----- Build Settings, you shouldn't really need to touch these ------
+PROJECT = Turbo
 
 # Directories where the source file will be compiled
 BIN_DIR = ./bin
@@ -11,8 +12,7 @@ SRC_DIR = ./src/cpp
 SRC_DIR_MODELS = $(SRC_DIR)/models
 SRC_DIR_VIEWS = $(SRC_DIR)/views
 SRC_DIR_CONTROLLERS = $(SRC_DIR)/controllers
-
-TEST_DIR = ./test
+SRC_DIR_TEST = $(SRC_DIR)/test
 
 LIB_DIR = ./lib
 
@@ -28,9 +28,10 @@ CXXFLAGS = -Wall \
 LDFLAGS = \
        --preload-file data \
        -s NO_EXIT_RUNTIME=1 \
-       -s ASSERTIONS=1 \
+       -s ASSERTIONS=2 \
        --llvm-lto 1 \
-       -s TOTAL_MEMORY=117440512# 112MB
+       -s DEMANGLE_SUPPORT=1 \
+       -s TOTAL_MEMORY=117440512  # 112MB
 
 # The source file themselves
 MAIN = $(SRC_DIR)/main.cpp
@@ -39,24 +40,12 @@ SOURCES += $(wildcard $(SRC_DIR_MODELS)/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR_VIEWS)/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR_CONTROLLERS)/*.cpp)
 
-TEST_SOURCES = $(filter-out $(MAIN), $(SOURCES))
-TEST_SOURCES += $(wildcard $(TEST_DIR)/*.cpp)
-
-# Object Directory
-OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(patsubst %.cpp, %.o, $(SOURCES))))
+COMPILED_JS = $(BIN_DIR)/$(PROJECT).asm.js
+COMPILED_BC = $(BIN_DIR)/$(PROJECT).bc
 
 # Automatic header dependecy management. Not 100% how it works.
 DEPS = $(OBJECTS:%.o=%.d)
 -include $(DEPS)
-
-TEST_OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(patsubst %.cpp, %.o, $(TEST_SOURCES))))
-
-# The executible file itself
-PROJECT = Turbo
-COMPILED_JS = $(BIN_DIR)/$(PROJECT).asm.js
-COMPILED_BC = $(BIN_DIR)/$(PROJECT).bc
-
-TEST_COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.asm.js
 
 # ----- OpenCV Dependencies ----- 
 OPENCV_DIR = $(LIB_DIR)/opencv_3.1.0
@@ -97,30 +86,34 @@ LIBS = \
     $(OPENCV_LIB)/libopencv_core.a \
     $(OPENCV_3RD_PARTY)/libzlib.a
 
+
+# Specify the executible
+ifeq ($(MAKECMDGOALS), test)
+    $(info Building with unit tests.)
+    COMPILED_BC = $(BIN_DIR)/$(PROJECT).test.bc
+    COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.html
+    LDFLAGS += --preload-file test_data
+    SOURCES += $(wildcard $(SRC_DIR_TEST)/*.cpp)
+    CXXFLAGS += -D TEST_ENV
+endif
+
+# Object Directory
+OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(patsubst %.cpp, %.o, $(SOURCES))))
+
 # ----- Actual Build targets. Add new ones as needed. ------
-
-ifeq ($(MAKECMDGOALS), debug)
-    CXXFLAGS +=-g
-endif
-
-ifeq ($(MAKECMDGOALS), release)
-    CXXFLAGS +=-O3
-endif
-
-debug: clean all
-
-release: clean all
+test: all
 
 all: $(COMPILED_JS)
 
 $(COMPILED_JS): $(COMPILED_BC)
-	$(info ---- Compiling bitcode into asm.js ----)
+	$(info ---- Compiling bitcode into $(COMPILED_JS) ----)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(COMPILED_BC) -o $(COMPILED_JS)
 
 $(COMPILED_BC): $(OBJECTS)
 	$(info ---- Linking with 3rd party libs ----)
 	$(CXX) $(CXXFLAGS) $^ $(LIBS) -o $(COMPILED_BC)
 
+# ---- Compiling C++/Headers in objects. -------
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(info ---- Compiling $^ ----)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -MMD $< -o $@
@@ -137,13 +130,10 @@ $(OBJ_DIR)/%.o: $(SRC_DIR_CONTROLLERS)/%.cpp
 	$(info ---- Compiling $^ ----)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -MMD $< -o $@
 
-# ----- Build targets for testing
-test: $(TEST_OBJECTS)
-	$(eval $(CXXFLAGS) += -I$(TEST_DIR))
-	$(CXX) $(CXXFLAGS) $^ -o $(TEST_COMPILED_JS)
+$(OBJ_DIR)/%.o: $(SRC_DIR_TEST)/%.cpp
+	$(info ---- Compiling $^ ----)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -MMD $< -o $@
 
-$(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # ----- Other useful scripts ------
 server:
