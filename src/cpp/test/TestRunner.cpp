@@ -11,8 +11,7 @@
 
 #include "test/TestRunner.h"
 
-void TestRunner::setUp() {}
-void TestRunner::tearDown() {}
+TestRunner::TestRunner(std::string runnerDescription) : description(runnerDescription) { }
 
 void TestRunner::addTest(const std::function<void()> testFunction,
                          const std::string testDescription) {
@@ -22,7 +21,7 @@ void TestRunner::addTest(const std::function<void()> testFunction,
 
 void TestRunner::run() {
   std::cout << "--- Setting up test runner ---\n";
-  setUp();
+  std::cout << description << std::endl;
 
   for (unsigned int i = 0; i < testFunctions.size(); i++) {
     std::cout << "Running test #" << i + 1 << std::endl;
@@ -37,7 +36,6 @@ void TestRunner::run() {
         << " seconds\n";
   }
 
-  tearDown();
   std::cout << "--- Finished running tests ---\n";
 }
 

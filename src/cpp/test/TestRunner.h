@@ -15,13 +15,13 @@
 
 class TestRunner {
  public:
+  TestRunner(std::string runnerDescription);
   void addTest(const std::function<void()> testFunction,
                const std::string testDescription);
   void run();
 
  private:
-  void setUp();
-  void tearDown();
+  std::string description;
   std::vector< std::function<void(void)> > testFunctions;
   std::vector< std::string > testDescriptions;
 };

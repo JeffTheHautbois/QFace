@@ -12,7 +12,7 @@ void stubTest() {
 }
 
 void runTests() {
-    TestRunner tr;
+    TestRunner tr("Runner for reading duck images");
     tr.addTest([]() {
       cv::Mat image;
       loadImageIntoMat("test_data/duck.bmp", &image);
