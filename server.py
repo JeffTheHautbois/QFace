@@ -4,9 +4,8 @@ import socketserver
 
 class TurboServer(http.server.SimpleHTTPRequestHandler):
     paths = {
-        # General purpose routes
         "/": {
-            "content-type": "html",
+            "content-type": "text/html",
             "filename": "src/views/index.html",
             "response_code": 200
         },
@@ -20,25 +19,9 @@ class TurboServer(http.server.SimpleHTTPRequestHandler):
             "filename": "bin/Turbo.asm.data",
             "response_code": 200
         },
-        # Custom routes for tests
         "/Turbo.asm.js.mem": {
             "content-type": "application/javascript",
             "filename": "bin/Turbo.asm.js.mem",
-            "response_code": 200
-        },
-        "/Turbo.test.data": {
-            "content-type": "application/javascript",
-            "filename": "bin/Turbo.test.data",
-            "response_code": 200
-        },
-        "/Turbo.test.js": {
-            "content-type": "application/javascript",
-            "filename": "bin/Turbo.test.js",
-            "response_code": 200
-        },
-        "/test": {
-            "content-type": "html",
-            "filename": "bin/Turbo.test.html",
             "response_code": 200
         }
     }
