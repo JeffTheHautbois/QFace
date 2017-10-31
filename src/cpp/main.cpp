@@ -1,6 +1,12 @@
 #include <iostream>
+#include "test/test.h"
 
 int main() {
-  std::cout << "No errors while waiting for crop!" << "\n";
+  bool inTestEnv = true;
+  if (inTestEnv) {
+      runTests();
+  }
+
+  std::cout << "It worked!" << "\n";
   return 0;
 }
