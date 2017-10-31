@@ -1,35 +1,61 @@
 #include <iostream>
 #include <string>
 #include <emscripten.h>
+#include "FaceCropperController.h"
 
-#include "controllers/DuckCropperController.h"
 #include "models/MatModel.h"
 #include "opencv2/core.hpp"
 #include "opencv2/objdetect.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+//#include "opencv/highgui.h"
+//#include "opencv2/highgui/highgui.hpp"
 
+using namespace std;
+using namespace cv;
 
 /*
  * Crops the duck image into a square. Does not modify the original image.
  */
-std::string croppedDuckImageAsByteString(int length) {
-  cv::Mat duckImage;
-  loadImageIntoMat("data/duck.bmp", &duckImage);
+std::string cropFaceImageAsByteString() {
+	Mat inputImage;
+	loadImageIntoMat("data/obama.bmp", &inputImage);
 
-  if (duckImage.empty()) {
-    std::cout << "Was not able to load the duck bitmap" << std::endl;
-    std::string empty = "";
-    return empty;
-  }
+	if (inputImage.empty()) {
+		cout << "Was not able to load image" << std::endl;
+		string empty = "";
+		return empty;
+	}
 
-  // This part should be handled by the Model.
-  const std::string filePath = "data/haarcascade_frontalface_default.xml";
-  std::cout << filePath << std::endl;
-  cv::CascadeClassifier face;
-  face.load(filePath);
+	// This part should be handled by the Model.
+	const string filePath = "data/haarcascade_frontalface_default.xml";
+	cout << filePath << std::endl;
+	CascadeClassifier face;
+	face.load(filePath);
 
-  // The actual cropping occurs here.
-  cv::Rect regionOfInterest(0, 0, length, length);
-  cv::Mat croppedDuckImage = duckImage(regionOfInterest);
+	Mat gray_img;
+	vector<Rect> faces, eyes;
+	cvtColor(inputImage, gray_img, CV_BGR2GRAY); // captured image modified with "RBG 2 GRAY" and stored in grey image
+	equalizeHist(gray_img, gray_img); // normalize brightness and increase contrast if image
 
-  return convertMatToByteString(croppedDuckImage);
+	// detects objects of different sizes in the image, stored to faces (2nd paramater)
+	face.detectMultiScale(gray_img, faces, 1.1, 10,
+	CV_HAAR_SCALE_IMAGE | CV_HAAR_DO_CANNY_PRUNING, CvSize(0, 0),
+			cvSize(300, 300));
+
+	if(faces.size() > 1){
+		cout << "Error! Too many faces!" << endl;
+	}
+	else if(faces.size() == 0){
+		cout << "Error! No faces detected!" << endl;
+	}
+	else{
+		// The actual cropping occurs here.
+		Rect faceROI(faces[0].x, faces[0].y, faces[0].width,
+				faces[0].height);
+		Mat croppedFace = inputImage(faceROI);
+
+		return convertMatToByteString(croppedFace);
+	}
+
+
 }

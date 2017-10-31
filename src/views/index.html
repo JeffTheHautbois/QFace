@@ -4,23 +4,20 @@
     </head>
     <body>
         <ul>
-            <li> Crop this duck! Set the new length below:</li>
-            <input type="text" id="cropped-length" value=100>
+            <li> Crop the president!</li>
             <button id="cropper"> Crop image </button>
         </ul>
-        <img id="duck" src="./data/duck.bmp" alt="no-goose">
+        <img id="obama" src="./data/obama.bmp" alt="no-goose">
     </body>
 
     <script type="application/javascript" src="./Turbo.asm.js"></script>
     <script type="application/javascript">
     let cropper = document.getElementById("cropper");
-    let croppedLengthInput = document.getElementById("cropped-length");
-    let duck = document.getElementById("duck");
+    let obama = document.getElementById("obama");
 
     cropper.onclick = function() {
-        let length = window.parseInt(croppedLengthInput.value);
-        let base64String = Module.duckCropper_cropDuckImageToSquare(length);
-        duck.src = "data:image/bmp;base64," + btoa(base64String);
+        let base64String = Module.faceCropper_detectCropFace();
+        obama.src = "data:image/bmp;base64," + btoa(base64String);
     };
     </script>
 </html>

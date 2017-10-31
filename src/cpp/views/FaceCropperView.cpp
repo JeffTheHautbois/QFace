@@ -3,15 +3,15 @@
 
 #include "emscripten/bind.h"
 
-#include "controllers/DuckCropperController.h"
-#include "views/DuckCropperView.h"
+#include "controllers/FaceCropperController.h"
+#include "views/FaceCropperView.h"
 
 
-std::string cropDuckImageToSquare(int length) {
-  return croppedDuckImageAsByteString(length);
+std::string detectCropFace() {
+  return cropFaceImageAsByteString();
 }
 
 EMSCRIPTEN_BINDINGS(Turbo) {
-    emscripten::function("duckCropper_cropDuckImageToSquare",
-                         &cropDuckImageToSquare);
+    emscripten::function("faceCropper_detectCropFace",
+                         &detectCropFace);
 }

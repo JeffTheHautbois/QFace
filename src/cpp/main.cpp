@@ -1,6 +1,6 @@
 #include <iostream>
 
 int main() {
-  std::cout << "It worked!" << "\n";
+  std::cout << "No errors while waiting for crop!" << "\n";
   return 0;
 }

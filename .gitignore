@@ -18,3 +18,5 @@ lib/opencv/**
 .cproject
 .project
 .settings/
+.sync/
+Makefile.variable
