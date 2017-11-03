@@ -1,6 +1,10 @@
 #include <iostream>
 
+
 int main() {
-  std::cout << "It worked!" << "\n";
+  
+std::cout << j2 << "\n";
+
+
   return 0;
 }

@@ -58,13 +58,20 @@ COMPILED_BC = $(BIN_DIR)/$(PROJECT).bc
 
 TEST_COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.asm.js
 
+# json
+JSON_INCLUDE = $(LIB_DIR)/json
+INCLUDE = \
+  -I$(JSON_INCLUDE) \
+ 
+
+
 # ----- OpenCV Dependencies ----- 
 OPENCV_DIR = $(LIB_DIR)/opencv_3.1.0
 OPENCV_INCLUDE = $(OPENCV_DIR)/modules
 OPENCV_LIB = $(OPENCV_DIR)/precompiled
 
 # Libs
-INCLUDE = \
+INCLUDE += \
   -I$(OPENCV_INCLUDE)/core/include \
   -I$(OPENCV_INCLUDE)/flann/include \
   -I$(OPENCV_INCLUDE)/ml/include \
@@ -133,6 +140,8 @@ $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # ----- Other useful scripts ------
+
+
 server:
 	$(PYTHON3) server.py
 
