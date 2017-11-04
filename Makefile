@@ -30,6 +30,7 @@ LDFLAGS = \
        -s NO_EXIT_RUNTIME=1 \
        -s ASSERTIONS=2 \
        --llvm-lto 1 \
+       -s DISABLE_EXCEPTION_CATCHING=0 \
        -s DEMANGLE_SUPPORT=1 \
        -s TOTAL_MEMORY=117440512  # 112MB
 
@@ -67,6 +68,7 @@ INCLUDE = \
   -I$(OPENCV_INCLUDE)/objdetect/include \
   -I$(OPENCV_INCLUDE)/imgcodecs/include \
   -I$(OPENCV_INCLUDE)/hal/include \
+  -I$(OPENCV_INCLUDE)/face/include \
 
 # Do NOT change the order of these libs. The order matters.
 LIBS = \
@@ -83,6 +85,7 @@ LIBS = \
     $(OPENCV_LIB)/libopencv_video.a \
     $(OPENCV_LIB)/libopencv_imgproc.a \
     $(OPENCV_LIB)/libopencv_flann.a \
+    $(OPENCV_LIB)/libopencv_face.a \
     $(OPENCV_LIB)/libopencv_core.a \
     $(OPENCV_3RD_PARTY)/libzlib.a
 
