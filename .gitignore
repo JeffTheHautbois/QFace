@@ -17,3 +17,4 @@ lib/opencv/**
 .cproject
 .project
 .settings/
+.vscode/

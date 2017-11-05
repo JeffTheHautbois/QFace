@@ -63,8 +63,6 @@ JSON_INCLUDE = $(LIB_DIR)/json
 INCLUDE = \
   -I$(JSON_INCLUDE) \
  
-
-
 # ----- OpenCV Dependencies ----- 
 OPENCV_DIR = $(LIB_DIR)/opencv_3.1.0
 OPENCV_INCLUDE = $(OPENCV_DIR)/modules
