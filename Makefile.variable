@@ -1,8 +1,0 @@
-# Emscripten PATH, modify this as needed.
-EMSCRIPTEN_HOME = ./compiler/emsdk-portable/emscripten/1.37.21
-
-# Python3 binary
-PYTHON3 = python3
-
-# cpplint binary
-CPPLINT = cpplint

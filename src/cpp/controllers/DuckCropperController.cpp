@@ -1,6 +1,6 @@
+#include <emscripten.h>
 #include <iostream>
 #include <string>
-#include <emscripten.h>
 
 #include "controllers/DuckCropperController.h"
 #include "models/MatModel.h"
