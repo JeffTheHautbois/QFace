@@ -42,8 +42,10 @@ std::string cropFaceImageAsByteString() {
 
   if (faces.size() > 1) {
     cout << "Error! Too many faces!" << endl;
+    return "";
   } else if (faces.size() == 0) {
     cout << "Error! No faces detected!" << endl;
+    return "";
   } else {
     // The actual cropping occurs here.
     Rect faceROI(faces[0].x, faces[0].y, faces[0].width, faces[0].height);

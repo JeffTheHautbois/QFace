@@ -11,6 +11,9 @@ compiler/**
 *.d
 *.asm.*
 lib/opencv/**
+bin/*.html
+bin/*.data
+bin/*.js
 
 .lvimrc
 *.variable
@@ -18,5 +21,4 @@ lib/opencv/**
 .cproject
 .project
 .settings/
-.sync/
-Makefile.variable
+.vscode/
