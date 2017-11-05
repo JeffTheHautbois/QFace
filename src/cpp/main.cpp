@@ -2,7 +2,7 @@
 #include "test/test.h"
 
 int main() {
-  bool inTestEnv = true;
+  bool inTestEnv = false;
   if (inTestEnv) {
       runTests();
   }
