@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+    <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/lokijs.min.js"></script>
+    <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/loki-indexed-adapter.min.js"></script>
     </head>
     <body>
         <ul>
@@ -17,10 +19,23 @@
     let croppedLengthInput = document.getElementById("cropped-length");
     let duck = document.getElementById("duck");
 
-    cropper.onclick = function() {
-        let length = window.parseInt(croppedLengthInput.value);
-        let base64String = Module.duckCropper_cropDuckImageToSquare(length);
-        duck.src = "data:image/bmp;base64," + btoa(base64String);
-    };
+    let cropDuck = function() {
+        let ranOnce = false;
+        return function() {
+            if (!ranOnce) {
+                ranOnce = true;
+            } else {
+                return;
+            }
+
+            let length = window.parseInt(croppedLengthInput.value);
+            let base64String = Module.duckCropper_cropDuckImageToSquare(length);
+            duck.src = "data:image/bmp;base64," + btoa(base64String);
+        };
+    }
+
+    cropper.onclick = cropDuck();
+
+
     </script>
 </html>

@@ -70,19 +70,13 @@ INCLUDE = \
 
 # Do NOT change the order of these libs. The order matters.
 LIBS = \
-    $(OPENCV_LIB)/libopencv_videoio.a \
     $(OPENCV_LIB)/libopencv_shape.a \
-    $(OPENCV_LIB)/libopencv_photo.a \
     $(OPENCV_LIB)/libopencv_objdetect.a \
-    $(OPENCV_LIB)/libopencv_ml.a \
     $(OPENCV_LIB)/libopencv_imgcodecs.a \
     $(OPENCV_LIB)/libopencv_highgui.a \
-    $(OPENCV_LIB)/libopencv_features2d.a \
     $(OPENCV_3RD_PARTY)/liblibpng.a \
     $(OPENCV_3RD_PARTY)/liblibjpeg.a \
-    $(OPENCV_LIB)/libopencv_video.a \
     $(OPENCV_LIB)/libopencv_imgproc.a \
-    $(OPENCV_LIB)/libopencv_flann.a \
     $(OPENCV_LIB)/libopencv_core.a \
     $(OPENCV_3RD_PARTY)/libzlib.a
 
