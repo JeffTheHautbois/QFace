@@ -107,6 +107,9 @@ val CustomerModel::persist() {
 void CustomerModel::saveCustomer(int studentId) {
   // Returns immediately an attempt to modify the DB is made, when it is not yet
   // loaded. This should throw an exception.
+  if (!CustomerModel::hasBeenInit()) {
+    return;
+  }
 
   val window = val::global("window");
   val customers = window[dbName].call<val>("getCollection", customerCollectionName);
