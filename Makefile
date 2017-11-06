@@ -30,6 +30,7 @@ LDFLAGS = \
        -s NO_EXIT_RUNTIME=1 \
        -s ASSERTIONS=2 \
        --llvm-lto 1 \
+       -s DISABLE_EXCEPTION_CATCHING=0 \
        -s DEMANGLE_SUPPORT=1 \
        -s TOTAL_MEMORY=117440512  # 112MB
 
@@ -47,6 +48,20 @@ COMPILED_BC = $(BIN_DIR)/$(PROJECT).bc
 DEPS = $(OBJECTS:%.o=%.d)
 -include $(DEPS)
 
+TEST_OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(patsubst %.cpp, %.o, $(TEST_SOURCES))))
+
+# The executible file itself
+PROJECT = Turbo
+COMPILED_JS = $(BIN_DIR)/$(PROJECT).asm.js
+COMPILED_BC = $(BIN_DIR)/$(PROJECT).bc
+
+TEST_COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.asm.js
+
+# json
+JSON_INCLUDE = $(LIB_DIR)/json
+INCLUDE = \
+  -I$(JSON_INCLUDE) \
+ 
 # ----- OpenCV Dependencies ----- 
 OPENCV_DIR = $(LIB_DIR)/opencv_3.1.0
 OPENCV_INCLUDE = $(OPENCV_DIR)/modules
@@ -54,7 +69,7 @@ OPENCV_LIB = $(OPENCV_DIR)/precompiled
 OPENCV_3RD_PARTY = $(OPENCV_DIR)/share/OpenCV/3rdparty/lib
 
 # Libs
-INCLUDE = \
+INCLUDE += \
   -I$(OPENCV_INCLUDE)/core/include \
   -I$(OPENCV_INCLUDE)/flann/include \
   -I$(OPENCV_INCLUDE)/ml/include \
@@ -67,6 +82,7 @@ INCLUDE = \
   -I$(OPENCV_INCLUDE)/objdetect/include \
   -I$(OPENCV_INCLUDE)/imgcodecs/include \
   -I$(OPENCV_INCLUDE)/hal/include \
+  -I$(OPENCV_INCLUDE)/face/include \
 
 # Do NOT change the order of these libs. The order matters.
 LIBS = \
@@ -77,6 +93,8 @@ LIBS = \
     $(OPENCV_3RD_PARTY)/liblibpng.a \
     $(OPENCV_3RD_PARTY)/liblibjpeg.a \
     $(OPENCV_LIB)/libopencv_imgproc.a \
+    $(OPENCV_LIB)/libopencv_flann.a \
+    $(OPENCV_LIB)/libopencv_face.a \
     $(OPENCV_LIB)/libopencv_core.a \
     $(OPENCV_3RD_PARTY)/libzlib.a
 
@@ -130,6 +148,8 @@ $(OBJ_DIR)/%.o: $(SRC_DIR_TEST)/%.cpp
 
 
 # ----- Other useful scripts ------
+
+
 server:
 	$(PYTHON3) server.py
 

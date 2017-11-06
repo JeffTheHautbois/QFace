@@ -21,3 +21,4 @@ bin/*.js
 .cproject
 .project
 .settings/
+.vscode/
