@@ -3,8 +3,7 @@
 #include "Image.h"
 #include "MatModel.h"
 // Constructor given cv::Mat
-Image::Image(cv::Mat matrix){
-  imageData = matrix;
+Image::Image(cv::Mat matrix) : imageData(matrix){
 }
 
 // Constructor given base64 string
