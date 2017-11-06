@@ -7,7 +7,6 @@
 #include "opencv2/core.hpp"
 #include "opencv2/imgcodecs.hpp"
 
-
 /*
  * It might make sense for the model to create a wrapper class around a Mat object.
  * For instance, if we have a TurboMat class, it will have a toString and toBytes method.
