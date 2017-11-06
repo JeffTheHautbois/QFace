@@ -19,5 +19,6 @@ public:
 
 private:
   cv::Mat imageData; // the image stored as a Mat
+};
 
 #endif /* SRC_CPP_MODELS_IMAGE_H_ */
