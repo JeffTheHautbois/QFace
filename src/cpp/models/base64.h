@@ -7,6 +7,8 @@
 #define BASE64_H_C0CE2A47_D10E_42C9_A27C_C883944E704A
 
 #include <string>
+#include <vector>
+
 typedef unsigned char BYTE;
 
 std::string base64_encode(BYTE const* buf, unsigned int bufLen);
