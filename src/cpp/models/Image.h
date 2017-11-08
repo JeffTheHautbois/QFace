@@ -11,9 +11,7 @@ public:
   Image(std::string base64EncodedImage);
   Image(std::vector<unsigned char> imageBytes);
 
-  cv::Mat getData() const; // accessor
-
-  cv::Mat asMat();
+  cv::Mat asMat() const; // accessor
   std::string asBase64();
   std::vector<unsigned char> asBytes();
 

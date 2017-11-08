@@ -26,7 +26,7 @@ Image::Image(std::vector<unsigned char> imageBytes){
 }
 
 // Data accessor
-cv::Mat Image::getData() const{
+cv::Mat Image::asMat() const{
   return imageData;
 }
 
