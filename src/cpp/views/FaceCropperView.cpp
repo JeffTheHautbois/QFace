@@ -7,7 +7,7 @@
 #include "views/FaceCropperView.h"
 
 std::string detectCropFace() {
-  return cropFaceImageAsByteString();
+  return cropFaceImageAsByteString(passThisImage);
 }
 
 EMSCRIPTEN_BINDINGS(Turbo) {

@@ -2,6 +2,7 @@
 #include <string>
 #include <emscripten.h>
 #include "FaceCropperController.h"
+#include "Image.h"
 
 #include "models/MatModel.h"
 #include "opencv2/core.hpp"
@@ -14,9 +15,9 @@ using namespace cv;
 /*
  * Crops the duck image into a square. Does not modify the original image.
  */
-std::string cropFaceImageAsByteString() {
-  Mat inputImage;
-  loadImageIntoMat("data/obama.bmp", &inputImage);
+std::string cropFaceImageAsByteString(Image& passedImage) {
+  Mat inputImage = passedImage;
+  //oadImageIntoMat("data/obama.bmp", &inputImage);
 
   if (inputImage.empty()) {
     cout << "Was not able to load image" << std::endl;
