@@ -13,10 +13,9 @@ Image::Image(cv::Mat matrix) : imageData(matrix){
 
 // Constructor given base64 string
 Image::Image(std::string base64EncodedImage){
-	string str = base64_decode(base64EncodedImage);
-	vector<unsigned char> data(str.begin(),str.end());
-
-	imageData = cv::imdecode(data, IMREAD_UNCHANGED);
+	std::vector<unsigned char> imageBytes = base64_decode(base64EncodedImage);
+  cv::Mat data_mat(imageBytes,true);
+  imageData = data_mat;
 }
 
 // Constructor given byte vector
@@ -31,11 +30,14 @@ cv::Mat Image::asMat() const{
 }
 
 std::vector<unsigned char> Image::asBytes(){
-  return convertMatToByteString(imageData);
+  std::vector<unsigned char> imageBytes;
+  convertMatToByteVector(imageData,&imageBytes);
+  return imageBytes;
 }
 
 std::string Image::asBase64(){
-  std::vector<unsigned char> imageBytes = convertMatToByteString(imageData);
+  std::vector<unsigned char> imageBytes;
+  convertMatToByteVector(imageData,&imageBytes);
   std::string encodedData = base64_encode(&imageBytes[0], imageBytes.size());
   return encodedData;
 }
