@@ -16,7 +16,7 @@ using namespace cv;
  * Crops the duck image into a square. Does not modify the original image.
  */
 std::string cropFaceImageAsByteString(Image& passedImage) {
-  Mat inputImage = passedImage;
+  Mat inputImage = passedImage.asMat();
   //oadImageIntoMat("data/obama.bmp", &inputImage);
 
   if (inputImage.empty()) {
