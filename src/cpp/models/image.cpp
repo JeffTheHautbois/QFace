@@ -36,6 +36,6 @@ std::vector<unsigned char> Image::asBytes(){
 
 std::string Image::asBase64(){
   std::vector<unsigned char> imageBytes = convertMatToByteString(imageData);
-  std::string encodedData = base64::base64_encode(&imageBytes[0], imageBytes.size());
+  std::string encodedData = base64_encode(&imageBytes[0], imageBytes.size());
   return encodedData;
 }
