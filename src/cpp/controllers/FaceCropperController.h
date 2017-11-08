@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <string>
+#include "Image.h"
 
-std::string cropFaceImageAsByteString();
+std::string cropFaceImageAsByteString(Image& passedImage);
 
 #endif  // SRC_CPP_CONTROLLERS_FACECROPPERCONTROLLER_H_
