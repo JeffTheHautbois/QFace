@@ -3,15 +3,20 @@
 #include "Image.h"
 #include "MatModel.h"
 #include "base64.h"
+
+using namespace std;
+using namespace cv;
+
 // Constructor given cv::Mat
 Image::Image(cv::Mat matrix) : imageData(matrix){
 }
 
 // Constructor given base64 string
 Image::Image(std::string base64EncodedImage){
-  std::vector<unsigned char> imageBytes = base64::base64_decode(base64EncodedImage);
-  cv::Mat data_mat(imageBytes,true);
-  imageData = data_mat;
+	string str = base64_decode(base64EncodedImage);
+	vector<uchar> data(str.begin(),str.end());
+
+	imageData = cv::imdecode(data, IMREAD_UNCHANGED);
 }
 
 // Constructor given byte vector
