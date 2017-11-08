@@ -14,7 +14,7 @@ public:
   cv::Mat getData() const; // accessor
 
   cv::Mat asMat();
-  std::string asString();
+  std::string asBase64();
   std::vector<unsigned char> asBytes();
 
 private:
