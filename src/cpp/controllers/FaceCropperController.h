@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include "Image.h"
+#include "models/Image.h"
 
 std::string cropFaceImageAsByteString(Image& passedImage);
 

@@ -17,7 +17,7 @@ using namespace cv;
  */
 std::string cropFaceImageAsByteString(Image& passedImage) {
   Mat inputImage = passedImage.asMat();
-  //oadImageIntoMat("data/obama.bmp", &inputImage);
+  //loadImageIntoMat("data/obama.bmp", &inputImage);
 
   if (inputImage.empty()) {
     cout << "Was not able to load image" << std::endl;

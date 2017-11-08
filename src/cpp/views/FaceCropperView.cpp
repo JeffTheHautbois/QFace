@@ -6,7 +6,7 @@
 #include "controllers/FaceCropperController.h"
 #include "views/FaceCropperView.h"
 
-std::string detectCropFace() {
+std::string detectCropFace(Image& passThisImage) {
   return cropFaceImageAsByteString(passThisImage);
 }
 
