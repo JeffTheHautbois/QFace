@@ -14,7 +14,7 @@ Image::Image(cv::Mat matrix) : imageData(matrix){
 // Constructor given base64 string
 Image::Image(std::string base64EncodedImage){
 	string str = base64_decode(base64EncodedImage);
-	vector<uchar> data(str.begin(),str.end());
+	vector<unsigned char> data(str.begin(),str.end());
 
 	imageData = cv::imdecode(data, IMREAD_UNCHANGED);
 }
