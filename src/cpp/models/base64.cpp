@@ -29,6 +29,8 @@
 
 */
 
+using namespace std;
+
 static const std::string base64_chars = 
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 "abcdefghijklmnopqrstuvwxyz"
