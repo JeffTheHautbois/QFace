@@ -7,7 +7,6 @@
 #include "json.hpp"
 using json = nlohmann::json;
 
-
 /*
  * Runs this code synchronously after the DB is initialized.
  */
@@ -16,20 +15,21 @@ void afterDbInit(val) {
   if (inTestEnv) {
       runTests();
   }
-  CustomerModel::findCustomers();
-  CustomerModel::isExistingUser(10186046);
+  //commented out 19-33 but left in so that other ppl can try out
+  //CustomerModel::findCustomers();
+  CustomerModel::isExistingUser(102);
   json j = {{"studentId",101},{"name", "HELLO"},{"age",21},{"order","turbo"}};
   CustomerModel::overWriteUser(j);
   //CustomerModel::createNewCollection("images");
   //CustomerModel::addImageToUser("100","AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
   //CustomerModel::addImageToUser("100",""); // shouldn't overwrite above document 
-  //CustomerModel::addImageToUser("10091837","imagestring"); // shouldn't overwrite above document 
-  std::vector<std::string> imagesForUser = {};
-  CustomerModel::getImagesOfUser("100", imagesForUser, 1);
-  int length = imagesForUser.size();
-  for (int i = 0 ; i < length; i++) {
-        std::cout << imagesForUser[i] <<"\n"; 
-  }
+  //CustomerModel::addImageToUser("102","imagestrin"); // shouldn't overwrite above document 
+  // std::vector<std::string> imagesForUser = {};
+  // CustomerModel::getImagesOfUser("100", imagesForUser, 1);
+  // int length = imagesForUser.size();
+  // for (int i = 0 ; i < length; i++) {
+  //       std::cout << imagesForUser[i] <<"\n"; 
+  // }
   std::cout << "It worked!" << "\n";
 }
 

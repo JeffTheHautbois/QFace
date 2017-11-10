@@ -153,19 +153,16 @@ void CustomerModel::findCustomers() {
 
 bool CustomerModel::isExistingUser(int studentNum){
   if (!CustomerModel::hasBeenInit()) {
-    // need to throw exception
     return false;
   }
-  // general idea - run find query using loki.js
+  // run find query using loki.js
   // if returned vector is not empty, return true (customer exists)
   val window = val::global("window");
   val customers = window[dbName].call<val>("getCollection", customerCollectionName);
   val selector = val::object();
-  // check student number length and isnum
   selector.set("studentId", studentNum);
   val results = customers.call<val>("find", selector);
   unsigned int length = results["length"].as<unsigned int>();
-  // std::cout << (length>0) << std::endl;
   return (length > 0);
 }
 
@@ -188,14 +185,11 @@ void CustomerModel::overWriteUser(const json &user) {
   val customers = window[dbName].call<val>("getCollection", customerCollectionName);
   val query = val::object();
   query.set("studentId", id);
-  val result = (customers.call<val>("find", query))[0];
- // val updateDoc = val::object();
-
+  val result = (customers.call<val>("findOne", query));
   result.set("studentId", id);
   result.set("name", user["name"].get<std::string>());
   result.set("age", user["age"].get<int>());
   result.set("order", user["order"].get<std::string>());
-  // result.call<val>("update",updateDoc);
 }
 
 // just using string object for image instead of Image class for now
@@ -233,5 +227,4 @@ void CustomerModel::getImagesOfUser(const std::string &studentId, std::vector<st
         val image = results[i].as<val>();
         imageVecOut.push_back(image["image"].as<std::string>());
     }
-
 }
