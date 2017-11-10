@@ -10,14 +10,21 @@
 
 #include <string>
 #include <emscripten/val.h>
+#include "json.hpp"
 
 using emscripten::val;
+using json = nlohmann::json;
 
 class CustomerModel {
  public:
   static bool hasBeenInit();
   static void saveCustomer(int);
   static void findCustomers();
+  static bool isExistingUser(int);
+  static void overWriteUser(const json & );
+  static void createNewCollection(const std::string &);
+  static void addImageToUser(const std::string &, const std::string &);
+  static void getImagesOfUser(const std::string &, std::vector<std::string> &, int);
 
   // Loads the database asynchronously. Returns a global promise
   // to allow stuff to allow things to happen after this is done.
@@ -31,6 +38,7 @@ class CustomerModel {
   // Prevent this class from being instantiated
   CustomerModel() {}
   static const std::string customerCollectionName;
+  static const std::string imagesCollectionName;
   static const std::string dbPromiseName;
   static const std::string dbName;
   static const std::string isDbLoaded;

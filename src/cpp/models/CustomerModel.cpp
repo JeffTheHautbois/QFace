@@ -11,11 +11,14 @@
 #include <iostream>
 #include <vector>
 
+#include "json.hpp"
 #include "models/CustomerModel.h"
 
 using emscripten::val;
+using json = nlohmann::json;
 
 const std::string CustomerModel::customerCollectionName = "customers";
+const std::string CustomerModel::imagesCollectionName = "images";
 const std::string CustomerModel::dbPromiseName = "dbPromise";
 const std::string CustomerModel::dbName = "db";
 const std::string CustomerModel::isDbLoaded = "isDbLoaded";
@@ -124,7 +127,6 @@ void CustomerModel::findCustomers() {
   if (!CustomerModel::hasBeenInit()) {
     return;
   }
-
   /*
    * Equivalent JS:
    * let customers = window.db.getCollection('customers');
@@ -147,4 +149,89 @@ void CustomerModel::findCustomers() {
     std::cout << customer["studentId"].as<int>() << std::endl;
     std::cout << customer["age"].as<int>() << std::endl;
   }
+}
+
+bool CustomerModel::isExistingUser(int studentNum){
+  if (!CustomerModel::hasBeenInit()) {
+    // need to throw exception
+    return false;
+  }
+  // general idea - run find query using loki.js
+  // if returned vector is not empty, return true (customer exists)
+  val window = val::global("window");
+  val customers = window[dbName].call<val>("getCollection", customerCollectionName);
+  val selector = val::object();
+  // check student number length and isnum
+  selector.set("studentId", studentNum);
+  val results = customers.call<val>("find", selector);
+  unsigned int length = results["length"].as<unsigned int>();
+  // std::cout << (length>0) << std::endl;
+  return (length > 0);
+}
+
+// creates a new collection in db, takes name of new collection as argument 
+void CustomerModel::createNewCollection(const std::string &collectionName) {
+    if (!CustomerModel::hasBeenInit()) {
+    return;
+  }
+  val window = val::global("window");
+  val newCol = window[dbName].call<val>("addCollection", collectionName);
+}
+
+void CustomerModel::overWriteUser(const json &user) {
+  if (!CustomerModel::hasBeenInit()) {
+    return;
+  }
+  std::cout << user << std::endl;
+  int id = user["studentId"];
+  val window = val::global("window");
+  val customers = window[dbName].call<val>("getCollection", customerCollectionName);
+  val query = val::object();
+  query.set("studentId", id);
+  val result = (customers.call<val>("find", query))[0];
+ // val updateDoc = val::object();
+
+  result.set("studentId", id);
+  result.set("name", user["name"].get<std::string>());
+  result.set("age", user["age"].get<int>());
+  result.set("order", user["order"].get<std::string>());
+  // result.call<val>("update",updateDoc);
+}
+
+// just using string object for image instead of Image class for now
+// also this assumes that the collection used for the customer images is called "images"
+// Maybe we should pass the collection name as an argument in the future...
+void CustomerModel::addImageToUser(const std::string &studentId, const std::string &image) {
+    // inserting new document into images collection
+    // structure of document {studentId: 00000000, image: ""}
+    if (!CustomerModel::hasBeenInit()) {
+        return;
+    }
+    val window = val::global("window");
+    val imageCol = window[dbName].call<val>("getCollection", imagesCollectionName);
+    val document = val::object();
+    document.set("studentId", studentId);
+    document.set("image", image);
+    imageCol.call<val>("insert", document);
+}
+
+// In the SDD -> getImagesOfUser(std::string, std::vector<Image*>*, std::string<std::string>*, int)
+// currently this function will add images by string to a vector
+// I am assuming the int is for when we want a certain number of images
+// if this argument is set to -1, return all images for student with studentId
+void CustomerModel::getImagesOfUser(const std::string &studentId, std::vector<std::string> &imageVecOut , int) {
+    if (!CustomerModel::hasBeenInit()) {
+        return;
+    }
+    val window = val::global("window");
+    val images = window[dbName].call<val>("getCollection", imagesCollectionName);
+    val selector = val::object();
+    selector.set("studentId", studentId);
+    val results = images.call<val>("find", selector);
+    unsigned int length = results["length"].as<unsigned int>();
+    for(unsigned int i = 0; i < length; ++i) {
+        val image = results[i].as<val>();
+        imageVecOut.push_back(image["image"].as<std::string>());
+    }
+
 }
