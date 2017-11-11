@@ -152,18 +152,24 @@ void CustomerModel::overwriteCustomer(const int studentId, const json &user) {
   query.set("studentId", studentId);
 
   val customer = customers.call<val>("findOne", query);
-  if (customer.isNull()) {
-    // Create a new customer if it does not already exist
-    val newCustomer = val::object();
-    newCustomer.set("name", user["name"].get<std::string>());
-    newCustomer.set("age", user["age"].get<int>());
-    newCustomer.set("order", user["order"].get<std::string>());
-    customers.call<void>("insert", newCustomer);
-    return;
-  }
   customer.set("name", user["name"].get<std::string>());
   customer.set("age", user["age"].get<int>());
   customer.set("order", user["order"].get<std::string>());
+}
+
+void CustomerModel::insertCustomer(const int studentId, const json &user) {
+  if (!CustomerModel::hasBeenInit()) {
+    return;
+  }
+  val window = val::global("window");
+  val customers = window[dbName].call<val>("getCollection", customerCollectionName);
+
+  val customer = val::object();
+  customer.set("studentId", studentId);
+  customer.set("name", user["name"].get<std::string>());
+  customer.set("age", user["age"].get<int>());
+  customer.set("order", user["order"].get<std::string>());
+  customers.call<void>("insert", customer);
 }
 
 // just using string object for image instead of Image class for now
@@ -194,7 +200,7 @@ void CustomerModel::addImageToCustomer(const int studentId, const std::string &i
 // if this argument is set to -1, return all images for student with studentId
 void CustomerModel::getImagesOfCustomer(const int studentId,
                                         std::vector<std::string> &imageVecOut,
-                                        int numberOfResults) {
+                                        int) {
     if (!CustomerModel::hasBeenInit()) {
         return;
     }
