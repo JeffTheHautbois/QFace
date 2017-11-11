@@ -42,7 +42,6 @@ class CustomerModel {
   static const std::string dbPromiseName;
   static const std::string dbName;
   static const std::string isDbLoaded;
-  static bool isValidStudentId(int);
 };
 
 #endif /* SRC_CPP_MODELS_CUSTOMERMODEL_H_ */

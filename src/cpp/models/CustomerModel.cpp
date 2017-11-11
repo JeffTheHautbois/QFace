@@ -175,6 +175,11 @@ void CustomerModel::addImageToCustomer(const int studentId, const std::string &i
     if (!CustomerModel::hasBeenInit()) {
         return;
     }
+
+    if (!isExistingCustomer(studentId)) {
+      return; // should throw exception
+    }
+
     val window = val::global("window");
     val imageCol = window[dbName].call<val>("getCollection", imagesCollectionName);
     val document = val::object();
@@ -189,7 +194,7 @@ void CustomerModel::addImageToCustomer(const int studentId, const std::string &i
 // if this argument is set to -1, return all images for student with studentId
 void CustomerModel::getImagesOfCustomer(const int studentId,
                                         std::vector<std::string> &imageVecOut,
-                                        int) {
+                                        int numberOfResults) {
     if (!CustomerModel::hasBeenInit()) {
         return;
     }
