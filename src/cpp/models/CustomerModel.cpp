@@ -146,6 +146,11 @@ void CustomerModel::overwriteCustomer(const int studentId, const json &user) {
   if (!CustomerModel::hasBeenInit()) {
     return;
   }
+
+  if (!isExistingCustomer(studentId)) {
+    return; // Throw an exception.
+  }
+
   val window = val::global("window");
   val customers = window[dbName].call<val>("getCollection", customerCollectionName);
   val query = val::object();
@@ -161,6 +166,11 @@ void CustomerModel::insertCustomer(const int studentId, const json &user) {
   if (!CustomerModel::hasBeenInit()) {
     return;
   }
+
+  if (isExistingCustomer(studentId)) {
+    return; // Throw an exception.
+  }
+
   val window = val::global("window");
   val customers = window[dbName].call<val>("getCollection", customerCollectionName);
 
