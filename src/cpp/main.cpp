@@ -21,9 +21,8 @@ void afterDbInit(val) {
 }
 
 int main() {
-  Database::init()
-    .call<void>("then",
-                val::module_property("main_afterDbInit"));
+  val promise = Database::init();
+  promise.call<void>("then", val::module_property("main_afterDbInit"));
   return 0;
 }
 
