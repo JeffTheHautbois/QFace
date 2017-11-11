@@ -18,13 +18,13 @@ using json = nlohmann::json;
 class CustomerModel {
  public:
   static bool hasBeenInit();
-  static void saveCustomer(int);
-  static void findCustomers();
-  static bool isExistingUser(int);
-  static void overWriteUser(const json & );
+  static bool isExistingCustomer(const int studentId);
+  static void overwriteCustomer(const int studentId, const json & customer);
   static void createNewCollection(const std::string &);
-  static void addImageToUser(const std::string &, const std::string &);
-  static void getImagesOfUser(const std::string &, std::vector<std::string> &, int);
+  static void addImageToCustomer(const int studentId, const std::string & image);
+  static void getImagesOfCustomer(const int studentId,
+                                  std::vector<std::string> & outVector,
+                                  int numberOfResults);
 
   // Loads the database asynchronously. Returns a global promise
   // to allow stuff to allow things to happen after this is done.
@@ -42,6 +42,7 @@ class CustomerModel {
   static const std::string dbPromiseName;
   static const std::string dbName;
   static const std::string isDbLoaded;
+  static bool isValidStudentId(int);
 };
 
 #endif /* SRC_CPP_MODELS_CUSTOMERMODEL_H_ */

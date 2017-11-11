@@ -37,6 +37,7 @@ val CustomerModel::initDb() {
     let dbName = UTF8ToString($1);
     let dbPromiseName = UTF8ToString($2);
     let isLoaded = UTF8ToString($3);
+    let imagesCollectionName = UTF8ToString($4);
 
     // Create a promise that is only resolved once the DB is loaded.
     // This can allow other parts of the code from modifying/reading
@@ -52,8 +53,17 @@ val CustomerModel::initDb() {
         // as needed. This should theoretically be the only thing in
         // this mess of JS/C++ that needs to be changed.
         let databaseInitialize = function () {
+          // Add customer collection
           if (!window.db.getCollection(customerCollectionName)) {
             window.db.addCollection(customerCollectionName, {
+              indices: ['studentId'],
+              unqiue: ['studentId']
+            });
+          }
+
+          // Add images collection
+          if (!window.db.getCollection(imagesCollectionName)) {
+            window.db.addCollection(imagesCollectionName, {
               indices: ['studentId']
             });
           }
@@ -79,7 +89,8 @@ val CustomerModel::initDb() {
   customerCollectionName.c_str(),
   dbName.c_str(),
   dbPromiseName.c_str(),
-  isDbLoaded.c_str());
+  isDbLoaded.c_str(),
+  imagesCollectionName.c_str());
 
   return val::global("window")[dbPromiseName];
 }
@@ -107,51 +118,7 @@ val CustomerModel::persist() {
   return val::global("window")[dbPromiseName];
 }
 
-void CustomerModel::saveCustomer(int studentId) {
-  // Returns immediately an attempt to modify the DB is made, when it is not yet
-  // loaded. This should throw an exception.
-  if (!CustomerModel::hasBeenInit()) {
-    return;
-  }
-
-  val window = val::global("window");
-  val customers = window[dbName].call<val>("getCollection", customerCollectionName);
-  val customer = val::object();
-  customer.set("studentId", studentId);
-  customer.set("name", "Paul McCartney");
-  customer.set("age", 75);
-  customers.call<val>("insert", customer);
-}
-
-void CustomerModel::findCustomers() {
-  if (!CustomerModel::hasBeenInit()) {
-    return;
-  }
-  /*
-   * Equivalent JS:
-   * let customers = window.db.getCollection('customers');
-   * let selector = {'name': 'Paul McCartney' };
-   * let results = customers.find(selector);
-   *
-   * See: https://rawgit.com/techfort/LokiJS/master/jsdoc/tutorial-Query%20Examples.html
-   */
-
-  val window = val::global("window");
-  val customers = window[dbName].call<val>("getCollection", customerCollectionName);
-  val selector = val::object();
-  selector.set("name", "Paul McCartney");
-  val results = customers.call<val>("find", selector);
-
-  unsigned int length = results["length"].as<unsigned int>();
-  for(unsigned int i = 0; i < length; ++i) {
-    val customer = results[i].as<val>();
-    std::cout << customer["name"].as<std::string>() << std::endl;
-    std::cout << customer["studentId"].as<int>() << std::endl;
-    std::cout << customer["age"].as<int>() << std::endl;
-  }
-}
-
-bool CustomerModel::isExistingUser(int studentNum){
+bool CustomerModel::isExistingCustomer(int studentId){
   if (!CustomerModel::hasBeenInit()) {
     return false;
   }
@@ -160,7 +127,7 @@ bool CustomerModel::isExistingUser(int studentNum){
   val window = val::global("window");
   val customers = window[dbName].call<val>("getCollection", customerCollectionName);
   val selector = val::object();
-  selector.set("studentId", studentNum);
+  selector.set("studentId", studentId);
   val results = customers.call<val>("find", selector);
   unsigned int length = results["length"].as<unsigned int>();
   return (length > 0);
@@ -175,27 +142,34 @@ void CustomerModel::createNewCollection(const std::string &collectionName) {
   val newCol = window[dbName].call<val>("addCollection", collectionName);
 }
 
-void CustomerModel::overWriteUser(const json &user) {
+void CustomerModel::overwriteCustomer(const int studentId, const json &user) {
   if (!CustomerModel::hasBeenInit()) {
     return;
   }
-  std::cout << user << std::endl;
-  int id = user["studentId"];
   val window = val::global("window");
   val customers = window[dbName].call<val>("getCollection", customerCollectionName);
   val query = val::object();
-  query.set("studentId", id);
-  val result = (customers.call<val>("findOne", query));
-  result.set("studentId", id);
-  result.set("name", user["name"].get<std::string>());
-  result.set("age", user["age"].get<int>());
-  result.set("order", user["order"].get<std::string>());
+  query.set("studentId", studentId);
+
+  val customer = customers.call<val>("findOne", query);
+  if (customer.isNull()) {
+    // Create a new customer if it does not already exist
+    val newCustomer = val::object();
+    newCustomer.set("name", user["name"].get<std::string>());
+    newCustomer.set("age", user["age"].get<int>());
+    newCustomer.set("order", user["order"].get<std::string>());
+    customers.call<void>("insert", newCustomer);
+    return;
+  }
+  customer.set("name", user["name"].get<std::string>());
+  customer.set("age", user["age"].get<int>());
+  customer.set("order", user["order"].get<std::string>());
 }
 
 // just using string object for image instead of Image class for now
 // also this assumes that the collection used for the customer images is called "images"
 // Maybe we should pass the collection name as an argument in the future...
-void CustomerModel::addImageToUser(const std::string &studentId, const std::string &image) {
+void CustomerModel::addImageToCustomer(const int studentId, const std::string &image) {
     // inserting new document into images collection
     // structure of document {studentId: 00000000, image: ""}
     if (!CustomerModel::hasBeenInit()) {
@@ -213,7 +187,9 @@ void CustomerModel::addImageToUser(const std::string &studentId, const std::stri
 // currently this function will add images by string to a vector
 // I am assuming the int is for when we want a certain number of images
 // if this argument is set to -1, return all images for student with studentId
-void CustomerModel::getImagesOfUser(const std::string &studentId, std::vector<std::string> &imageVecOut , int) {
+void CustomerModel::getImagesOfCustomer(const int studentId,
+                                        std::vector<std::string> &imageVecOut,
+                                        int) {
     if (!CustomerModel::hasBeenInit()) {
         return;
     }
@@ -223,7 +199,7 @@ void CustomerModel::getImagesOfUser(const std::string &studentId, std::vector<st
     selector.set("studentId", studentId);
     val results = images.call<val>("find", selector);
     unsigned int length = results["length"].as<unsigned int>();
-    for(unsigned int i = 0; i < length; ++i) {
+    for (unsigned int i = 0; i < length; ++i) {
         val image = results[i].as<val>();
         imageVecOut.push_back(image["image"].as<std::string>());
     }

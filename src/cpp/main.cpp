@@ -15,11 +15,11 @@ void afterDbInit(val) {
   if (inTestEnv) {
       runTests();
   }
+
   //commented out 19-33 but left in so that other ppl can try out
   //CustomerModel::findCustomers();
-  CustomerModel::isExistingUser(102);
-  json j = {{"studentId",101},{"name", "HELLO"},{"age",21},{"order","turbo"}};
-  CustomerModel::overWriteUser(j);
+  // CustomerModel::isExistingCustomer(102);
+  // json j = {{"studentId",101},{"name", "HELLO"},{"age",21},{"order","turbo"}};
   //CustomerModel::createNewCollection("images");
   //CustomerModel::addImageToUser("100","AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
   //CustomerModel::addImageToUser("100",""); // shouldn't overwrite above document 
