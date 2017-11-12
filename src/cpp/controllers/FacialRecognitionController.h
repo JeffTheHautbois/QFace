@@ -14,15 +14,15 @@ public:
 
   }
 
-  void loadModel(const FileStorage& fs){
+  void loadModel(const cv::FileStorage& fs){
 
   }
 
-  void saveModel(FileStorage& fs){
+  void saveModel(cv::FileStorage& fs){
 
   }
 
-  void trainModel(InputArrayOfArrays src, InputArray labels){
+  void trainModel(cv::InputArrayOfArrays src, cv::InputArray labels){
 
   }
 
@@ -30,7 +30,7 @@ public:
 
   }
 
-  void identify(InputArray src, int& label, double& confidence){
+  void identify(cv::InputArray src, int& label, double& confidence){
 
   }
 
