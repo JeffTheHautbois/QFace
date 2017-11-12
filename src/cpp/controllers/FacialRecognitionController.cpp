@@ -1,15 +1,8 @@
 #include <iostream>
 #include <string>
 #include <emscripten.h>
-#include "FacialRecognitionController.h"
-#include "Image.h"
 
-#include <string>
-#include <vector>
-#include "opencv2/core.hpp"
-#include "Image.h"
-#include <string>
-#include <vector>
+#include "FacialRecognitionController.h"
 #include "lib/opencv_3.1.0/modules/face/include/opencv2/face.hpp"
 
 using namespace std;
