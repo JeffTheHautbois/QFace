@@ -1,6 +1,3 @@
-/*
- * FacialRecognitionController.cpp
- */
 #include <iostream>
 #include <string>
 #include <emscripten.h>
