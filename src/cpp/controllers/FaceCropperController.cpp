@@ -12,12 +12,7 @@
 using namespace std;
 using namespace cv;
 
-/*
- * Crops the duck image into a square. Does not modify the original image.
- */
-
 cv::CascadeClassifier loadCascadeClassifier(const std::string& filePath){
-	// This part should be handled by the Model.
 	//const string filePath = "data/haarcascade_frontalface_default.xml";
 	cout << filePath << std::endl;
 	CascadeClassifier face;
