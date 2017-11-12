@@ -5,9 +5,6 @@
 #include "Image.h"
 
 #include "models/MatModel.h"
-#include "opencv2/core.hpp"
-#include "opencv2/objdetect.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
 
 using namespace std;
 using namespace cv;

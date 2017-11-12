@@ -6,6 +6,8 @@
 
 #include "models/Image.h"
 #include "opencv2/core.hpp"
+#include "opencv2/objdetect.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 cv::CascadeClassifier loadCascadeClassifier(const std::string&); // Pre-load the cascade classifier from an xml file
 std::string cropFaceImageAsByteString(Image& passedImage, cv::CascadeClassifier); // Crops the image and returns it as a byte string
