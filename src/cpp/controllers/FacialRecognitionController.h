@@ -6,7 +6,7 @@
 #include "Image.h"
 //#include <string>
 //#include <vector>
-//#include "lib/opencv_3.1.0/modules/face/include/opencv2/face.hpp"
+#include "lib/opencv_3.1.0/modules/face/include/opencv2/face.hpp"
 
 using namespace cv;
 
@@ -70,6 +70,9 @@ public:
   void identify(cv::InputArray src, int& label, double& confidence);
 
   void createFaceRecognizer(int num_components=0, double threshold=DBL_MAX);
+
+private:
+  Ptr<FaceRecognizer> model;
 
 };
 
