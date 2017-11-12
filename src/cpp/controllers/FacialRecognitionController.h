@@ -6,9 +6,11 @@
 #include "Image.h"
 #include <string>
 #include <vector>
+#include "lib/opencv_3.1.0/modules/face/include/opencv2/face.hpp"
 
 using namespace cv;
 
+/*
 class FaceRecognizer : public Algorithm
 {
 public:
@@ -31,7 +33,7 @@ public:
     virtual void save(const String& filename) const;
 
     // Deserializes this object from a given filename.
-    virtual void load(const String& filename);
+    virtual void load(const FileStorage& fs);
 
     // Serializes this object to a given cv::FileStorage.
     virtual void save(FileStorage& fs) const = 0;
@@ -48,42 +50,27 @@ public:
     // Gets labels by string info
     virtual vector<int> getLabelsByString(const String& str);
 };
+*/
 
 class FacialRecognizer {
 public:
   // Facial Recognizer constructor
   FacialRecognizer();
 
-  void loadDataSet(){
+  void loadDataSet();
 
-  }
+  void loadModel(const cv::FileStorage& fs);
 
-  void loadModel(const cv::FileStorage& fs){
+  void saveModel(cv::FileStorage& fs);
 
-  }
+  void trainModel(cv::InputArrayOfArrays src, cv::InputArray labels);
 
-  void saveModel(cv::FileStorage& fs){
+  void cropAndSaveFaceTemporary(Image& inputImage);
 
-  }
+  void identify(cv::InputArray src, int& label, double& confidence);
 
-  void trainModel(cv::InputArrayOfArrays src, cv::InputArray labels){
+  void createFaceRecognizer(int num_components=0, double threshold=DBL_MAX);
 
-  }
-
-  void cropAndSaveFaceTemporary(Image& inputImage){
-
-  }
-
-  void identify(cv::InputArray src, int& label, double& confidence){
-
-  }
-
-  void createFaceRecognizer(int num_components=0, double threshold=DBL_MAX){
-    Ptr<FaceRecognizer> model = createEigenFaceRecognizer(num_components, threshold);
-  }
-
-private:
-  cv::Mat imageData; // the image stored as a Mat
 };
 
 
