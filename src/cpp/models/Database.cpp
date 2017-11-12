@@ -10,6 +10,7 @@
 
 const std::string Database::customerCollectionName = "customers";
 const std::string Database::imagesCollectionName = "images";
+const std::string Database::temporaryStorageCollectionName = "temporaryStorage";
 const std::string Database::dbPromiseName = "dbPromise";
 const std::string Database::dbName = "db";
 const std::string Database::isDbLoaded = "isDbLoaded";
@@ -29,6 +30,7 @@ val Database::init() {
     let dbPromiseName = UTF8ToString($2);
     let isLoaded = UTF8ToString($3);
     let imagesCollectionName = UTF8ToString($4);
+    let temporaryStorageCollectionName = UTF8ToString($5);
 
     // Create a promise that is only resolved once the DB is loaded.
     // This can allow other parts of the code from modifying/reading
@@ -58,6 +60,11 @@ val Database::init() {
               indices: ['studentId']
             });
           }
+
+          // Add images collection
+          if (!window.db.getCollection(temporaryStorageCollectionName)) {
+            window.db.addCollection(temporaryStorageCollectionName);
+          }
           console.log('Db has been loaded.');
           window[isLoaded] = true;
           return resolve();
@@ -81,7 +88,8 @@ val Database::init() {
   dbName.c_str(),
   dbPromiseName.c_str(),
   isDbLoaded.c_str(),
-  imagesCollectionName.c_str());
+  imagesCollectionName.c_str(),
+  temporaryStorageCollectionName.c_str());
 
   return val::global("window")[dbPromiseName];
 }
@@ -100,5 +108,11 @@ val Database::customersCollection() {
 val Database::imagesCollection() {
   val window = val::global("window");
   val images = window[dbName].call<val>("getCollection", imagesCollectionName);
+  return images;
+}
+
+val Database::temporaryStorageCollection() {
+  val window = val::global("window");
+  val images = window[dbName].call<val>("getCollection", temporaryStorageCollectionName);
   return images;
 }
