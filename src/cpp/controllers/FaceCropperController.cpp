@@ -10,11 +10,10 @@ using namespace std;
 using namespace cv;
 
 cv::CascadeClassifier loadCascadeClassifier(const std::string& filePath){
-	//const string filePath = "data/haarcascade_frontalface_default.xml";
 	cout << filePath << std::endl;
-	CascadeClassifier face;
-	face.load(filePath);
-	return face;
+	CascadeClassifier face; // Create CascadeClassifier object
+	face.load(filePath); // Load the xml file from the given file directory in the string
+	return face; // Return the CascadeClassifier Object
 }
 
 std::string cropFaceImageAsByteString(Image& passedImage, cv::CascadeClassifier face) {
