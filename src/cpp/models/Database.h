@@ -27,7 +27,9 @@ class Database {
 
   static val customersCollection();
   static val imagesCollection();
+  static val temporaryStorageCollection();
  private:
+  static const std::string temporaryStorageCollectionName;
   static const std::string customerCollectionName;
   static const std::string imagesCollectionName;
   static const std::string dbPromiseName;
