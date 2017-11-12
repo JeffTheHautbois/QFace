@@ -1,8 +1,5 @@
-#include <iostream>
-#include <string>
 #include <emscripten.h>
 #include "FaceCropperController.h"
-#include "Image.h"
 
 #include "models/MatModel.h"
 
