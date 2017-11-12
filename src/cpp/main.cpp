@@ -1,17 +1,13 @@
 #include <iostream>
 #include <emscripten/bind.h>
 #include <emscripten/val.h>
-
 #include "test/test.h"
 #include "models/Database.h"
-#include "models/CustomerModel.h"
-#include "json.hpp"
-using json = nlohmann::json;
 
 /*
  * Runs this code synchronously after the DB is initialized.
  */
-void afterDbInit(val) {
+void afterDbInit(emscripten::val) {
   bool inTestEnv = false;
   if (inTestEnv) {
       runTests();
@@ -21,8 +17,8 @@ void afterDbInit(val) {
 }
 
 int main() {
-  val promise = Database::init();
-  promise.call<void>("then", val::module_property("main_afterDbInit"));
+  emscripten::val promise = Database::init();
+  promise.call<void>("then", emscripten::val::module_property("main_afterDbInit"));
   return 0;
 }
 
