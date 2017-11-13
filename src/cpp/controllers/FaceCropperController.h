@@ -20,7 +20,7 @@ private:
 
 class FaceDetectionException {
 public:
-  FaceDetectionException(const std::string&);
+  FaceDetectionException(const std::string& msg) : message(msg) {};
   std::string what() const;
 private:
   std::string message;

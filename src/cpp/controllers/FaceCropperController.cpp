@@ -36,10 +36,8 @@ std::string FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
   // Checks for the number of faces in the image
   if (faces.size() > 1) { // More than one face detected in the image
     throw FaceDetectionException("Error! Too many faces!");
-    return "";
   } else if (faces.size() == 0) { // No faces detected in the image
     throw FaceDetectionException("Error! No faces!");
-    return "";
   } else { // One face has been detected
     // The actual cropping occurs here.
     Rect faceROI(faces[0].x, faces[0].y, faces[0].width, faces[0].height);
