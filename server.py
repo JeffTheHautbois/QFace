@@ -53,13 +53,14 @@ class TurboServer(http.server.SimpleHTTPRequestHandler):
         },
         "/test": {
             "content-type": "html",
-            "filename": "bin/Turbo.test.html",
+            "filename": "src/views/test.html",
             "response_code": 200
         }
     }
 
     def do_GET(self):
         if self.path in TurboServer.paths:
+            print(self.path)
             route_options = TurboServer.paths[self.path]
 
             self.send_response(route_options["response_code"])
