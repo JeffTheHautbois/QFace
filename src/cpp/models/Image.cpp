@@ -1,15 +1,9 @@
-#include <string>
-#include <vector>
 #include "Image.h"
 #include "base64.h"
 #include "opencv2/imgcodecs.hpp"
-#include "opencv2/core.hpp"
-
-using namespace std;
-using namespace cv;
 
 // Constructor given cv::Mat
-Image::Image(cv::Mat& matrix)
+Image::Image(cv::Mat matrix)
     : imageData(matrix) {
 }
 
@@ -34,7 +28,7 @@ cv::Mat Image::asMat() const {
 // Returns the image as a base 64 string
 std::string Image::asBase64() {
   std::vector<unsigned char> imageBytes;  // Vector variable declaration
-  cv::imencode(".bmp", imageData, imageBytes);
+  cv::imencode(".jpg", imageData, imageBytes);
   std::string encodedData = base64_encode(&imageBytes[0], imageBytes.size());  // Encodes the vector to a base64 string
   return encodedData;  // Return the encoded string
 }
@@ -42,7 +36,7 @@ std::string Image::asBase64() {
 // Returns the image as a vector of unsifned chars (bytes)
 std::vector<unsigned char> Image::asBytes() {
   std::vector<unsigned char> imageBytes;  // Vector variable declaration
-  cv::imencode(".bmp", imageData, imageBytes);
+  cv::imencode(".jpg", imageData, imageBytes);
   return imageBytes;  // Return the vector
 }
 

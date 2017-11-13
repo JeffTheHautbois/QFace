@@ -8,7 +8,7 @@
 class Image {
 public:
 	// Image constructors
-	Image(cv::Mat& matrix);
+	Image(cv::Mat matrix);
 	Image(std::string& base64EncodedImage);
 	Image(std::vector<unsigned char>& imageBytes);
 
