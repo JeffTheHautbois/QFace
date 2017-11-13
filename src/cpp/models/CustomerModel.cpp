@@ -77,22 +77,23 @@ void CustomerModel::insertCustomer(const int studentId, const json &user) {
 // just using string object for image instead of Image class for now
 // also this assumes that the collection used for the customer images is called "images"
 // Maybe we should pass the collection name as an argument in the future...
-void CustomerModel::addImageToCustomer(const int studentId, const std::string &image) {
-    // inserting new document into images collection
-    // structure of document {studentId: 00000000, image: ""}
-    if (!Database::hasBeenInit()) {
-        return;
-    }
+void CustomerModel::addImageToCustomer(const int studentId,
+                                       const std::string &image) {
+  // inserting new document into images collection
+  // structure of document {studentId: 00000000, image: ""}
+  if (!Database::hasBeenInit()) {
+    return;
+  }
 
-    if (!isExistingCustomer(studentId)) {
-      return; // should throw exception
-    }
+  if (!isExistingCustomer(studentId)) {
+    return;  // should throw exception
+  }
 
-    val images = Database::imagesCollection();
-    val document = val::object();
-    document.set("studentId", studentId);
-    document.set("image", image);
-    images.call<val>("insert", document);
+  val images = Database::imagesCollection();
+  val document = val::object();
+  document.set("studentId", studentId);
+  document.set("image", image);
+  images.call<val>("insert", document);
 }
 
 // In the SDD -> getImagesOfUser(std::string, std::vector<Image*>*, std::string<std::string>*, int)
@@ -100,61 +101,59 @@ void CustomerModel::addImageToCustomer(const int studentId, const std::string &i
 // I am assuming the int is for when we want a certain number of images
 // if this argument is set to -1, return all images for student with studentId
 void CustomerModel::getImagesOfCustomer(const int studentId,
-                                        std::vector<std::string> &imageVecOut, int numImages) {
-    if (!Database::hasBeenInit()) {
-        return;
+                                        std::vector<std::string> &imageVecOut,
+                                        int numImages) {
+  if (!Database::hasBeenInit()) {
+    return;
+  }
+  val window = val::global("window");
+  val images = Database::imagesCollection();
+  val selector = val::object();
+  selector.set("studentId", studentId);
+  val results = images.call<val>("find", selector);
+  int length = results["length"].as<int>();
+  if (numImages < 0 || numImages > length) {
+    for (int i = 0; i < length; ++i) {
+      val image = results[i].as<val>();
+      imageVecOut.push_back(image["image"].as<std::string>());
     }
-    val window = val::global("window");
-    val images = Database::imagesCollection();
-    val selector = val::object();
-    selector.set("studentId", studentId);
-    val results = images.call<val>("find", selector);
-    int length = results["length"].as<int>();
-    if (numImages < 0 || numImages > length) {
-      for (int i = 0; i < length; ++i) {
-        val image = results[i].as<val>();
-        imageVecOut.push_back(image["image"].as<std::string>());
-      }
-    } else {
-      for (int i = 0; i < numImages; ++i) {
-        val image = results[i].as<val>();
-        imageVecOut.push_back(image["image"].as<std::string>());
-      }
+  } else {
+    for (int i = 0; i < numImages; ++i) {
+      val image = results[i].as<val>();
+      imageVecOut.push_back(image["image"].as<std::string>());
     }
-    
-}
+  }
 
+}
 
 // Sturcture for the json files
 json CustomerModel::getCustomerStructure() {
-	//Check for how it looks on the front end
-	json structure = {
-		{ "name", "" },
-		{ "studentId", "" },
-		{ "age", "" },
-		{ "order", "" }
-	};
-	return structure;
+  json structure = {
+    { "name", "" },
+    { "studentId", "" },
+    { "age", "" },
+    { "order", "" }
+  };
+  return structure;
 }
-
 
 // Check if customer exisits, get customer info, write it into json and then return
 json CustomerModel::getCustomer(int studentId) {
-	if (!CustomerModel::isExistingCustomer(studentId)){
+  if (!CustomerModel::isExistingCustomer(studentId)) {
     return CustomerModel::getCustomerStructure();
-	}
-	
-	val customers = Database::customersCollection();
-	val selector = val::object();
-	selector.set("studentId", studentId);
-	val customer = customers.call<val>("findOne", selector);
-	
-	json jsonCustomer = {
-		{ "name", customer["name"].as<std::string>() },
-		{ "studentId", customer["studentId"].as<int>() },
-		{ "age", customer["age"].as<int>() },
-		{ "order", customer["order"].as<std::string>()}
-	};
+  }
 
-	return jsonCustomer;
+  val customers = Database::customersCollection();
+  val selector = val::object();
+  selector.set("studentId", studentId);
+  val customer = customers.call<val>("findOne", selector);
+
+  json jsonCustomer = {
+    { "name", customer["name"].as<std::string>() },
+    { "studentId", customer["studentId"].as<int>() },
+    { "age", customer["age"] .as<int>() },
+    { "order", customer["order"].as<std::string>() }
+  };
+
+  return jsonCustomer;
 }
