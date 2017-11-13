@@ -11,8 +11,6 @@ public:
   FacialRecognizer(int num_components, double threshold);
   ~FacialRecognizer(); // Destructor
 
-  void loadDataSet();
-
   void loadModel(const cv::FileStorage& fs);
 
   void saveModel(cv::FileStorage& fs);

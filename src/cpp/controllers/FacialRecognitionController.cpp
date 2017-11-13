@@ -12,10 +12,6 @@ FacialRecognizer::~FacialRecognizer(){
   delete model;
 }
 
-void FacialRecognizer::loadDataSet(){
-
-}
-
 void FacialRecognizer::loadModel(const cv::FileStorage& fs){
 
 }
