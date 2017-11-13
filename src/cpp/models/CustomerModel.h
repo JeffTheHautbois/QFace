@@ -15,6 +15,24 @@
 using emscripten::val;
 using json = nlohmann::json;
 
+// An exception that is thrown if the database doesn't exist 
+class DataBaseException {
+public:
+  DataBaseException(const std::string&);
+  std::string& what();
+private:
+  std::string message;
+};
+
+// An exception that is thrown if there are errors with the customer infomation
+class CustomerException {
+public:
+  CustomerException(const std::string&);
+  std::string& what();
+private:
+  std::string message;
+};
+
 class CustomerModel {
  public:
   static bool isExistingCustomer(const int studentId);
