@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+    <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/lokijs.min.js"></script>
+    <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/loki-indexed-adapter.min.js"></script>
     </head>
     <body>
         <ul>
@@ -15,9 +17,20 @@
     let cropper = document.getElementById("cropper");
     let obama = document.getElementById("obama");
 
-    cropper.onclick = function() {
-        let base64String = Module.faceCropper_detectCropFace();
-        obama.src = "data:image/bmp;base64," + btoa(base64String);
-    };
+    let cropFace = function() {
+        let ranOnce = false;
+        return function() {
+            if (!ranOnce) {
+                ranOnce = true;
+            } else {
+                return;
+            }
+
+            let base64String = Module.faceCropper_detectCropFace();
+            obama.src = "data:image/bmp;base64," + btoa(base64String);
+        };
+    }
+
+    cropper.onclick = cropFace();
     </script>
 </html>
