@@ -13,8 +13,17 @@
 
 class TemporaryStorage {
  public:
+  /*
+   * Clears the temporary storage.
+   */
   static void clearStorage();
+  /*
+   * Gets all images from the temporary storage and loads them into a vector.
+   */
   static void getImages(std::vector<std::string>* outVector);
+  /*
+   * Adds an image to temporary storage.
+   */
   static void addImage(std::string& image);
 };
 
