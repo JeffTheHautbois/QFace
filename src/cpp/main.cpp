@@ -20,6 +20,9 @@ void afterDbInit(val) {
   CustomerModel::saveCustomer(10186046);
   CustomerModel::findCustomers();
 
+  CustomerModel::getAllCustomers();
+
+
   std::cout << "It worked!" << "\n";
 }
 

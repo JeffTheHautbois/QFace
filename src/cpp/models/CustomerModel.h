@@ -10,7 +10,8 @@
 
 #include <string>
 #include <emscripten/val.h>
-
+#include "json.hpp"
+using json = nlohmann::json;
 using emscripten::val;
 
 class CustomerModel {
@@ -18,7 +19,9 @@ class CustomerModel {
   static bool hasBeenInit();
   static void saveCustomer(int);
   static void findCustomers();
-
+  static json  getCustomerStructure();
+  static json  getCustomer(int studentId);
+  static void getAllCustomers();
   // Loads the database asynchronously. Returns a global promise
   // to allow stuff to allow things to happen after this is done.
   static val initDb();
