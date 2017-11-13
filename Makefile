@@ -86,17 +86,12 @@ INCLUDE += \
 
 # Do NOT change the order of these libs. The order matters.
 LIBS = \
-    $(OPENCV_LIB)/libopencv_videoio.a \
     $(OPENCV_LIB)/libopencv_shape.a \
-    $(OPENCV_LIB)/libopencv_photo.a \
     $(OPENCV_LIB)/libopencv_objdetect.a \
-    $(OPENCV_LIB)/libopencv_ml.a \
     $(OPENCV_LIB)/libopencv_imgcodecs.a \
     $(OPENCV_LIB)/libopencv_highgui.a \
-    $(OPENCV_LIB)/libopencv_features2d.a \
     $(OPENCV_3RD_PARTY)/liblibpng.a \
     $(OPENCV_3RD_PARTY)/liblibjpeg.a \
-    $(OPENCV_LIB)/libopencv_video.a \
     $(OPENCV_LIB)/libopencv_imgproc.a \
     $(OPENCV_LIB)/libopencv_flann.a \
     $(OPENCV_LIB)/libopencv_face.a \
@@ -108,7 +103,7 @@ LIBS = \
 ifeq ($(MAKECMDGOALS), test)
     $(info Building with unit tests.)
     COMPILED_BC = $(BIN_DIR)/$(PROJECT).test.bc
-    COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.html
+    COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.js
     LDFLAGS += --preload-file test_data
     SOURCES += $(wildcard $(SRC_DIR_TEST)/*.cpp)
     CXXFLAGS += -D TEST_ENV
