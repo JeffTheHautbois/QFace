@@ -1,15 +1,15 @@
 #include <iostream>
 #include <string>
 #include <emscripten.h>
-
+#include "opencv2/face.hpp"
 #include "FacialRecognitionController.h"
 
-using namespace std;
-using namespace cv;
-
 FacialRecognizer::FacialRecognizer(){
-  //Ptr<FaceRecognizer> model = EigenFaceRecognizer::create();
-  //Ptr<FaceRecognizer> model = createEigenFaceRecognizer();
+  model = cv::face::EigenFaceRecognizer::create(0,100);
+}
+
+FacialRecognizer::~FacialRecognizer(){
+  delete model;
 }
 
 void FacialRecognizer::loadDataSet(){
@@ -24,12 +24,9 @@ void FacialRecognizer::saveModel(cv::FileStorage& fs){
 
 }
 
-void FacialRecognizer::trainModel(cv::InputArrayOfArrays src, cv::InputArray labels){
- // model->train(images, labels)
-}
-
-void FacialRecognizer::cropAndSaveFaceTemporary(Image& inputImage){
-
+void FacialRecognizer::trainModel(const cv::InputArray& src){
+  // IN MAIN CODE, MUST CREATE A vector<cv::Mat> TO PASS AS src
+  model->cv::face::FaceRecognizer::train(src, labels);
 }
 
 void FacialRecognizer::identify(cv::InputArray src, int& label, double& confidence){

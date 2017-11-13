@@ -5,12 +5,11 @@
 #include "models/Image.h"
 #include "opencv2/core.hpp"
 
-using namespace cv;
-
 class FacialRecognizer {
 public:
   // Facial Recognizer constructor
   FacialRecognizer();
+  ~FacialRecognizer(); // Destructor
 
   void loadDataSet();
 
@@ -18,9 +17,7 @@ public:
 
   void saveModel(cv::FileStorage& fs);
 
-  void trainModel(cv::InputArrayOfArrays src, cv::InputArray labels);
-
-  void cropAndSaveFaceTemporary(Image& inputImage);
+  void trainModel(const cv::InputArray& src);
 
   void identify(cv::InputArray src, int& label, double& confidence);
 
@@ -28,7 +25,7 @@ public:
 private:
   std::vector<Image> images;
   std::vector<int> labels;
-  Ptr<FacialRecognizer> model;
+  cv::face::FaceRecognizer* model;
 };
 
 
