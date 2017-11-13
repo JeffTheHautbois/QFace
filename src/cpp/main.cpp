@@ -1,19 +1,18 @@
 #include <iostream>
 #include <emscripten/bind.h>
 #include <emscripten/val.h>
-
 #include "test/test.h"
-#include "models/CustomerModel.h"
-
+#include "models/Database.h"
 
 /*
  * Runs this code synchronously after the DB is initialized.
  */
-void afterDbInit(val) {
+void afterDbInit(emscripten::val) {
   bool inTestEnv = false;
   if (inTestEnv) {
       runTests();
   }
+
 
   CustomerModel::saveCustomer(10000000);
   CustomerModel::saveCustomer(10000000);
@@ -27,9 +26,8 @@ void afterDbInit(val) {
 }
 
 int main() {
-  val promise = CustomerModel::initDb();
-  promise.call<void>("then", val::module_property("main_afterDbInit"));
-
+  emscripten::val promise = Database::init();
+  promise.call<void>("then", emscripten::val::module_property("main_afterDbInit"));
   return 0;
 }
 

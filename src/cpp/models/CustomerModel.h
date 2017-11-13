@@ -11,8 +11,9 @@
 #include <string>
 #include <emscripten/val.h>
 #include "json.hpp"
-using json = nlohmann::json;
+
 using emscripten::val;
+using json = nlohmann::json;
 
 class CustomerModel {
  public:
@@ -30,13 +31,17 @@ class CustomerModel {
   // to allow stuff to allow things to happen after this is done.
   static val persist();
 
+
+  static bool isExistingCustomer(const int studentId);
+  static void overwriteCustomer(const int studentId, const json & customer);
+  static void insertCustomer(const int studentId, const json & customer);
+  static void addImageToCustomer(const int studentId, const std::string & image);
+  static void getImagesOfCustomer(const int studentId,
+                                  std::vector<std::string> & outVector,
+                                  int numberOfResults);
  private:
   // Prevent this class from being instantiated
   CustomerModel() {}
-  static const std::string customerCollectionName;
-  static const std::string dbPromiseName;
-  static const std::string dbName;
-  static const std::string isDbLoaded;
 };
 
 #endif /* SRC_CPP_MODELS_CUSTOMERMODEL_H_ */

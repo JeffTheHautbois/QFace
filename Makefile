@@ -103,7 +103,7 @@ LIBS = \
 ifeq ($(MAKECMDGOALS), test)
     $(info Building with unit tests.)
     COMPILED_BC = $(BIN_DIR)/$(PROJECT).test.bc
-    COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.html
+    COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.js
     LDFLAGS += --preload-file test_data
     SOURCES += $(wildcard $(SRC_DIR_TEST)/*.cpp)
     CXXFLAGS += -D TEST_ENV
