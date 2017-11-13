@@ -104,7 +104,6 @@ void CustomerModel::getImagesOfCustomer(const int studentId,
     if (!Database::hasBeenInit()) {
         return;
     }
-    val window = val::global("window");
     val images = Database::imagesCollection();
     val selector = val::object();
     selector.set("studentId", studentId);
@@ -121,5 +120,31 @@ void CustomerModel::getImagesOfCustomer(const int studentId,
         imageVecOut.push_back(image["image"].as<std::string>());
       }
     }
-    
+}
+
+// This function replaces the original "getAllUsers" function.
+// It should allow the retrieval of all studentId and image pairs in the images collection.
+//
+// For example, if the images collection contains:
+// {"studentId": 1000, "image": "ASGxw.."}
+// {"studentId": 1000, "image": "Vhx+s.."}
+// {"studentId": 1010, "image": "OAnx.."}
+// {"studentId": 1050, "image": "Waxv.."}
+//
+// The value of outIds should be
+// [1000, 1000, 1010, 1050]
+//
+// The values of outImages should be
+// ["ASGxw..", "Vhx+s..", "OAnx..", "Waxv.."]
+void CustomerModel::getAllStudentIdImagePairs(std::vector<int>* outIds, std::vector<std::string>* outImages) {
+   if (!Database::hasBeenInit()) {
+        return;
+    }
+    val images = Database::imagesCollection();
+    val results = images.call<val>("find");
+    int length = results["length"].as<int>();
+    for (int i = 0; i < length; ++i) {
+      outIds->push_back(results[i]["studentId"].as<int>());
+      outImages->push_back(results[i]["image"].as<std::string>());
+    }
 }
