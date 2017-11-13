@@ -13,15 +13,6 @@ void afterDbInit(emscripten::val) {
       runTests();
   }
 
-
-  CustomerModel::saveCustomer(10000000);
-  CustomerModel::saveCustomer(10000000);
-  CustomerModel::saveCustomer(10186046);
-  CustomerModel::findCustomers();
-
-  CustomerModel::getAllCustomers();
-
-
   std::cout << "It worked!" << "\n";
 }
 

@@ -95,55 +95,6 @@ void CustomerModel::addImageToCustomer(const int studentId, const std::string &i
     images.call<val>("insert", document);
 }
 
-  unsigned int length = results["length"].as<unsigned int>();
-  for(unsigned int i = 0; i < length; ++i) {
-    val customer = results[i].as<val>();
-    std::cout << customer["name"].as<std::string>() << std::endl;
-    std::cout << customer["studentId"].as<int>() << std::endl;
-    std::cout << customer["age"].as<int>() << std::endl;
-  }
-
-}
-
-
-// Sturcture for the json files
-json  CustomerModel::getCustomerStructure() {
-	//Check for how it looks on the front end
-	json structure = {
-		{ "name", "" },
-		{ "studentId", "" },
-		{ "age", "" },
-		{ "order", "" }
-	};
-	return structure;
-}
-
-
-// Check if customer exisits, get customer info, write it into json and then return
-json  CustomerModel::getCustomer(int studentId) {
-
-	if (!CustomerModel::isExistingCustomer(studentId)){
-	return CustomerModel::getCustomerStructure(); 
-	}
-	
-
-	val window = val::global("window");
-	val customers = window[dbName].call<val>("getCollection", customerCollectionName);
-	val selector = val::object();
-	selector.set("studentId", studentId);
-	val results = customers.call<val>("findOne", selector);
-	
-	val customer = results.as<val>();
-
-	json jsonCustomer = {
-		{ "name", customer["name"].as<std::string>() },
-		{ "studentId", customer["studentId"].as<int>() },
-		{ "age", customer["age"].as<int>() },
-		{ "order", customer["order"].as<string>()}
-	};
-	return jsonCustomer;
-
-
 // In the SDD -> getImagesOfUser(std::string, std::vector<Image*>*, std::string<std::string>*, int)
 // currently this function will add images by string to a vector
 // I am assuming the int is for when we want a certain number of images
@@ -172,25 +123,3 @@ void CustomerModel::getImagesOfCustomer(const int studentId,
     }
     
 }
-
-// Return the studentID for all customers in the 'customers' collection
-void CustomerModel::getAllCustomers() {
-
-	val window = val::global("window");
-	val customers = window[dbName].call<val>("getCollection", customerCollectionName);
-	val results = customers.call<val>("find");
-
-	unsigned int length = results["length"].as<unsigned int>();
-
-	// Check that there are customers in the collection
-	if (length == 0) {
-		std::cout << No customers saved. << std::endl;
-	}
-
-	for (unsigned int i = 0; i < length; ++i) {
-		val customer = results[i].as<val>();
-		std::cout << customer["studentId"].as<int>() << std::endl;
-	}
-
-}
-
