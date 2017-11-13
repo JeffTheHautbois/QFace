@@ -158,15 +158,14 @@ void CustomerModel::getImagesOfCustomer(const int studentId,
     val selector = val::object();
     selector.set("studentId", studentId);
     val results = images.call<val>("find", selector);
-    unsigned int length = results["length"].as<unsigned int>();
-    unsigned int imagesRequested = numImages.as<unsigned int>();
-    if (imagesRequested < 0 || imagesRequested > length) {
-      for (unsigned int i = 0; i < length; ++i) {
+    int length = results["length"].as<int>();
+    if (numImages < 0 || numImages > length) {
+      for (int i = 0; i < length; ++i) {
         val image = results[i].as<val>();
         imageVecOut.push_back(image["image"].as<std::string>());
       }
     } else {
-      for (unsigned int i = 0; i < imagesRequested; ++i) {
+      for (int i = 0; i < numImages; ++i) {
         val image = results[i].as<val>();
         imageVecOut.push_back(image["image"].as<std::string>());
       }
