@@ -7,6 +7,7 @@
 using namespace std;
 using namespace cv;
 
+/*
 FacialRecognizer::FacialRecognizer(){
   //Ptr<FaceRecognizer> model = EigenFaceRecognizer::create();
   //Ptr<FaceRecognizer> model = createEigenFaceRecognizer();
@@ -47,4 +48,4 @@ void FacialRecognizer::identify(cv::InputArray src, int& label, double& confiden
 void FacialRecognizer::createFaceRecognizer(int num_components, double threshold){
 
 }
-
+*/
