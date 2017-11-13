@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="QFACE Website">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- CSS -->
+	<link href="src/views/css/style.css" type="text/css" rel="stylesheet">
+	<!-- BootStrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<title>Welcome to QFACE</title>
+</head>
+<body>
+	<!-- Header Element-->
+	<header>
+	
+	</header>
+	<!-- Main Element-->
+	<main>	
+		<a href="/">
+			<img id="logoButton" src="src/views/images/logo2.png" width="100" height="100">
+		</a>
+		<div id="webcam">
+			<!--<img id="cropped" src="../images/croppedpic.jpeg" width="700" height="500">-->
+			 <video autoplay="true" id="videoElement"></video>
+		</div>
+		<div class="takePicture">
+			<button id="tpButton" type="button" class="btn btn-primary btn-lg">Take Picture</button>
+			<input id="uploadimg" type="file" accept="image/*;capture=camera">
+		</div>
+		<div class="addCustomerFrom">
+			<form id="customerForm" action="" method="post" enctype="text/plain">
+				<label id="StudentId">Student ID: </label>
+    			<input type="text" id="fname" name="firstname" placeholder="Enter Student ID...">
+    			<p id="savebuttons">
+					<input type="submit" name="upload" value="Save">
+					<input type="reset" value="Reset">
+				</p>
+			</form>
+		</div>
+	</main>
+	<!-- Footer Element-->
+	<footer>
+		<p>Copyright 2017 by QFACE CO.</p>
+	</footer>
+	<!-- JavaScript -->
+	<script type="text/javascript">
+		var tpButton = document.querySelector("#tpButton");
+		
+		tpButton.onclick = function(){
+			var canvas = document.createElement('canvas');
+			canvas.width = 475;
+			canvas.height = 475;
+			var ctx = canvas.getContext('2d');
+
+			//draw image to canvas. scale to target dimensions
+			ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+			//convert to desired file format
+			var dataURI = canvas.toDataURL('image/jpeg');
+			console.log(dataURI);
+			//alert("Picture Taken!");
+		};
+	</script>
+	<script src="src/views/js/script.js"></script>
+</body>	
+</html>
+
