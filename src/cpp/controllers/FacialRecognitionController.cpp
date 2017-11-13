@@ -3,7 +3,6 @@
 #include <emscripten.h>
 
 #include "FacialRecognitionController.h"
-//#include "lib/opencv_3.1.0/modules/face/include/opencv2/face.hpp"
 
 using namespace std;
 using namespace cv;

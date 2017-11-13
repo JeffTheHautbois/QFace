@@ -8,9 +8,9 @@
 class Image {
 public:
 	// Image constructors
-	Image(cv::Mat matrix);
-	Image(std::string base64EncodedImage);
-	Image(std::vector<unsigned char> imageBytes);
+	Image(cv::Mat& matrix);
+	Image(std::string& base64EncodedImage);
+	Image(std::vector<unsigned char>& imageBytes);
 
 	cv::Mat asMat() const; // Get the image as a matrix
 	std::string asBase64(); // Get the image as a base64 string
