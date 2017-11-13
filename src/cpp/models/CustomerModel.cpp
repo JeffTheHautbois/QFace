@@ -106,7 +106,6 @@ void CustomerModel::getImagesOfCustomer(const int studentId,
   if (!Database::hasBeenInit()) {
     return;
   }
-  val window = val::global("window");
   val images = Database::imagesCollection();
   val selector = val::object();
   selector.set("studentId", studentId);
