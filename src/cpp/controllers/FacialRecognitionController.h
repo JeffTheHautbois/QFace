@@ -8,7 +8,7 @@
 class FacialRecognizer {
 public:
   // Facial Recognizer constructor
-  FacialRecognizer();
+  FacialRecognizer(int num_components, double threshold);
   ~FacialRecognizer(); // Destructor
 
   void loadDataSet();
@@ -19,9 +19,8 @@ public:
 
   void trainModel(const cv::InputArray& src);
 
-  void identify(cv::InputArray src, int& label, double& confidence);
+  void identify(Image& src, int& label, double& confidence);
 
-  void createFaceRecognizer(int num_components, double threshold);
 private:
   std::vector<Image> images;
   std::vector<int> labels;

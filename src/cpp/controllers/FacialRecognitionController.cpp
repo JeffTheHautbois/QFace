@@ -4,8 +4,8 @@
 #include "opencv2/face.hpp"
 #include "FacialRecognitionController.h"
 
-FacialRecognizer::FacialRecognizer(){
-  model = cv::face::EigenFaceRecognizer::create(0,100);
+FacialRecognizer::FacialRecognizer(int num_components, double threshold){
+  model = cv::face::EigenFaceRecognizer::create(num_components, threshold);
 }
 
 FacialRecognizer::~FacialRecognizer(){
@@ -25,20 +25,16 @@ void FacialRecognizer::saveModel(cv::FileStorage& fs){
 }
 
 void FacialRecognizer::trainModel(const cv::InputArray& src){
-  // IN MAIN CODE, MUST CREATE A vector<cv::Mat> TO PASS AS src
+  // IN MAIN CODE, MUST UPDATE AND CREATE A vector<cv::Mat> TO PASS AS src
+  // IN MAIN CODE, MUST UPDATE THE LABELS ASSOSCIATED WITH THE model
   model->cv::face::FaceRecognizer::train(src, labels);
 }
 
-void FacialRecognizer::identify(cv::InputArray src, int& label, double& confidence){
-  // Mat img = imread("person1/3.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-  // Some variables for the predicted label and associated confidence (e.g. distance):
+void FacialRecognizer::identify(Image& src, int& label, double& confidence){
+  cv::Mat predictThis;
+  cv:cvtColor(src.asMat(), predictThis, CV_BGR2GRAY);  // Image changed to greyscale
   int predicted_label = -1;
   double predicted_confidence = 0.0;
   // Get the prediction and associated confidence from the model
-  //FacialRecognizer::model->FaceRecognizer::predict(img, predicted_label, predicted_confidence);
+  model->FaceRecognizer::predict(predictThis, predicted_label, predicted_confidence);
 }
-
-void FacialRecognizer::createFaceRecognizer(int num_components, double threshold){
-
-}
-
