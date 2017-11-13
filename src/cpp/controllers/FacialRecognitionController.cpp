@@ -30,10 +30,7 @@ void FacialRecognizer::trainModel(const cv::InputArray& src){
 }
 
 void FacialRecognizer::identify(cv::InputArray src, int& label, double& confidence){
-  // Do your initialization here (create the cv::FaceRecognizer model) ...
-  // ...
-  createFaceRecognizer(0,DBL_MAX);
- // Mat img = imread("person1/3.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+  // Mat img = imread("person1/3.jpg", CV_LOAD_IMAGE_GRAYSCALE);
   // Some variables for the predicted label and associated confidence (e.g. distance):
   int predicted_label = -1;
   double predicted_confidence = 0.0;
