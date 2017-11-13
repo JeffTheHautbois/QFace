@@ -4,6 +4,10 @@
 #include "opencv2/face.hpp"
 #include "FacialRecognitionController.h"
 
+using namespace std;
+using namespace cv;
+
+/*
 FacialRecognizer::FacialRecognizer(){
   model = cv::face::EigenFaceRecognizer::create(0,100);
 }
@@ -41,4 +45,4 @@ void FacialRecognizer::identify(cv::InputArray src, int& label, double& confiden
 void FacialRecognizer::createFaceRecognizer(int num_components, double threshold){
 
 }
-
+*/

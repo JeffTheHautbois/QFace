@@ -21,6 +21,8 @@ class CustomerModel {
   static void overwriteCustomer(const int studentId, const json & customer);
   static void insertCustomer(const int studentId, const json & customer);
   static void addImageToCustomer(const int studentId, const std::string & image);
+  static json getCustomerStructure();
+  static json getCustomer(int studentId);
   static void getImagesOfCustomer(const int studentId,
                                   std::vector<std::string> & outVector,
                                   int numberOfResults);
