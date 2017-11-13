@@ -12,7 +12,7 @@
 class FaceCropper{
  public:
   FaceCropper(); // Constructor: automatically loads cascadeClassifier
-  std::string cropFaceAndSaveInTemporaryStorage(Image& passedImage); // Crops the image and returns a Base64 String
+  void cropFaceAndSaveInTemporaryStorage(Image& passedImage); // Crops the image and returns a Base64 String
 private:
   cv::CascadeClassifier face; // Cascade classifier object
   void loadCascadeClassifier(const std::string&); // Pre-load the cascade classifier from an xml file
