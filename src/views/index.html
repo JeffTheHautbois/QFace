@@ -26,8 +26,8 @@
                 return;
             }
 
-            let base64String = Module.faceCropper_detectCropFace();
-            obama.src = "data:image/jpg;base64," + base64String;
+            Module.faceCropper_detectCropFace();
+            obama.src = "data:image/jpg;base64," + db.getCollection("temporaryStorage").find()[0].image;
         };
     }
 
