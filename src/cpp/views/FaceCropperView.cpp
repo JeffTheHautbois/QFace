@@ -12,9 +12,9 @@ void detectCropFace() {
   TemporaryStorage::clearStorage();
   Image passThisImage = Image(cv::imread("./data/obama.bmp"));
   FaceCropper fcc;
-	fcc.cropFaceAndSaveInTemporaryStorage(passThisImage); // Crop the face
+  fcc.cropFaceAndSaveInTemporaryStorage(passThisImage); // Crop the face
 }
 
 EMSCRIPTEN_BINDINGS(Turbo) {
-	emscripten::function("faceCropper_detectCropFace", &detectCropFace);
+  emscripten::function("faceCropper_detectCropFace", &detectCropFace);
 }
