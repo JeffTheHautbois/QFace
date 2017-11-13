@@ -19,9 +19,9 @@ void FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
 
   // Check if the image was loaded correctly
   if (inputImage.empty()) {
-    cout << "Was not able to load image" << std::endl;
+    //cout << "Was not able to load image" << std::endl;
     string empty = "";
-    return empty;
+    throw FaceDetectionException("Error! Unable to load Image!");
   }
 
   Mat gray_img;
