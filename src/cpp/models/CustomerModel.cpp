@@ -123,3 +123,38 @@ void CustomerModel::getImagesOfCustomer(const int studentId,
     }
     
 }
+
+
+// Sturcture for the json files
+json CustomerModel::getCustomerStructure() {
+	//Check for how it looks on the front end
+	json structure = {
+		{ "name", "" },
+		{ "studentId", "" },
+		{ "age", "" },
+		{ "order", "" }
+	};
+	return structure;
+}
+
+
+// Check if customer exisits, get customer info, write it into json and then return
+json CustomerModel::getCustomer(int studentId) {
+	if (!CustomerModel::isExistingCustomer(studentId)){
+    return CustomerModel::getCustomerStructure();
+	}
+	
+	val customers = Database::customersCollection();
+	val selector = val::object();
+	selector.set("studentId", studentId);
+	val customer = customers.call<val>("findOne", selector);
+	
+	json jsonCustomer = {
+		{ "name", customer["name"].as<std::string>() },
+		{ "studentId", customer["studentId"].as<int>() },
+		{ "age", customer["age"].as<int>() },
+		{ "order", customer["order"].as<std::string>()}
+	};
+
+	return jsonCustomer;
+}
