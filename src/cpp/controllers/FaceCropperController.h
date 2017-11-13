@@ -18,4 +18,12 @@ private:
   void loadCascadeClassifier(const std::string&); // Pre-load the cascade classifier from an xml file
 };
 
+class FaceDetectionException {
+public:
+  FaceDetectionException(const std::string&);
+  std::string what() const;
+private:
+  std::string message;
+};
+
 #endif  // SRC_CPP_CONTROLLERS_FACECROPPERCONTROLLER_H_
