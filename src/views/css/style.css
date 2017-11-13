@@ -115,20 +115,18 @@ input[type=text], select {
             animation: fadein 1s;
 }
 /********************************** identifyCustomer.html ***********************************/
-#identify{
+#idButton{
     position: relative;
-    top: 15vh;
+    top: 13vh;
 }
 .takePicture{
     text-align: center;
 }
+/*********************************** saveCustomer.html ***********************************/
 .faceScan{
     text-align: center;
-    position: relative;
-    top: 8vh;
 }
-/*********************************** retrainCustomer.html ***********************************/
-#idButton{
+#identify{
     position: relative;
     top: 13vh;
 }
