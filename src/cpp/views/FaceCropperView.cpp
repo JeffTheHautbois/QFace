@@ -5,9 +5,12 @@
 
 #include "controllers/FaceCropperController.h"
 #include "views/FaceCropperView.h"
+#include "opencv2/imgcodecs.hpp"
 
-std::string detectCropFace(Image& passThisImage) {
-	return cropFaceImageAsByteString(passThisImage); // Crop the face
+std::string detectCropFace() {
+  Image passThisImage = Image(cv::imread("./data/obama.bmp"));
+  FaceCropper fcc;
+	return fcc.cropFaceAndSaveInTemporaryStorage(passThisImage); // Crop the face
 }
 
 EMSCRIPTEN_BINDINGS(Turbo) {

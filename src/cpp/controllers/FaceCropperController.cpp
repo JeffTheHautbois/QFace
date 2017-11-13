@@ -1,21 +1,19 @@
 #include <emscripten.h>
 #include "FaceCropperController.h"
 
-#include "models/MatModel.h"
-
 using namespace std;
 using namespace cv;
 
-cv::CascadeClassifier loadCascadeClassifier(const std::string& filePath){
-	cout << filePath << std::endl;
-	CascadeClassifier face; // Create CascadeClassifier object
-	face.load(filePath); // Load the xml file from the given file directory in the string
-	return face; // Return the CascadeClassifier Object
+FaceCropper::FaceCropper() : face() {
+  FaceCropper::loadCascadeClassifier("data/haarcascade_frontalface_default.xml");
 }
 
-std::string cropFaceImageAsByteString(Image& passedImage, cv::CascadeClassifier face) {
+void FaceCropper::loadCascadeClassifier(const std::string& filePath){
+	face.load(filePath); // Load the xml file from the given file directory in the string
+}
+
+std::string FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
   Mat inputImage = passedImage.asMat();
-  //loadImageIntoMat("data/obama.bmp", &inputImage);
 
   if (inputImage.empty()) {
     cout << "Was not able to load image" << std::endl;
@@ -43,8 +41,9 @@ std::string cropFaceImageAsByteString(Image& passedImage, cv::CascadeClassifier 
     // The actual cropping occurs here.
     Rect faceROI(faces[0].x, faces[0].y, faces[0].width, faces[0].height);
     Mat croppedFace = inputImage(faceROI);
+    Image returnImage(croppedFace);
 
-    return convertMatToByteString(croppedFace);
+    return returnImage.asBase64();
   }
 
 }

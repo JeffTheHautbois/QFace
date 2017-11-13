@@ -9,7 +9,14 @@
 #include "opencv2/objdetect.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
-cv::CascadeClassifier loadCascadeClassifier(const std::string&); // Pre-load the cascade classifier from an xml file
-std::string cropFaceImageAsByteString(Image& passedImage, cv::CascadeClassifier); // Crops the image and returns it as a byte string
+class FaceCropper{
+ public:
+  // Constructor: automatically loads cascadeClassifier
+  FaceCropper();
+  std::string cropFaceAndSaveInTemporaryStorage(Image& passedImage); // Crops the image and returns it as a byte string
+private:
+  cv::CascadeClassifier face;
+  void loadCascadeClassifier(const std::string&); // Pre-load the cascade classifier from an xml file
+};
 
 #endif  // SRC_CPP_CONTROLLERS_FACECROPPERCONTROLLER_H_

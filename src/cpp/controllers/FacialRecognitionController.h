@@ -66,7 +66,7 @@ public:
 
   void identify(cv::InputArray src, int& label, double& confidence);
 
-  void createFaceRecognizer(int num_components=0, double threshold=DBL_MAX);
+  void createFaceRecognizer(int num_components, double threshold);
 private:
   std::vector<Image> images;
   std::vector<int> labels;
