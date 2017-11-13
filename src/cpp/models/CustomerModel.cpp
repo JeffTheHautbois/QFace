@@ -32,6 +32,8 @@ bool CustomerModel::isExistingCustomer(int studentId){
   return (length > 0);
 }
 
+// accesses customer by student id key in customers collection and edits returned document
+// using data in json user object
 void CustomerModel::overwriteCustomer(const int studentId, const json &user) {
   if (!Database::hasBeenInit()) {
     return;
@@ -46,11 +48,13 @@ void CustomerModel::overwriteCustomer(const int studentId, const json &user) {
   query.set("studentId", studentId);
 
   val customer = customers.call<val>("findOne", query);
+  // changes made to customer will persist in database
   customer.set("name", user["name"].get<std::string>());
   customer.set("age", user["age"].get<int>());
   customer.set("order", user["order"].get<std::string>());
 }
 
+// inserts one customer into the customer collection using data in json object
 void CustomerModel::insertCustomer(const int studentId, const json &user) {
   if (!Database::hasBeenInit()) {
     return;
@@ -96,8 +100,7 @@ void CustomerModel::addImageToCustomer(const int studentId, const std::string &i
 // I am assuming the int is for when we want a certain number of images
 // if this argument is set to -1, return all images for student with studentId
 void CustomerModel::getImagesOfCustomer(const int studentId,
-                                        std::vector<std::string> &imageVecOut,
-                                        int) {
+                                        std::vector<std::string> &imageVecOut, int numImages) {
     if (!Database::hasBeenInit()) {
         return;
     }
@@ -107,8 +110,16 @@ void CustomerModel::getImagesOfCustomer(const int studentId,
     selector.set("studentId", studentId);
     val results = images.call<val>("find", selector);
     unsigned int length = results["length"].as<unsigned int>();
-    for (unsigned int i = 0; i < length; ++i) {
+    if (numImages == -1 || numImages > length) {
+      for (unsigned int i = 0; i < length; ++i) {
         val image = results[i].as<val>();
         imageVecOut.push_back(image["image"].as<std::string>());
+      }
+    } else {
+      for (unsigned int i = 0; i < numResults; ++i) {
+        val image = results[i].as<val>();
+        imageVecOut.push_back(image["image"].as<std::string>());
+      }
     }
+    
 }
