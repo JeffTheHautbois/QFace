@@ -116,3 +116,21 @@ val Database::temporaryStorageCollection() {
   val images = window[dbName].call<val>("getCollection", temporaryStorageCollectionName);
   return images;
 }
+
+val Database::persist() {
+  EM_ASM({
+    let customerCollectionName = UTF8ToString($0);
+    let dbName = UTF8ToString($1);
+    let dbPromiseName = UTF8ToString($2);
+
+    window[dbPromiseName] = window[dbPromiseName].then(function() {
+      return new Promise((resolve, reject) => {
+        window[dbName].saveDatabase(function() {
+          resolve();
+        })
+      });
+    });
+  }, customerCollectionName.c_str(), dbName.c_str(), dbPromiseName.c_str());
+
+  return val::global("window")[dbPromiseName];
+}
