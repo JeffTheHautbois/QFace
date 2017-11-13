@@ -10,6 +10,7 @@
 
 const std::string Database::customerCollectionName = "customers";
 const std::string Database::imagesCollectionName = "images";
+const std::string Database::trainedRecognizerCollectionName = "trainedRecognizer";
 const std::string Database::temporaryStorageCollectionName = "temporaryStorage";
 const std::string Database::dbPromiseName = "dbPromise";
 const std::string Database::dbName = "db";
@@ -103,6 +104,12 @@ val Database::customersCollection() {
   val window = val::global("window");
   val customers = window[dbName].call<val>("getCollection", customerCollectionName);
   return customers;
+}
+
+val Database::trainedRecognizerCollection() {
+  val window = val::global("window");
+  val recognizer = window[dbName].call<val>("getCollection", trainedRecognizerCollectionName);
+  return recognizer;
 }
 
 val Database::imagesCollection() {
