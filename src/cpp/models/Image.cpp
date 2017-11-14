@@ -15,9 +15,7 @@ Image::Image(std::string& base64EncodedImage) {
 
 // Constructor given byte vector
 Image::Image(std::vector<unsigned char>& imageBytes) {
-  cv::Mat data_mat(imageBytes, true);  // opencv constructor for a matrix
-  cv::Mat image(cv::imdecode(data_mat,-1)) //Decode image format IMREAD_UNCHANGED = -1 IMREAD_GRAYSCALE = 0
-  imageData = image;  // Set imageData to the matrix created above
+  imageData = cv::imdecode(imageBytes, -1); //Decode image format IMREAD_UNCHANGED = -1 IMREAD_GRAYSCALE = 0
 }
 
 // Returns the image as a matrix
