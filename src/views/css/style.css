@@ -58,18 +58,19 @@ footer{
 #addCustomerContainer {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     width: 100%;
     justify-content: space-evenly;
 }
 
-#addCustomerContainer > .cropped-preview {
-    flex: 0 1 auto;
-    display: none;
+#addCustomerContainer > #webcam {
+    flex: 1 0 auto;
+    max-width: 40%;
 }
 
 #addCustomerContainer > #webcam > video {
-    flex: 1 1 auto;
+    width: 100%;
     border: 10px #333 solid;
     -webkit-animation: fadein 1s; 
        -moz-animation: fadein 1s;
@@ -79,14 +80,15 @@ footer{
 }
 
 #addCustomerContainer > #images  {
+    flex: 1 0 auto;
     display: none;
     flex-direction: row;
     flex-wrap: wrap;
-    max-width: 400px;
+    max-width: 40%;
 }
 
 #addCustomerContainer > #images > .croppedImage  {
-    flex: 0 1 auto;
+    flex-shrink: 1;
     /* Fade-In Effect (CSS3 Animation) */
     -webkit-animation: fadein 1s; 
        -moz-animation: fadein 1s;
