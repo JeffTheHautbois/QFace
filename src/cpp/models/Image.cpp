@@ -10,14 +10,12 @@ Image::Image(cv::Mat matrix)
 // Constructor given base64 string
 Image::Image(std::string& base64EncodedImage) {
   std::vector<unsigned char> imageBytes = base64_decode(base64EncodedImage);  // Decodes the given base64 string to a vector of unsigned chars
-  cv::Mat data_mat(imageBytes, true);  // Create an opencv matrix object from the vector of unsigned chars
-  imageData = data_mat;
+  imageData = cv::imdecode(imageBytes, -1);//Decode image format IMREAD_UNCHANGED = -1 IMREAD_GRAYSCALE = 0
 }
 
 // Constructor given byte vector
 Image::Image(std::vector<unsigned char>& imageBytes) {
-  cv::Mat data_mat(imageBytes, true);  // opencv constructor for a matrix
-  imageData = data_mat;  // Set imageData to the matrix created above
+  imageData = cv::imdecode(imageBytes, -1); //Decode image format IMREAD_UNCHANGED = -1 IMREAD_GRAYSCALE = 0
 }
 
 // Returns the image as a matrix
