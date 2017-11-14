@@ -115,7 +115,6 @@ void CustomerModel::getImagesOfCustomer(const int studentId,
   if(!isExistingCustomer(studentId)) {
     throw CustomerException("Customer doesn't exist");
   }
-
   val images = Database::imagesCollection();
   val selector = val::object();
   selector.set("studentId", studentId);
@@ -125,14 +124,13 @@ void CustomerModel::getImagesOfCustomer(const int studentId,
     for (int i = 0; i < length; ++i) {
       val image = results[i].as<val>();
       imageVecOut.push_back(image["image"].as<std::string>());
-    }
+    } 
   } else {
     for (int i = 0; i < numImages; ++i) {
       val image = results[i].as<val>();
       imageVecOut.push_back(image["image"].as<std::string>());
     }
   }
-
 }
 
 // Sturcture for the json files
@@ -170,4 +168,31 @@ json CustomerModel::getCustomer(int studentId) {
   };
 
   return jsonCustomer;
+}
+
+// This function replaces the original "getAllUsers" function.
+// It should allow the retrieval of all studentId and image pairs in the images collection.
+//
+// For example, if the images collection contains:
+// {"studentId": 1000, "image": "ASGxw.."}
+// {"studentId": 1000, "image": "Vhx+s.."}
+// {"studentId": 1010, "image": "OAnx.."}
+// {"studentId": 1050, "image": "Waxv.."}
+//
+// The value of outIds should be
+// [1000, 1000, 1010, 1050]
+//
+// The values of outImages should be
+// ["ASGxw..", "Vhx+s..", "OAnx..", "Waxv.."]
+void CustomerModel::getAllStudentIdImagePairs(std::vector<int>* outIds, std::vector<std::string>* outImages) {
+   if (!Database::hasBeenInit()) {
+        throw DatabaseException("Database has not been initialized");
+    }
+    val images = Database::imagesCollection();
+    val results = images.call<val>("find");
+    int length = results["length"].as<int>();
+    for (int i = 0; i < length; ++i) {
+      outIds->push_back(results[i]["studentId"].as<int>());
+      outImages->push_back(results[i]["image"].as<std::string>());
+    }
 }

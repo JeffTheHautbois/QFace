@@ -35,6 +35,8 @@ class CustomerModel {
   static void getImagesOfCustomer(const int studentId,
                                   std::vector<std::string> & outVector,
                                   int numberOfResults);
+
+  static void getAllStudentIdImagePairs(std::vector<int>* outIds, std::vector<std::string>* outImages);
  private:
   // Prevent this class from being instantiated
   CustomerModel() {}
