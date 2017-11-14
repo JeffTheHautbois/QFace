@@ -17,7 +17,7 @@ void TrainedRecognizerModel::update(const std::string& serializedData) {
 
 std::string TrainedRecognizerModel::get() {
  if (!Database::hasBeenInit()) {
-    return "";
+    return ""; 
   }
   val data = Database::trainedRecognizerCollection();
   val result = data.call<val>("findOne");

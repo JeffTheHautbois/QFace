@@ -13,6 +13,15 @@
 
 using emscripten::val;
 
+// An exception that is thrown if the database doesn't exist 
+class DatabaseException {
+public:
+  DatabaseException(const std::string&);
+  std::string& what();
+private:
+  std::string message;
+};
+
 class Database {
  public:
   // Loads the database asynchronously. Returns a global promise

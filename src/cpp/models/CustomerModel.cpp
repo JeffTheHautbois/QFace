@@ -9,7 +9,6 @@
 #include <emscripten/val.h>
 #include <iostream>
 #include <vector>
-
 #include "json.hpp"
 #include "models/CustomerModel.h"
 #include "models/Database.h"
@@ -17,10 +16,16 @@
 using emscripten::val;
 using json = nlohmann::json;
 
+// CustomerException definition
+CustomerException::CustomerException(const std::string& msg) : message(msg) {}
+
+std::string& CustomerException::what() {
+  return message;
+}
 
 bool CustomerModel::isExistingCustomer(int studentId){
-  if (!Database::hasBeenInit()) {
-    return false;
+  if(!Database::hasBeenInit()) {
+    throw DatabaseException("Database has not been initialized");
   }
   // run find query using loki.js
   // if returned vector is not empty, return true (customer exists)
@@ -35,14 +40,14 @@ bool CustomerModel::isExistingCustomer(int studentId){
 // accesses customer by student id key in customers collection and edits returned document
 // using data in json user object
 void CustomerModel::overwriteCustomer(const int studentId, const json &user) {
-  if (!Database::hasBeenInit()) {
-    return;
+  if(!Database::hasBeenInit()) {
+    throw DatabaseException("Database has not been initialized");
   }
 
-  if (!isExistingCustomer(studentId)) {
-    return; // Throw an exception.
+  if(!isExistingCustomer(studentId)) {
+    throw CustomerException("Customer doesn't exist");
   }
-
+    
   val customers = Database::customersCollection();
   val query = val::object();
   query.set("studentId", studentId);
@@ -56,12 +61,12 @@ void CustomerModel::overwriteCustomer(const int studentId, const json &user) {
 
 // inserts one customer into the customer collection using data in json object
 void CustomerModel::insertCustomer(const int studentId, const json &user) {
-  if (!Database::hasBeenInit()) {
-    return;
+  if(!Database::hasBeenInit()) {
+    throw DatabaseException("Database has not been initialized");
   }
 
-  if (isExistingCustomer(studentId)) {
-    return; // Throw an exception.
+  if(isExistingCustomer(studentId)) {
+    throw CustomerException("Customer already exists");
   }
 
   val customers = Database::customersCollection();
@@ -77,22 +82,23 @@ void CustomerModel::insertCustomer(const int studentId, const json &user) {
 // just using string object for image instead of Image class for now
 // also this assumes that the collection used for the customer images is called "images"
 // Maybe we should pass the collection name as an argument in the future...
-void CustomerModel::addImageToCustomer(const int studentId, const std::string &image) {
-    // inserting new document into images collection
-    // structure of document {studentId: 00000000, image: ""}
-    if (!Database::hasBeenInit()) {
-        return;
-    }
+void CustomerModel::addImageToCustomer(const int studentId,
+                                       const std::string &image) {
+  // inserting new document into images collection
+  // structure of document {studentId: 00000000, image: ""}
+  if(!Database::hasBeenInit()) {
+    throw DatabaseException("Database has not been initialized");
+  }
 
-    if (!isExistingCustomer(studentId)) {
-      return; // should throw exception
-    }
+  if(!isExistingCustomer(studentId)) {
+    throw CustomerException("Customer doesn't exist");
+  }
 
-    val images = Database::imagesCollection();
-    val document = val::object();
-    document.set("studentId", studentId);
-    document.set("image", image);
-    images.call<val>("insert", document);
+  val images = Database::imagesCollection();
+  val document = val::object();
+  document.set("studentId", studentId);
+  document.set("image", image);
+  images.call<val>("insert", document);
 }
 
 // In the SDD -> getImagesOfUser(std::string, std::vector<Image*>*, std::string<std::string>*, int)
@@ -100,26 +106,68 @@ void CustomerModel::addImageToCustomer(const int studentId, const std::string &i
 // I am assuming the int is for when we want a certain number of images
 // if this argument is set to -1, return all images for student with studentId
 void CustomerModel::getImagesOfCustomer(const int studentId,
-                                        std::vector<std::string> &imageVecOut, int numImages) {
-    if (!Database::hasBeenInit()) {
-        return;
+                                        std::vector<std::string> &imageVecOut,
+                                        int numImages) {
+  if(!Database::hasBeenInit()) {
+    throw DatabaseException("Database has not been initialized");
+  }
+
+  if(!isExistingCustomer(studentId)) {
+    throw CustomerException("Customer doesn't exist");
+  }
+  val images = Database::imagesCollection();
+  val selector = val::object();
+  selector.set("studentId", studentId);
+  val results = images.call<val>("find", selector);
+  int length = results["length"].as<int>();
+  if (numImages < 0 || numImages > length) {
+    for (int i = 0; i < length; ++i) {
+      val image = results[i].as<val>();
+      imageVecOut.push_back(image["image"].as<std::string>());
+    } 
+  } else {
+    for (int i = 0; i < numImages; ++i) {
+      val image = results[i].as<val>();
+      imageVecOut.push_back(image["image"].as<std::string>());
     }
-    val images = Database::imagesCollection();
-    val selector = val::object();
-    selector.set("studentId", studentId);
-    val results = images.call<val>("find", selector);
-    int length = results["length"].as<int>();
-    if (numImages < 0 || numImages > length) {
-      for (int i = 0; i < length; ++i) {
-        val image = results[i].as<val>();
-        imageVecOut.push_back(image["image"].as<std::string>());
-      }
-    } else {
-      for (int i = 0; i < numImages; ++i) {
-        val image = results[i].as<val>();
-        imageVecOut.push_back(image["image"].as<std::string>());
-      }
-    }
+  }
+}
+
+// Sturcture for the json files
+json CustomerModel::getCustomerStructure() {
+  json structure = {
+    { "name", "" },
+    { "studentId", "" },
+    { "age", "" },
+    { "order", "" }
+  };
+  return structure;
+}
+
+// Check if customer exisits, get customer info, write it into json and then return
+json CustomerModel::getCustomer(int studentId) {
+
+  if(!Database::hasBeenInit()) {
+    throw DatabaseException("Database has not been initialized");
+  }
+
+  if(!isExistingCustomer(studentId)) {
+    throw CustomerException("Customer doesn't exist");
+  }
+
+  val customers = Database::customersCollection();
+  val selector = val::object();
+  selector.set("studentId", studentId);
+  val customer = customers.call<val>("findOne", selector);
+
+  json jsonCustomer = {
+    { "name", customer["name"].as<std::string>() },
+    { "studentId", customer["studentId"].as<int>() },
+    { "age", customer["age"] .as<int>() },
+    { "order", customer["order"].as<std::string>() }
+  };
+
+  return jsonCustomer;
 }
 
 // This function replaces the original "getAllUsers" function.
@@ -138,7 +186,7 @@ void CustomerModel::getImagesOfCustomer(const int studentId,
 // ["ASGxw..", "Vhx+s..", "OAnx..", "Waxv.."]
 void CustomerModel::getAllStudentIdImagePairs(std::vector<int>* outIds, std::vector<std::string>* outImages) {
    if (!Database::hasBeenInit()) {
-        return;
+        throw DatabaseException("Database has not been initialized");
     }
     val images = Database::imagesCollection();
     val results = images.call<val>("find");

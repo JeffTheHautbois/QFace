@@ -15,12 +15,23 @@
 using emscripten::val;
 using json = nlohmann::json;
 
+// An exception that is thrown if there are errors with the customer infomation
+class CustomerException {
+public:
+  CustomerException(const std::string&);
+  std::string& what();
+private:
+  std::string message;
+};
+
 class CustomerModel {
  public:
   static bool isExistingCustomer(const int studentId);
   static void overwriteCustomer(const int studentId, const json & customer);
   static void insertCustomer(const int studentId, const json & customer);
   static void addImageToCustomer(const int studentId, const std::string & image);
+  static json getCustomerStructure();
+  static json getCustomer(int studentId);
   static void getImagesOfCustomer(const int studentId,
                                   std::vector<std::string> & outVector,
                                   int numberOfResults);
