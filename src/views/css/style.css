@@ -66,6 +66,7 @@ footer{
 
 #addCustomerContainer > #webcam {
     flex: 1 0 auto;
+    width: 40%;
     max-width: 40%;
 }
 

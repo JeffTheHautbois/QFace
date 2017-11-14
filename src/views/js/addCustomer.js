@@ -42,7 +42,7 @@ let main = function() {
                 window
                 .location
                 .href
-                .replace("addCustomer", "saveUser") + "?studentId=" + studentId;
+                .replace("addCustomer", "saveCustomer") + "?studentId=" + studentId;
             window.location.href = nextURL;
         });
     }
