@@ -19,7 +19,7 @@ const std::string Database::isDbLoaded = "isDbLoaded";
 DatabaseException::DatabaseException(const std::string& msg) : message(msg) {}
 
 std::string& DatabaseException::what() {
-	return message;
+  return message;
 }
 
 

@@ -16,10 +16,10 @@ using emscripten::val;
 // An exception that is thrown if the database doesn't exist 
 class DatabaseException {
 public:
-	DatabaseException(const std::string&);
-	std::string& what();
+  DatabaseException(const std::string&);
+  std::string& what();
 private:
-	std::string message;
+  std::string message;
 };
 
 class Database {
