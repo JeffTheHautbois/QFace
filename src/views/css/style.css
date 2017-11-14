@@ -86,7 +86,13 @@ footer{
 }
 
 #addCustomerContainer > #images > .croppedImage  {
-    flex-shrink: 1;
+    flex: 0 1 auto;
+    /* Fade-In Effect (CSS3 Animation) */
+    -webkit-animation: fadein 1s; 
+       -moz-animation: fadein 1s;
+        -ms-animation: fadein 1s; 
+         -o-animation: fadein 1s; 
+            animation: fadein 1s;
 }
 
 #controls {
