@@ -15,6 +15,14 @@ const std::string Database::dbPromiseName = "dbPromise";
 const std::string Database::dbName = "db";
 const std::string Database::isDbLoaded = "isDbLoaded";
 
+// DataBaseException definition
+DatabaseException::DatabaseException(const std::string& msg) : message(msg) {}
+
+std::string& DatabaseException::what() {
+  return message;
+}
+
+
 val Database::init() {
   val window = val::global("window");
 

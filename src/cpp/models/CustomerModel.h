@@ -15,6 +15,15 @@
 using emscripten::val;
 using json = nlohmann::json;
 
+// An exception that is thrown if there are errors with the customer infomation
+class CustomerException {
+public:
+  CustomerException(const std::string&);
+  std::string& what();
+private:
+  std::string message;
+};
+
 class CustomerModel {
  public:
   static bool isExistingCustomer(const int studentId);
