@@ -13,6 +13,15 @@
 
 using emscripten::val;
 
+// An exception that is thrown if the database doesn't exist 
+class DatabaseException {
+public:
+  DatabaseException(const std::string&);
+  std::string& what();
+private:
+  std::string message;
+};
+
 class Database {
  public:
   // Loads the database asynchronously. Returns a global promise
@@ -28,6 +37,7 @@ class Database {
   static val customersCollection();
   static val imagesCollection();
   static val temporaryStorageCollection();
+  static val trainedRecognizerCollection();
  private:
   static const std::string temporaryStorageCollectionName;
   static const std::string customerCollectionName;
@@ -35,6 +45,7 @@ class Database {
   static const std::string dbPromiseName;
   static const std::string dbName;
   static const std::string isDbLoaded;
+  static const std::string trainedRecognizerCollectionName;
 };
 
 #endif /* SRC_CPP_MODELS_DATABASE_H_ */
