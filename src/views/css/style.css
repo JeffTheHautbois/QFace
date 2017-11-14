@@ -125,10 +125,12 @@ input[type=text], select {
 /*********************************** saveCustomer.html ***********************************/
 .faceScan{
     text-align: center;
+    position: relative;
+    top: 10vh;
 }
 #identify{
-    position: relative;
-    top: 13vh;
+	position: relative;
+    top: -5vh;
 }
 /***************************** Fade-In Effect (CSS3 Animation) ******************************/
 @keyframes fadein {
