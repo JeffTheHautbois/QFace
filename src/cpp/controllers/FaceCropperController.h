@@ -21,7 +21,7 @@ private:
 class FaceDetectionException {
 public:
   FaceDetectionException(const std::string& msg) : message(msg) {};
-  std::string what() const;
+  std::string what() const { return message; };
 private:
   std::string message;
 };

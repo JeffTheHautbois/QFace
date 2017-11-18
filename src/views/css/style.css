@@ -6,6 +6,9 @@ body{
     margin: 0;
     padding: 0;
 }
+header {
+    height: 100px;
+}
 main{
     
 }
@@ -52,67 +55,71 @@ footer{
             animation: fadein 1s;
 }
 /************************************ addCustomer.html **************************************/
-input[type=text], select {
-    width: 20%;
-    padding: 6px 10px;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+#addCustomerContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    justify-content: space-evenly;
 }
-#uploadimg{
-    position: relative;
-    top: 15vh;   
-    left: 22vw;
+
+#addCustomerContainer > #webcam {
+    flex: 1 0 auto;
+    width: 40%;
+    max-width: 40%;
 }
-#customerForm{
-    position: relative;
-    left: 18vw;
-    bottom: 35vh;
-}
-#StudentId{
-    /*color:white;*/
-}
-#tpButton{
-    position: relative;
-    right: 22vw;
-    top: 12vh;
-}
-#savebuttons{
-    position: relative;
-    left: 2vw;
-}
-/* Video Stream*/
-#videoElement{
-    text-align: center;
-    width: 600px;
-    height: 475px;
-    background-color: #666;
-}
-#webcam{
-    width: 600px;
-    height: 475px;
+
+#addCustomerContainer > #webcam > video {
+    width: 100%;
     border: 10px #333 solid;
-    position: relative;
-    top: 10vh;
-    left: 10vw;
     -webkit-animation: fadein 1s; 
        -moz-animation: fadein 1s;
         -ms-animation: fadein 1s; 
          -o-animation: fadein 1s; 
             animation: fadein 1s;
 }
-.addCustomerFrom{
-    text-align: center;
-    position: relative;
-    top: 6vh;
-    left: 3vw;
+
+#addCustomerContainer > #images  {
+    flex: 1 0 auto;
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 40%;
+}
+
+#addCustomerContainer > #images > .croppedImage  {
+    flex-shrink: 1;
     /* Fade-In Effect (CSS3 Animation) */
     -webkit-animation: fadein 1s; 
        -moz-animation: fadein 1s;
         -ms-animation: fadein 1s; 
          -o-animation: fadein 1s; 
             animation: fadein 1s;
+}
+
+#controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    /* Fade-In Effect (CSS3 Animation) */
+    -webkit-animation: fadein 1s; 
+       -moz-animation: fadein 1s;
+        -ms-animation: fadein 1s; 
+         -o-animation: fadein 1s; 
+            animation: fadein 1s;
+}
+
+#controls > .takePicture {
+    text-align: left;
+}
+
+input[type=text], select {
+    padding: 6px 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 /********************************** identifyCustomer.html ***********************************/
 #identify{

@@ -10,10 +10,19 @@
 
 const std::string Database::customerCollectionName = "customers";
 const std::string Database::imagesCollectionName = "images";
+const std::string Database::trainedRecognizerCollectionName = "trainedRecognizer";
 const std::string Database::temporaryStorageCollectionName = "temporaryStorage";
 const std::string Database::dbPromiseName = "dbPromise";
 const std::string Database::dbName = "db";
 const std::string Database::isDbLoaded = "isDbLoaded";
+
+// DataBaseException definition
+DatabaseException::DatabaseException(const std::string& msg) : message(msg) {}
+
+std::string& DatabaseException::what() {
+  return message;
+}
+
 
 val Database::init() {
   val window = val::global("window");
@@ -31,6 +40,7 @@ val Database::init() {
     let isLoaded = UTF8ToString($3);
     let imagesCollectionName = UTF8ToString($4);
     let temporaryStorageCollectionName = UTF8ToString($5);
+    let trainedRecognizerCollectionName = UTF8ToString($6);
 
     // Create a promise that is only resolved once the DB is loaded.
     // This can allow other parts of the code from modifying/reading
@@ -59,6 +69,9 @@ val Database::init() {
             window.db.addCollection(imagesCollectionName, {
               indices: ['studentId']
             });
+          }
+          if (!window.db.getCollection(trainedRecognizerCollectionName)) {
+            window.db.addCollection(trainedRecognizerCollectionName);
           }
 
           // Add images collection
@@ -89,7 +102,8 @@ val Database::init() {
   dbPromiseName.c_str(),
   isDbLoaded.c_str(),
   imagesCollectionName.c_str(),
-  temporaryStorageCollectionName.c_str());
+  temporaryStorageCollectionName.c_str(),
+  trainedRecognizerCollectionName.c_str());
 
   return val::global("window")[dbPromiseName];
 }
@@ -105,6 +119,12 @@ val Database::customersCollection() {
   return customers;
 }
 
+val Database::trainedRecognizerCollection() {
+  val window = val::global("window");
+  val recognizer = window[dbName].call<val>("getCollection", trainedRecognizerCollectionName);
+  return recognizer;
+}
+
 val Database::imagesCollection() {
   val window = val::global("window");
   val images = window[dbName].call<val>("getCollection", imagesCollectionName);
@@ -115,4 +135,22 @@ val Database::temporaryStorageCollection() {
   val window = val::global("window");
   val images = window[dbName].call<val>("getCollection", temporaryStorageCollectionName);
   return images;
+}
+
+val Database::persist() {
+  EM_ASM({
+    let customerCollectionName = UTF8ToString($0);
+    let dbName = UTF8ToString($1);
+    let dbPromiseName = UTF8ToString($2);
+
+    window[dbPromiseName] = window[dbPromiseName].then(function() {
+      return new Promise((resolve, reject) => {
+        window[dbName].saveDatabase(function() {
+          resolve();
+        })
+      });
+    });
+  }, customerCollectionName.c_str(), dbName.c_str(), dbPromiseName.c_str());
+
+  return val::global("window")[dbPromiseName];
 }
