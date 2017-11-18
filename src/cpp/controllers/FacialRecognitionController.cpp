@@ -14,20 +14,22 @@ FacialRecognizer::~FacialRecognizer(){
 
 // Read model from database as raw XML data and set current model to  loaded model
 void FacialRecognizer::loadModel(){
-  std::string xmlRaw;
-  cv::FileStorage fs;
-  fs.open(xmlRaw,cv::FileStorage::READ|cv::FileStorage::MEMORY);
-  model->load(fs);
-  fs.release();
+  //std::string xmlRaw;
+  //cv::FileStorage fs;
+  //fs.open(xmlRaw,cv::FileStorage::READ|cv::FileStorage::MEMORY);
+  //model->FaceRecognizer::read(fn)(fs);
+  //fs.release();
+  model->FaceRecognizer::read("modelStateXML.xml");
 }
 
 // Write model as raw XML data to a string and store in database
 void FacialRecognizer::saveModel(){
-  std::string xmlRaw;
-  cv::FileStorage fs;
-  fs.open(xmlRaw,cv::FileStorage::WRITE|cv::FileStorage::MEMORY);
-  model->save(fs);
-  fs.release();
+  //std::string xmlRaw;
+  //cv::FileStorage fs;
+  //fs.open(xmlRaw,cv::FileStorage::WRITE|cv::FileStorage::MEMORY);
+  //model->FaceRecognizer::write(fs);
+  //fs.release();
+  model->FaceRecognizer::save("modelStateXML.xml");
 }
 
 void FacialRecognizer::trainModel(const cv::InputArray& src){
