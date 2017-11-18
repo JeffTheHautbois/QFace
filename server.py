@@ -64,9 +64,9 @@ class TurboServer(http.server.SimpleHTTPRequestHandler):
     }
 
     def do_GET(self):
-        if self.path in TurboServer.paths:
-            print(self.path)
-            route_options = TurboServer.paths[self.path]
+        raw_path = self.path.split("?")[0]
+        if raw_path in TurboServer.paths:
+            route_options = TurboServer.paths[raw_path]
 
             self.send_response(route_options["response_code"])
             self.send_header('content-type', route_options["content-type"])

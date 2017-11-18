@@ -9,6 +9,8 @@
 #include "TemporaryStorage.h"
 #include "models/Database.h"
 
+using emscripten::val;
+
 void TemporaryStorage::getImages(std::vector<std::string>* outVector) {
   val temporaryStorage = Database::temporaryStorageCollection();
   val allImages = temporaryStorage.call<val>("find");

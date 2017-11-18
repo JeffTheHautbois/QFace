@@ -1,5 +1,6 @@
 #include <emscripten.h>
 #include "FaceCropperController.h"
+#include "models/TemporaryStorage.h"
 
 using namespace std;
 using namespace cv;
@@ -13,14 +14,13 @@ void FaceCropper::loadCascadeClassifier(const std::string& filePath){
 }
 
 // Crops the image and saves it in temporary storage as a base64 String
-std::string FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
+void FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
   Mat inputImage = passedImage.asMat(); // The image as a matrix
 
   // Check if the image was loaded correctly
   if (inputImage.empty()) {
-    cout << "Was not able to load image" << std::endl;
     string empty = "";
-    return empty;
+    throw FaceDetectionException("Error! Unable to load Image!");
   }
 
   Mat gray_img;
@@ -44,7 +44,9 @@ std::string FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
     Mat croppedFace = inputImage(faceROI); // The cropped face as a matrix
     Image returnImage(croppedFace); // Create an image object using the cropped face matrix
 
-    return returnImage.asBase64(); // Return the image object as a Base64 String
+    std::string croppedImageBase64 = returnImage.asBase64();
+    TemporaryStorage::addImage(croppedImageBase64); // Save cropped image as base64 string in temporary storage
+    
   }
 
 }
