@@ -4,8 +4,8 @@
 #include "opencv2/face.hpp"
 #include "FacialRecognitionController.h"
 
-FacialRecognizer::FacialRecognizer(int num_components, double threshold){
-  model = cv::face::EigenFaceRecognizer::create(num_components, threshold);
+FacialRecognizer::FacialRecognizer(int radius, int neighbors, int grid_x, int grid_y, double threshold){
+  model = cv::face::LBPHFaceRecognizer::create(radius, neighbors, grid_x, grid_y, threshold);
 }
 
 FacialRecognizer::~FacialRecognizer(){
@@ -23,7 +23,7 @@ void FacialRecognizer::saveModel(cv::FileStorage& fs){
 void FacialRecognizer::trainModel(const cv::InputArray& src){
   // IN MAIN CODE, MUST UPDATE AND CREATE A vector<cv::Mat> TO PASS AS src
   // IN MAIN CODE, MUST UPDATE THE LABELS ASSOSCIATED WITH THE model
-  model->cv::face::FaceRecognizer::train(src, labels);
+  model->FaceRecognizer::train(src, labels);
 }
 
 void FacialRecognizer::identify(Image& src, int& label, double& confidence){
@@ -33,4 +33,8 @@ void FacialRecognizer::identify(Image& src, int& label, double& confidence){
   double predicted_confidence = 0.0;
   // Get the prediction and associated confidence from the model
   model->FaceRecognizer::predict(predictThis, predicted_label, predicted_confidence);
+}
+
+void FacialRecognizer::updateModel(cv::InputArrayOfArrays& src, cv::InputArray labels){
+  model->FaceRecognizer::update(src, labels);
 }
