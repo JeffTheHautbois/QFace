@@ -31,6 +31,18 @@ footer{
     top: 0;
     left: 0;
 }
+.center{
+    text-align: center;
+}
+
+.fadeIn {
+    /* Fade-In Effect (CSS3 Animation) */
+    -webkit-animation: fadein 1s; 
+       -moz-animation: fadein 1s;
+        -ms-animation: fadein 1s; 
+         -o-animation: fadein 1s; 
+}
+
 /**************************************** index.html ****************************************/
 #logo{
     position: relative;
@@ -47,18 +59,11 @@ footer{
 }
 .container, .buttons {
     text-align: center;
-    /* Fade-In Effect (CSS3 Animation) */
-    -webkit-animation: fadein 1s; 
-       -moz-animation: fadein 1s;
-        -ms-animation: fadein 1s; 
-         -o-animation: fadein 1s; 
-            animation: fadein 1s;
 }
 /************************************ addCustomer.html **************************************/
 #addCustomerContainer {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     align-items: center;
     width: 100%;
     justify-content: space-evenly;
@@ -73,11 +78,6 @@ footer{
 #addCustomerContainer > #webcam > video {
     width: 100%;
     border: 10px #333 solid;
-    -webkit-animation: fadein 1s; 
-       -moz-animation: fadein 1s;
-        -ms-animation: fadein 1s; 
-         -o-animation: fadein 1s; 
-            animation: fadein 1s;
 }
 
 #addCustomerContainer > #images  {
@@ -90,24 +90,12 @@ footer{
 
 #addCustomerContainer > #images > .croppedImage  {
     flex-shrink: 1;
-    /* Fade-In Effect (CSS3 Animation) */
-    -webkit-animation: fadein 1s; 
-       -moz-animation: fadein 1s;
-        -ms-animation: fadein 1s; 
-         -o-animation: fadein 1s; 
-            animation: fadein 1s;
 }
 
 #controls {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    /* Fade-In Effect (CSS3 Animation) */
-    -webkit-animation: fadein 1s; 
-       -moz-animation: fadein 1s;
-        -ms-animation: fadein 1s; 
-         -o-animation: fadein 1s; 
-            animation: fadein 1s;
 }
 
 #controls > .takePicture {
@@ -139,10 +127,27 @@ input[type=text], select {
 	position: relative;
     top: -5vh;
 }
-.saveButtons{
-    text-align: center;
-    position: relative;
-    top: 1vh;
+.imageContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 5px;
+}
+.imageContainer > #newImages{
+    width: 40%;
+}
+
+.imageContainer > #oldImages {
+    display: none;
+    width: 40%;
+}
+
+.imageContainer > #oldImages > img {
+    width: 40%;
+}
+
+#addCustomerFrom > #saveButtons {
+    margin-top: 30px;
 }
 /***************************** Fade-In Effect (CSS3 Animation) ******************************/
 @keyframes fadein {

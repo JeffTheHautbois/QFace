@@ -1,4 +1,3 @@
-#include <exception>
 #include "emscripten/bind.h"
 #include "controllers/FaceCropperController.h"
 #include "models/TemporaryStorage.h"
@@ -7,6 +6,7 @@ FaceCropper* fc = nullptr;
 
 void init() {
   fc = new FaceCropper();
+  TemporaryStorage::clearStorage();
 }
 
 void clean() {

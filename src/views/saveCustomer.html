@@ -1,46 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="description" content="QFACE Website">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- CSS -->
-	<link href="src/views/css/style.css" type="text/css" rel="stylesheet">
-	<!-- BootStrap -->
+    <meta charset="UTF-8">
+    <meta name="description" content="QFACE Website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <link href="src/views/css/style.css" type="text/css" rel="stylesheet">
+    <!-- BootStrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<title>Welcome to QFACE</title>
+    <!-- Include lokiJS and compiled Turbo. -->
+    <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/lokijs.min.js"></script>
+    <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/loki-indexed-adapter.min.js"></script>
+    <title>Welcome to QFACE</title>
 </head>
 <body>
-	<!-- Header Element-->
-	<header>
-	</header>
-	<!-- Main Element-->
-	<main>	
-		<a href="/">
-			<img id="logoButton" src="src/views/images/logo2.png" width="100" height="100">
-		</a>
-		<div class="faceScan">
-			<img id="identify" src="src/views/images/croppedpic.jpeg" width="700" height="500">
-		</div>
-		<div class="addCustomerFrom">
-			<form id="sForm" action="" method="post" enctype="text/plain">
-				<label id="StudentId">Enter: </label>
-    			<input type="text" id="fname" name="firstname" placeholder="First Name...">
-    			<input type="text" id="fname" name="lastname" placeholder="Last Name...">
-    			<input type="text" id="studNum" name="studentnumber" placeholder="Student ID...">
-				<div class="saveButtons">
-				<p>
-					<input type="submit" name="upload" value="Save">
-					<input type="reset" value="Reset">
-				</p>
-				</div>
-			</form>
-		</div>
-	</main>
-	<!-- Footer Element-->
-	<footer>
-		<p>Copyright 2017 by QFACE CO.</p>
-	</footer>
-</body>	
+    <div id="loading-overlay">
+        <div id="text">Loading...</div>
+    </div>
+    <div id="content" class="center">
+        <!-- Header Element-->
+        <header>
+        </header>
+        <!-- Main Element-->
+        <main>  
+            <a href="/">
+                <img id="logoButton" class="fadeIn" src="src/views/images/logo2.png" width="100" height="100">
+            </a>
+
+            <h3 id="saveCustomerHeading"></h3>
+
+            <div class="imageContainer" class="fadeIn">
+                <div id="newImages">
+                    <h5>Pictures that will be added </h5>
+
+                </div>
+                <div id="oldImages">
+                    <h5>Taken Pictures</h5>
+                </div>
+            </div>
+            <div id="addCustomerFrom">
+                <label>Enter: </label>
+                <input id="name" class="fadeIn" type="text" name="name" placeholder="Name...">
+                <input id="age" class="fadeIn" type="text" name="age" placeholder="Age...">
+                <div id="saveButtons">
+                    <input id="saveButton" type="submit" name="upload" value="Save">
+                </div>
+            </div>
+        </main>
+        <!-- Footer Element-->
+        <footer>
+            <p>Copyright 2017 by QFACE CO.</p>
+        </footer>
+    </div>
+</body> 
+<script type="text/javascript" src="src/views/js/parseQueryStrings.js"></script>
+<script type="text/javascript" src="src/views/js/saveCustomer.js"></script>
+<script type="text/javascript" src="src/views/js/loading.js"></script>
+<script type="application/javascript" src="./Turbo.asm.js"></script>
 </html>
 

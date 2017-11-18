@@ -1,7 +1,8 @@
+
 // The code that runs after emscripten/db is fully loaded.
 let main = function() {
-    Module.clearTemporaryStorage();  // Clear temporary storage on page load.
     Module.addCustomer_init();
+    let photosTaken = false;
 
     // Ran when the Take Picture button is clicked.
     document.getElementById("tpButton").onclick = function(){
@@ -19,6 +20,8 @@ let main = function() {
         if (!success) {
             return;
         }
+
+        photosTaken = true;
         
         // Display the updated faces.
         let preview = document.getElementById("images");
@@ -31,11 +34,17 @@ let main = function() {
 
     // Ran when the "save" button is clicked.
     document.getElementById("save-button").onclick = function() {
+        debugger;
+        if (!photosTaken) {
+            alert("No pictures taken - press the \"Take Picture\" button.")
+            return;
+        }
+
         let studentId = window.parseInt(document.getElementById("studentId-form").value);
         if (!studentId) {
             alert("Invalid studentId");
+            return;
         }
-
         Module.addCustomer_clean();
         Module.persist().then(() => {
             let nextURL = 
@@ -46,28 +55,4 @@ let main = function() {
             window.location.href = nextURL;
         });
     }
-}
-
-// Displays a loading message while the page isn't loaded
-// then, runs the code in main once it is loaded.
-displayLoadingOverlay();
-let loading = function() {
-    if (window.isDbLoaded) { 
-        main();
-        hideLoadingOverlay();
-    } else {
-        setTimeout(loading, 0);
-    }
-};
-setTimeout(loading, 0);
-
-// Display loading message.
-function displayLoadingOverlay() {
-    document.getElementById("loading-overlay").style.display = "block";
-    document.getElementById("content").style.display = "none";
-}
-
-function hideLoadingOverlay() {
-    document.getElementById("loading-overlay").style.display = "none";
-    document.getElementById("content").style.display = "block";
 }
