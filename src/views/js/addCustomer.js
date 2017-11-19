@@ -10,6 +10,7 @@ let main = function() {
         let newImage = document.createElement("img");
         newImage.src = "data:image/png;base64," + Module.addCustomer_mostRecentDetectedFace();
         newImage.classList.add("croppedImage");
+        newImage.classList.add("fadeIn");
         imageContainer.appendChild(newImage);
     }
 
@@ -72,17 +73,18 @@ let main = function() {
 
             // Crop the face and save it to temporary storage.
             let success = Module.addCustomer_saveFaceInTemporaryStorage(dataURI);
-            if (!success) {
-                return;
+
+            if (success) {
+                // Only record and display a picture when it was successfully
+                // detected.
+                photosTaken = true;
+                displayMostRecentlyDetectedImage();
+
+                imagesTaken += 1;
+                imageCounter.innerText = "Images taken: " + imagesTaken + "/" + imagesToTake;
             }
 
-            photosTaken = true;
-            displayMostRecentlyDetectedImage();
-
-            imagesTaken += 1;
             setTimeout(takePictureFromVideo, 400);
-
-            imageCounter.innerText = "Images taken: " + imagesTaken + "/" + imagesToTake;
         }
 
         takePictureFromVideo();
