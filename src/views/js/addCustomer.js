@@ -52,6 +52,7 @@ let main = function() {
         let clearButton = document.getElementById("clear-button");
 
         let imageCounter = document.getElementById("imageCounter")
+        let errorDisplay = document.getElementById("errorMessages")
 
         this.disabled = true;
         singlePictureButton.disabled = true;
@@ -59,8 +60,15 @@ let main = function() {
         clearButton.disabled = true;
         imageCounter.style.display = 'block';
 
+        // Display console log messages to user.
+        let oldLogger = window.console.log;
+        window.console.log = function(message) {
+            errorDisplay.innerText = message;
+        }
+
         let takePictureFromVideo = () => {
             if (imagesTaken >= imagesToTake) {
+                window.console.log = oldLogger;
                 this.disabled = false;
                 singlePictureButton.disabled = false;
                 saveButton.disabled = false;
@@ -75,6 +83,7 @@ let main = function() {
             let success = Module.addCustomer_saveFaceInTemporaryStorage(dataURI);
 
             if (success) {
+                errorDisplay.innerText = "";
                 // Only record and display a picture when it was successfully
                 // detected.
                 photosTaken = true;

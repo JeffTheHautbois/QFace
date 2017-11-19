@@ -85,6 +85,14 @@ footer{
     display: none;
 }
 
+#addCustomerContainer > #webcam > #errorMessages {
+    position: absolute;
+    right: 0%;
+    top: 0;
+    background-color: #333;
+    color: white;
+}
+
 #addCustomerContainer > #webcam > video {
     width: 100%;
     border: 10px #333 solid;
