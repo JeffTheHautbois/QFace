@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="QFACE Website">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- CSS -->
+	<link href="src/views/css/style.css" type="text/css" rel="stylesheet">
+	<!-- BootStrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Include lokiJS and compiled Turbo. -->
+    <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/lokijs.min.js"></script>
+    <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/loki-indexed-adapter.min.js"></script>
+	<title>Welcome to QFACE</title>
+</head>
+<body>
+	<div id="loading-overlay">
+        <div id="text">Loading...</div>
+    </div>
+    <div id="content" class="center">
+		<!-- Header Element-->
+		<header>
+		</header>
+		<!-- Main Element-->
+		<main>	
+			<a href="/">
+				<img class="fadeIn" id="logoButton" src="src/views/images/logo2.png" width="100" height="100">
+			</a>
+
+			<div>
+				<div class="imageContainer" class="fadeIn">
+
+                <div id="images">
+                
+                </div>
+            </div>
+				<h3 id="name">Name: </h3>
+				<h3 id="age">Age: </h3>
+				<h3 id="studentId">Student ID: </h3>
+			</div>
+		</main>
+		<!-- Footer Element-->
+		<footer>
+			<p>Copyright 2017 by QFACE CO.</p>
+		</footer>
+	</div>
+</body>	
+<script type="text/javascript" src="src/views/js/parseQueryStrings.js"></script>
+<script type="text/javascript" src="src/views/js/showCustomer.js"></script>
+<script type="text/javascript" src="src/views/js/loading.js"></script>
+<script type="application/javascript" src="./Turbo.asm.js"></script>
+</html>
+

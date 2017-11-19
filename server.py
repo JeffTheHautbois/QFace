@@ -20,6 +20,16 @@ class TurboServer(http.server.SimpleHTTPRequestHandler):
             "filename": "src/views/identifyCustomer.html",
             "response_code": 200
         },
+        "/saveCustomer": {
+            "content-type": "html",
+            "filename": "src/views/saveCustomer.html",
+            "response_code": 200
+        },
+        "/showCustomer": {
+            "content-type": "html",
+            "filename": "src/views/showCustomer.html",
+            "response_code": 200
+        },
         "/Turbo.asm.js": {
             "content-type": "application/javascript",
             "filename": "bin/Turbo.asm.js",
