@@ -1,3 +1,11 @@
+/*
+ * Common.cpp
+ *
+ *  Created on: Nov 13, 2017
+ *      Author: Ragulan
+ */
+
+
 #include "emscripten/bind.h"
 #include "controllers/FaceCropperController.h"
 #include "models/TemporaryStorage.h"

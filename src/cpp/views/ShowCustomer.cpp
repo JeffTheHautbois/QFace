@@ -6,5 +6,5 @@
  */
 
 
-
-
+// The show customer view only uses functions in common.cpp
+// If more functionality is needed, add it here.
