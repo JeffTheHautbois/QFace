@@ -50,10 +50,13 @@ let main = function() {
         let saveButton = document.getElementById("save-button");
         let clearButton = document.getElementById("clear-button");
 
+        let imageCounter = document.getElementById("imageCounter")
+
         this.disabled = true;
         singlePictureButton.disabled = true;
         saveButton.disabled = true;
         clearButton.disabled = true;
+        imageCounter.style.display = 'block';
 
         let takePictureFromVideo = () => {
             if (imagesTaken >= imagesToTake) {
@@ -61,6 +64,7 @@ let main = function() {
                 singlePictureButton.disabled = false;
                 saveButton.disabled = false;
                 clearButton.disabled = false;
+                imageCounter.style.display = 'none';
                 return;
             }
 
@@ -77,6 +81,8 @@ let main = function() {
 
             imagesTaken += 1;
             setTimeout(takePictureFromVideo, 400);
+
+            imageCounter.innerText = "Images taken: " + imagesTaken + "/" + imagesToTake;
         }
 
         takePictureFromVideo();
