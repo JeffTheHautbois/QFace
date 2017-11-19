@@ -37,14 +37,19 @@
             </div>
             <div class="fadeIn" id="controls" class="addCustomerForm">
                 <div class="takePicture">
-                    <button id="tpButton" type="button" class="btn btn-primary btn-lg">Take Picture</button>
-                    <input id="uploadimg" type="file" accept=".jpg, .jpeg, .png" multiple>
+                    <div>
+                        <button id="detectFace" type="button" class="btn btn-primary btn-lg">Detect Face</button>
+                    </div>
+                    <div>
+                        <input id="tpButton" type="submit" value="Take Single Picture">
+                    </div>
                 </div>
                 <div class="addCustomerFrom">
                     <label id="StudentId">Student ID: </label>
                     <input id="studentId-form" type="text" id="fname" name="firstname" placeholder="Enter Student ID...">
                     <p id="savebuttons">
                         <input id="save-button" type="submit" name="upload" value="Save">
+                        <input id="clear-button" type="submit" name="upload" value="Clear Faces">
                     </p>
                 </div>
             </div>

@@ -95,11 +95,17 @@ footer{
 #controls {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 #controls > .takePicture {
+    width: 30%;
     text-align: left;
+}
+
+#controls > .addCustomerForm {
+    text-align: left;
+    width: 30%;
 }
 
 input[type=text], select {
