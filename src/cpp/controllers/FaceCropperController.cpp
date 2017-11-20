@@ -40,7 +40,7 @@ void FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
     throw FaceDetectionException("Error! No faces!");
   } else { // One face has been detected
     // The actual cropping occurs here.
-    Rect faceROI = getFaceROI(gray_img);//(faces[0].x, faces[0].y, faces[0].width, faces[0].height);
+    Rect faceROI = getFaceROI(gray_img);
     Mat croppedFace = inputImage(faceROI); // The cropped face as a matrix
     Image returnImage(croppedFace); // Create an image object using the cropped face matrix
 
@@ -50,6 +50,7 @@ void FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
   }
 }
 
+// Find the rectangle that bounds a detected face
 Rect FaceCropper::getFaceROI(Mat grayImg){
   vector<Rect> faces;
   Rect faceROI;
