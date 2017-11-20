@@ -1,4 +1,11 @@
-#include <exception>
+/*
+ * Common.cpp
+ *
+ *  Created on: Nov 13, 2017
+ *      Author: Ragulan
+ */
+
+
 #include "emscripten/bind.h"
 #include "controllers/FaceCropperController.h"
 #include "models/TemporaryStorage.h"
@@ -7,6 +14,7 @@ FaceCropper* fc = nullptr;
 
 void init() {
   fc = new FaceCropper();
+  TemporaryStorage::clearStorage();
 }
 
 void clean() {
