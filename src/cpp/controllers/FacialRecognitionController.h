@@ -5,6 +5,7 @@
 #include "models/Image.h"
 #include "opencv2/core.hpp"
 #include <opencv2/imgproc/imgproc.hpp>
+#include "opencv2/face.hpp"
 
 /*
  * This class will be utilized as the "core" algorithm for
@@ -18,8 +19,7 @@
 class FacialRecognizer {
 public:
   // Facial Recognizer constructor
-  FacialRecognizer(int radius, int neighbors, int grid_x, int grid_y, double threshold);
-  ~FacialRecognizer(); // Destructor
+  FacialRecognizer();
 
   // Load saved model state from database and set current model to it
   void loadModel();
@@ -28,10 +28,10 @@ public:
   void saveModel();
 
   // Train the model
-  void trainModel(const cv::InputArray& src);
+  void trainModel();
 
   // Identify a customer in a given image
-  void identify(Image& src, int& label, double& confidence);
+  int identify(Image& src, double* confidence);
 
   // Update current model to include new images
   void updateModel(cv::InputArrayOfArrays& src);
@@ -39,7 +39,8 @@ public:
 private:
   std::vector<Image> images;
   std::vector<int> labels;
-  cv::face::FaceRecognizer* model;
+  cv::Ptr<cv::face::FaceRecognizer> model;
+  const std::string persistenceFiletype;
 };
 
 

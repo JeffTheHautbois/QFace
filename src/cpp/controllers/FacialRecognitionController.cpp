@@ -1,30 +1,30 @@
 #include <iostream>
+#include <exception>
 #include <string>
 #include <emscripten.h>
-#include "opencv2/face.hpp"
+#include <assert.h>
+#include "opencv2/imgcodecs.hpp"
 #include "FacialRecognitionController.h"
 #include "models/TrainedRecognizerModel.h"
+#include "models/CustomerModel.h"
 
-FacialRecognizer::FacialRecognizer(int radius, int neighbors, int grid_x, int grid_y, double threshold){
-  model = cv::face::LBPHFaceRecognizer::create(radius, neighbors, grid_x, grid_y, threshold);
-}
 
-FacialRecognizer::~FacialRecognizer(){
-  delete model;
-}
+FacialRecognizer::FacialRecognizer() :
+model(cv::face::LBPHFaceRecognizer::create()), persistenceFiletype(".yaml") {}
 
 // Read model from database as raw XML data and set current model to loaded model
 void FacialRecognizer::loadModel(){
-  cv::FileStorage fs;
-  // get the string from the database, read to cv's fs in memory (not disk)
-  // and open it to allow data be accessed
-  fs.open(TrainedRecognizerModel::get(),cv::FileStorage::READ + cv::FileStorage::MEMORY);
-  // cannot model->load(fs) in current OpenCV release. Must create a
-  // cv::FileNode, created from the cv's fs, and then model "reads"
-  // (loads) the saved state and replaces the current state with it
-  cv::FileNode fn = fs;
-  model->read(fn);
-  fs.release();
+  try{
+    cv::FileStorage fs;
+    fs.open(TrainedRecognizerModel::get(), cv::FileStorage::READ + cv::FileStorage::MEMORY);
+    assert(fs.isOpened());
+    model->read(fs.root());
+    fs.release();
+  }
+  catch(std::exception& e) {
+      std::cerr << "Caught exception: " << e.what() << std::endl;
+      throw e;
+  }
 }
 
 // Write model as raw XML data to a string and store in database
@@ -32,26 +32,44 @@ void FacialRecognizer::saveModel(){
   // Create a cv::FileStorage fs with xml formatting. Write to it in memory
   // (not disk) and then get the string representation to pass in to
   // the database update method
-  cv::FileStorage fs(".xml", cv::FileStorage::WRITE + cv::FileStorage::MEMORY);
-  fs << model;
+  cv::FileStorage fs(persistenceFiletype, cv::FileStorage::WRITE + cv::FileStorage::MEMORY);
+  model->write(fs);
   TrainedRecognizerModel::update(fs.releaseAndGetString());
 }
 
-void FacialRecognizer::trainModel(const cv::InputArray& src){
-  // IN MAIN CODE, MUST UPDATE AND CREATE A vector<cv::Mat> TO PASS AS src
-  // IN MAIN CODE, MUST UPDATE THE LABELS ASSOSCIATED WITH THE model
-  model->FaceRecognizer::train(src, labels);
+void FacialRecognizer::trainModel(){
+  try {
+    std::vector<int> labels;
+    std::vector<std::string> images;
+    CustomerModel::getAllStudentIdImagePairs(&labels, &images);
+    std::vector<cv::Mat> sources;
+
+    assert(labels.size() == images.size());
+    for (unsigned int i = 0; i < labels.size(); i++) {
+      Image tempb64(images[i]);
+      cv::Mat tempGreyScale;
+      cv::cvtColor(tempb64.asMat(), tempGreyScale, cv::COLOR_RGB2GRAY);  // Image changed to greyscale
+      sources.push_back(tempGreyScale);
+    }
+
+    model->train(sources, labels);
+  } catch (std::exception& e) {
+    std::cerr << "Caught exception: " << e.what() << std::endl;
+    throw e;
+  }
 }
 
-void FacialRecognizer::identify(Image& src, int& label, double& confidence){
+int FacialRecognizer::identify(Image& src, double* confidence){
   cv::Mat predictThis;
   cv::cvtColor(src.asMat(), predictThis, cv::COLOR_RGB2GRAY);  // Image changed to greyscale
-  int predicted_label = -1;
-  double predicted_confidence = 0.0;
+  int predictedLabel = -1;
+  double predictedConfidence = -1;
   // Get the prediction and associated confidence from the model
-  model->FaceRecognizer::predict(predictThis, predicted_label, predicted_confidence);
+  model->predict(predictThis, predictedLabel, predictedConfidence);
+  *confidence = 100 - predictedConfidence;
+  return predictedLabel;
 }
 
 void FacialRecognizer::updateModel(cv::InputArrayOfArrays& src){
-  model->FaceRecognizer::update(src, labels);
+  model->update(src, labels);
 }

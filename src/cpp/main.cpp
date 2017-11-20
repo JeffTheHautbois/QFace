@@ -3,6 +3,7 @@
 #include <emscripten/val.h>
 #include "test/test.h"
 #include "models/Database.h"
+#include "controllers/FacialRecognitionController.h"
 
 /*
  * Runs this code synchronously after the DB is initialized.
@@ -12,7 +13,12 @@ void afterDbInit(emscripten::val) {
   if (inTestEnv) {
       runTests();
   }
-
+  FacialRecognizer face;
+//  face.trainModel();
+//  std::cout << "model trained" << std::endl;
+//  face.saveModel();
+  face.loadModel();
+  std::cout << "model loaded from DB" << std::endl;
   std::cout << "It worked!" << "\n";
 }
 
