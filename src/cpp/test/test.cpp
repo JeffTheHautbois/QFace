@@ -6,6 +6,31 @@
 #include "test/test.h"
 #include "test/TestRunner.h"
 #include "models/TemporaryStorage.h"
+#include "models/TrainedRecognizerModel.h"
+
+void runTrainedRecognizerModelTests() {
+  TestRunner tr("Runner for trained recognizer model");
+
+  tr.addTest([]() {
+
+   TrainedRecognizerModel::update("TEST1");
+   std::string data2 = TrainedRecognizerModel::get();
+   assert("TEST1" == data2 && "Saved string can be accessed.");
+
+   TrainedRecognizerModel::update("one");
+   TrainedRecognizerModel::update("two");
+   TrainedRecognizerModel::update("three");
+   std::string data3 = TrainedRecognizerModel::get();
+   assert(data3 == "three" && "Multiple updates in a row, get returns last update.");
+
+   TrainedRecognizerModel::update("");
+   std::string data4 = TrainedRecognizerModel::get();
+   assert(data4 == "" && "Update and get on empty string works.");
+
+  }, "Tests is document in TrainedRecognizerModel can be updated and accessed.");
+   tr.run();
+
+}
 
 void runTemporaryStorageTests() {
   TestRunner tr("Runner for testing temporary storage");
@@ -44,5 +69,7 @@ void runTemporaryStorageTests() {
 }
 
 void runTests() {
+  
+  runTrainedRecognizerModelTests();
   runTemporaryStorageTests();
 }
