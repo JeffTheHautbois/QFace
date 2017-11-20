@@ -66,6 +66,7 @@ void imageTests(){
 		Image img = Image(encoded_string);
 		std::string imageString = img.asBase64();
 
+		std::cout << imageString << std::endl;
 		assert(imageString.compare(encoded_string) == 0 && "Strings are not equal");
 	}, "Testing image base64 conversion");
 /*
