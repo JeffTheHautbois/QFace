@@ -24,7 +24,7 @@ void FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
   }
 
   Mat gray_img;
-  vector<Rect> faces, eyes;
+  vector<Rect> faces;
   cvtColor(inputImage, gray_img, CV_BGR2GRAY);  // Captured image modified with "RBG 2 GRAY" and stored in grey image
   equalizeHist(gray_img, gray_img);  // Normalize brightness and increase contrast if image
 
@@ -40,13 +40,27 @@ void FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
     throw FaceDetectionException("Error! No faces!");
   } else { // One face has been detected
     // The actual cropping occurs here.
-    Rect faceROI(faces[0].x, faces[0].y, faces[0].width, faces[0].height);
+    Rect faceROI = getFaceROI(gray_img);//(faces[0].x, faces[0].y, faces[0].width, faces[0].height);
     Mat croppedFace = inputImage(faceROI); // The cropped face as a matrix
     Image returnImage(croppedFace); // Create an image object using the cropped face matrix
 
     std::string croppedImageBase64 = returnImage.asBase64();
     TemporaryStorage::addImage(croppedImageBase64); // Save cropped image as base64 string in temporary storage
-    
-  }
 
+  }
+}
+
+Rect FaceCropper::getFaceROI(Mat grayImg){
+  vector<Rect> faces;
+  Rect faceROI;
+  face.detectMultiScale(grayImg, faces, 1.1, 10,
+  CV_HAAR_SCALE_IMAGE | CV_HAAR_DO_CANNY_PRUNING,
+                        CvSize(0, 0), cvSize(300, 300));
+
+  // Too many or no faces detected in the image
+  if (faces.size() > 1 || faces.size() == 0)
+    faceROI = Rect(0,0,0,0);
+  else // One face has been detected
+    faceROI = Rect(faces[0].x, faces[0].y, faces[0].width, faces[0].height);
+  return faceROI;
 }

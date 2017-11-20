@@ -16,6 +16,7 @@ class FaceCropper{
 private:
   cv::CascadeClassifier face; // Cascade classifier object
   void loadCascadeClassifier(const std::string&); // Pre-load the cascade classifier from an xml file
+  cv::Rect getFaceROI(cv::Mat grayImg);
 };
 
 class FaceDetectionException {
