@@ -13,7 +13,8 @@
  * the team to use it through this "wrapper" class. This
  * class also implements saving and loading model states
  * from raw XML strings, which the cv::FaceRecognizer
- * cannot do by itself.
+ * cannot do by itself. Utilizes functions related to a
+ * LBPHFaceRecognizer for updating the model, and constructs
  */
 
 class FacialRecognizer {
@@ -27,19 +28,21 @@ public:
   // Save current model state to database
   void saveModel();
 
-  // Train the model
+  // Fetch all customer image and student ID pairs and train model for
+  // identifying customers in database
   void trainModel();
 
   // Identify a customer in a given image
   int identify(Image& src, double* confidence);
 
-  // Update current model to include new images
-  void updateModel(cv::InputArrayOfArrays& src);
+  // Update current model to include new images. Images and labels must be
+  // passed in from the view
+  void updateModel(std::vector<Image>& newImages, std::vector<int>& newLabels);
 
 private:
-  std::vector<Image> images;
-  std::vector<int> labels;
+  // The current active FaceRecognizer "model"
   cv::Ptr<cv::face::FaceRecognizer> model;
+  // Persistent data storage file format (YAML)
   const std::string persistenceFiletype;
 };
 
