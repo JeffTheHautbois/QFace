@@ -59,8 +59,10 @@ TEST_COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.asm.js
 
 # json
 JSON_INCLUDE = $(LIB_DIR)/json
+BASE64_INCLUDE = $(LIB_DIR)/base64
 INCLUDE = \
   -I$(JSON_INCLUDE) \
+  -I$(BASE64_INCLUDE)
  
 # ----- OpenCV Dependencies ----- 
 OPENCV_DIR = $(LIB_DIR)/opencv_3.1.0
