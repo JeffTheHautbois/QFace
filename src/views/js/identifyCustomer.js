@@ -4,13 +4,10 @@ let main = function() {
     let photosTaken = false;
 
     let displayMostRecentlyDetectedImage = function () {
-        let imageContainer = document.getElementById("images");
-        imageContainer.style.display = "flex";
-        let newImage = document.createElement("img");
-        newImage.src = "data:image/png;base64," + Module.addCustomer_mostRecentDetectedFace();
-        newImage.classList.add("croppedImage");
-        newImage.classList.add("fadeIn");
-        imageContainer.appendChild(newImage);
+        let imageContainer = document.getElementById("detectedImage");
+        imageContainer.style.display = "block";
+        imageContainer.src = "data:image/png;base64," + Module.addCustomer_mostRecentDetectedFace();
+        imageContainer.classList.add("fadeIn");
     }
 
     // Returns the webcam frame as a b64 string.
@@ -99,10 +96,8 @@ let main = function() {
 
     let clearFaces = function () {
         Module.clearTemporaryStorage();
-        let imageContainer = document.getElementById("images");
-        while (imageContainer.hasChildNodes()) {
-            imageContainer.removeChild(imageContainer.lastChild);
-        }
+        let imageContainer = document.getElementById("detectedImage");
+        imageContainer.src = "";
         imageContainer.style.display = 'none';
     }
 

@@ -60,7 +60,7 @@ footer{
 .container, .buttons {
     text-align: center;
 }
-/************************************ addCustomer.html **************************************/
+/************************************ addCustomer.html and identifyCustomer.html **************************************/
 #addCustomerContainer {
     display: flex;
     flex-direction: row;
@@ -140,6 +140,13 @@ input[type=text], select {
 }
 .takePicture{
     text-align: center;
+}
+
+#detectedImage {
+    display: block;
+    height: 100%;
+    flex: 1 0 auto;
+    max-width: 20%;
 }
 /*********************************** saveCustomer.html ***********************************/
 .faceScan{
