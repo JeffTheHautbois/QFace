@@ -51,7 +51,7 @@ void FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
 }
 
 // Find the rectangle that bounds a detected face
-Rect FaceCropper::getFaceROI(Mat grayImg){
+Rect FaceCropper::getFaceROI(Mat& grayImg){
   vector<Rect> faces;
   Rect faceROI;
   face.detectMultiScale(grayImg, faces, 1.1, 10,
