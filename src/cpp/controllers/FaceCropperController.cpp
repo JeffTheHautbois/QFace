@@ -52,7 +52,7 @@ void FaceCropper::cropFaceAndSaveInTemporaryStorage(Image& passedImage) {
   }
 }
 
-// Find the rectangle that bounds a detected face for valid number of faces
+// Find the rectangle that bounds a detected face for cropping
 Rect FaceCropper::getFaceROI(Mat& grayImg) {
   vector<Rect> faces;
   Rect faceROI;
@@ -66,7 +66,7 @@ Rect FaceCropper::getFaceROI(Mat& grayImg) {
 // Define rectangle for single detected face, or empty rectangle if more exist
 // To be used ONLY to get rectangle for display on webcam feed. Separate functions
 // required as different error handling situations exist
-Rect FaceCropper::getFaceROI(Image& passedImage) {
+void FaceCropper::getFaceROI(Image& passedImage, int* x, int*y, int* width, int* height) {
   Mat inputImage = passedImage.asMat();  // The image as a matrix
 
   // Check if the image was loaded correctly
@@ -77,7 +77,6 @@ Rect FaceCropper::getFaceROI(Image& passedImage) {
 
   Mat gray_img;
   vector<Rect> faces;
-  Rect faceROI;
   cvtColor(inputImage, gray_img, CV_BGR2GRAY);  // Captured image modified with "RBG 2 GRAY" and stored in grey image
   equalizeHist(gray_img, gray_img);  // Normalize brightness and increase contrast if image
 
@@ -87,10 +86,16 @@ Rect FaceCropper::getFaceROI(Image& passedImage) {
                         CvSize(0, 0), cvSize(300, 300));
 
   // Too many or no faces detected in the image
-  if (faces.size() > 1 || faces.size() == 0)
-    faceROI = Rect(0, 0, 0, 0);
-  else
-    // One face has been detected
-    faceROI = Rect(faces[0].x, faces[0].y, faces[0].width, faces[0].height);
-  return faceROI;
+  if (faces.size() > 1 || faces.size() == 0){
+    *x = 0;
+    *y = 0;
+    *width = 0;
+    *height = 0;
+  }
+  else{    // One face has been detected
+    *x = faces[0].x;
+    *y = faces[0].y;
+    *width = faces[0].width;
+    *height = faces[0].height;
+  }
 }
