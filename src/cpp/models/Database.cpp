@@ -150,8 +150,8 @@ val Database::temporaryStorageCollection() {
 // persist - does customerCollectionName need to be passed to this function?
 val Database::persist() {
   EM_ASM({
-    let dbName = UTF8ToString($1);
-    let dbPromiseName = UTF8ToString($2);
+    let dbName = UTF8ToString($0);
+    let dbPromiseName = UTF8ToString($1);
     window[dbPromiseName] = window[dbPromiseName].then(function() {
       return new Promise((resolve, reject) => {
         window[dbName].saveDatabase(function() {
