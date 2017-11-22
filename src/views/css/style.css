@@ -51,6 +51,8 @@ footer{
     flex: 1 0 auto;
     position: relative;
 }
+.btn-group{
+}
 .container, .buttons {
     position: relative;
     text-align: center;
