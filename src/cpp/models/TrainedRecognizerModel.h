@@ -26,6 +26,7 @@ class TrainedRecognizerModel {
   public:
     static void update(const std::string& serializedData);
     static std::string get();
+    static bool hasBeenCreated();
   private:
     TrainedRecognizerModel();
 };
