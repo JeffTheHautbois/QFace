@@ -1,5 +1,5 @@
 let main = function() {
-    //Check studentid
+	//Check studentid
     let studentId = getStudentIDFromQueryString();
 
     if (window.isNaN(studentId) || studentId < 0){
@@ -9,11 +9,11 @@ let main = function() {
 
     let customer = JSON.parse(Module.getCustomer(studentId));
     if (!customer.studentId) {
-        alert("No customer found with Student ID: " + studentId);
-        window.location.href = "/";
+    	alert("No customer found with Student ID: " + studentId);
+    	window.location.href = "/";
     }
 
-        let images = Module.getImagesOfUser(studentId, -1);
+	let images = Module.getImagesOfUser(studentId, -1);
     if (images.length <= 0) {
         alert("No Faces Found for Student ID: " + studentId);
         window.location.href = "/";
