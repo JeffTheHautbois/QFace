@@ -11,8 +11,10 @@
 
 using emscripten::val;
 
+// get images in collection and adds them to vector argument as strings
 void TemporaryStorage::getImages(std::vector<std::string>* outVector) {
   val temporaryStorage = Database::temporaryStorageCollection();
+  // find query with no filters - returns all images
   val allImages = temporaryStorage.call<val>("find");
 
   unsigned int length = allImages["length"].as<unsigned int>();
@@ -22,6 +24,7 @@ void TemporaryStorage::getImages(std::vector<std::string>* outVector) {
   }
 }
 
+// adds image to temporary storage collection using insert 
 void TemporaryStorage::addImage(std::string& image) {
   val temporaryStorage = Database::temporaryStorageCollection();
   val imageObject = val::object();
@@ -29,6 +32,7 @@ void TemporaryStorage::addImage(std::string& image) {
   temporaryStorage.call<void>("insert", imageObject);
 }
 
+// clears temporary storage collection data, collection itself will persist
 void TemporaryStorage::clearStorage() {
   val temporaryStorage = Database::temporaryStorageCollection();
   temporaryStorage.call<void>("removeDataOnly");

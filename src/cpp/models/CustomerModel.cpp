@@ -23,6 +23,7 @@ std::string& CustomerException::what() {
   return message;
 }
 
+// returns true if customer exists in customer collection
 bool CustomerModel::isExistingCustomer(int studentId){
   if(!Database::hasBeenInit()) {
     throw DatabaseException("Database has not been initialized");
@@ -47,7 +48,7 @@ void CustomerModel::overwriteCustomer(const int studentId, const json &user) {
   if(!isExistingCustomer(studentId)) {
     throw CustomerException("Customer doesn't exist");
   }
-    
+
   val customers = Database::customersCollection();
   val query = val::object();
   query.set("studentId", studentId);
@@ -70,7 +71,6 @@ void CustomerModel::insertCustomer(const int studentId, const json &user) {
   }
 
   val customers = Database::customersCollection();
-
   val customer = val::object();
   customer.set("studentId", studentId);
   customer.set("name", user["name"].get<std::string>());
@@ -101,10 +101,8 @@ void CustomerModel::addImageToCustomer(const int studentId,
   images.call<val>("insert", document);
 }
 
-// In the SDD -> getImagesOfUser(std::string, std::vector<Image*>*, std::string<std::string>*, int)
-// currently this function will add images by string to a vector
-// I am assuming the int is for when we want a certain number of images
-// if this argument is set to -1, return all images for student with studentId
+// function will add n images of type string to a vector
+// if numImages argument is set to -1, return all images for student with studentId
 void CustomerModel::getImagesOfCustomer(const int studentId,
                                         std::vector<std::string> &imageVecOut,
                                         int numImages) {

@@ -59,8 +59,10 @@ TEST_COMPILED_JS = $(BIN_DIR)/$(PROJECT).test.asm.js
 
 # json
 JSON_INCLUDE = $(LIB_DIR)/json
+BASE64_INCLUDE = $(LIB_DIR)/base64
 INCLUDE = \
   -I$(JSON_INCLUDE) \
+  -I$(BASE64_INCLUDE)
  
 # ----- OpenCV Dependencies ----- 
 OPENCV_DIR = $(LIB_DIR)/opencv_3.1.0
@@ -109,11 +111,19 @@ ifeq ($(MAKECMDGOALS), test)
     CXXFLAGS += -D TEST_ENV
 endif
 
+ifeq ($(MAKECMDGOALS), release)
+    $(info Building released WebAssembly)
+    LDFLAGS += -s WASM=1
+    CXXFLAGS -= -O1
+endif
+
 # Object Directory
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(patsubst %.cpp, %.o, $(SOURCES))))
 
 # ----- Actual Build targets. Add new ones as needed. ------
 test: all
+
+release: clean all
 
 all: $(COMPILED_JS)
 

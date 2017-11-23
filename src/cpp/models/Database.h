@@ -25,18 +25,19 @@ private:
 class Database {
  public:
   // Loads the database asynchronously. Returns a global promise
-  // to allow stuff to allow things to happen after this is done.
   static val init();
-
+  // returns true if database is successfully initialized
   static bool hasBeenInit();
-
   // Saves the database asynchronously. Returns a global promise
   // to allow stuff to allow things to happen after this is done.
   static val persist();
-
+  // returns customer collection object from db
   static val customersCollection();
+  // returns images collection object from db
   static val imagesCollection();
+  // returns temporary storage collection object from db
   static val temporaryStorageCollection();
+  // returns trained recognizer collection object from db
   static val trainedRecognizerCollection();
  private:
   static const std::string temporaryStorageCollectionName;

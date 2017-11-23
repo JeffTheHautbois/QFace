@@ -40,6 +40,11 @@ class TurboServer(http.server.SimpleHTTPRequestHandler):
             "filename": "bin/Turbo.asm.data",
             "response_code": 200
         },
+        "/Turbo.asm.wasm": {
+            "content-type": "application/javascript",
+            "filename": "bin/Turbo.asm.wasm",
+            "response_code": 200
+        },
         # Custom routes for tests
         "/Turbo.asm.js.mem": {
             "content-type": "application/javascript",

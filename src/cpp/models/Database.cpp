@@ -23,10 +23,11 @@ std::string& DatabaseException::what() {
   return message;
 }
 
-
+/*
+ * init - Database Initialization
+ */
 val Database::init() {
   val window = val::global("window");
-
   // Create a global promise object. This will allow other parts of the
   // code to handle async saves.
   val dbPromise = val::global("Promise").call<val>("resolve");
@@ -70,6 +71,9 @@ val Database::init() {
               indices: ['studentId']
             });
           }
+
+          // Add trainedRecognizerCollection to databaseInitialize
+          // trainedRecognizerCollection doesn't have index, only one document in collection
           if (!window.db.getCollection(trainedRecognizerCollectionName)) {
             window.db.addCollection(trainedRecognizerCollectionName);
           }
@@ -108,23 +112,29 @@ val Database::init() {
   return val::global("window")[dbPromiseName];
 }
 
+// hasBeenInit - returns true if database has been initialized, 
+// returns false if database has not been loaded
 bool Database::hasBeenInit() {
   val window = val::global("window");
   return window[isDbLoaded].isTrue();
 }
 
+// customersCollection - returns Customer collection object as val
+// accesses database through global window object 
 val Database::customersCollection() {
   val window = val::global("window");
   val customers = window[dbName].call<val>("getCollection", customerCollectionName);
   return customers;
 }
 
+// trainedRecognizerCollection - returns Trained Recognizer collection object as val
 val Database::trainedRecognizerCollection() {
   val window = val::global("window");
   val recognizer = window[dbName].call<val>("getCollection", trainedRecognizerCollectionName);
   return recognizer;
 }
 
+// imagesCollection - returns Images collection object as val
 val Database::imagesCollection() {
   val window = val::global("window");
   val images = window[dbName].call<val>("getCollection", imagesCollectionName);
@@ -137,12 +147,11 @@ val Database::temporaryStorageCollection() {
   return images;
 }
 
+// persist - does customerCollectionName need to be passed to this function?
 val Database::persist() {
   EM_ASM({
-    let customerCollectionName = UTF8ToString($0);
-    let dbName = UTF8ToString($1);
-    let dbPromiseName = UTF8ToString($2);
-
+    let dbName = UTF8ToString($0);
+    let dbPromiseName = UTF8ToString($1);
     window[dbPromiseName] = window[dbPromiseName].then(function() {
       return new Promise((resolve, reject) => {
         window[dbName].saveDatabase(function() {
@@ -150,7 +159,7 @@ val Database::persist() {
         })
       });
     });
-  }, customerCollectionName.c_str(), dbName.c_str(), dbPromiseName.c_str());
+  }, dbName.c_str(), dbPromiseName.c_str());
 
   return val::global("window")[dbPromiseName];
 }
