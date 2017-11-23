@@ -10,8 +10,7 @@
 #include "controllers/FaceCropperController.h"
 #include "models/TemporaryStorage.h"
 
-namespace AddCustomer {
-
+namespace IdentifyCustomer {
   FaceCropper* fc = nullptr;
 
   void init() {
@@ -40,19 +39,19 @@ namespace AddCustomer {
   /*
    * Returns whether a face was detected and successfully stored.
    */
-  std::string mostRecentDetectedFace() {
+  std::string getCroppedFace() {
     std::vector<std::string> images;
     TemporaryStorage::getImages(&images);
     if (images.size() > 0) {
-      return images[images.size() - 1];
+      return images[0];
     }
     return "";
   }
 
-  EMSCRIPTEN_BINDINGS(AddCustomer) {
-    emscripten::function("addCustomer_init", &init);
-    emscripten::function("addCustomer_clean", &clean);
-    emscripten::function("addCustomer_saveFaceInTemporaryStorage", &saveFaceInTemporaryStorage);
-    emscripten::function("addCustomer_mostRecentDetectedFace", &mostRecentDetectedFace);
+  EMSCRIPTEN_BINDINGS(IdentifyCustomer) {
+    emscripten::function("identifyCustomer_init", &init);
+    emscripten::function("identifyCustomer_clean", &clean);
+    emscripten::function("identifyCustomer_saveFaceInTemporaryStorage", &saveFaceInTemporaryStorage);
+    emscripten::function("identifyCustomer_getCroppedFace", &getCroppedFace);
   }
 }

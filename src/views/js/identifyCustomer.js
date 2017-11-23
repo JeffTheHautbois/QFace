@@ -1,12 +1,12 @@
 // The code that runs after emscripten/db is fully loaded.
 let main = function() {
-    Module.addCustomer_init();
+    Module.identifyCustomer_init();
     let photosTaken = false;
 
     let displayMostRecentlyDetectedImage = function () {
         let imageContainer = document.getElementById("detectedImage");
         imageContainer.style.display = "block";
-        imageContainer.src = "data:image/png;base64," + Module.addCustomer_mostRecentDetectedFace();
+        imageContainer.src = "data:image/png;base64," + Module.identifyCustoner_getCroppedFace();
         imageContainer.classList.add("fadeIn");
     }
 
@@ -62,7 +62,7 @@ let main = function() {
             let dataURI = getFrame();
 
             // Crop the face and save it to temporary storage.
-            let success = Module.addCustomer_saveFaceInTemporaryStorage(dataURI);
+            let success = Module.identifyCustoner_saveFaceInTemporaryStorage(dataURI);
 
             if (success) {
                 errorDisplay.innerText = "";
@@ -83,7 +83,7 @@ let main = function() {
 
     // Ran when the "save" button is clicked.
     document.getElementById("save-button").onclick = function() {
-        Module.addCustomer_clean();
+        Module.identifyCustoner_clean();
         Module.persist().then(() => {
             let nextURL =
                 window
