@@ -86,11 +86,11 @@ void imageTests(){
 
 	tr.addTest([](){
 		cv::Mat mtx = cv::imread("./test_data/test_image.jpg"); // Create a matrix from an image file
-		Image img1 = Image(mtx);
-		std::vector<unsigned char> imageBytes1 = img1.asBytes();
+		Image img1 = Image(mtx); // Create an image from the matrix
+		std::vector<unsigned char> imageBytes1 = img1.asBytes(); // Get the bytes from the first image object
 
-		Image img = Image(imageBytes1);
-		std::vector<unsigned char> imageBytes2 = img.asBytes();
+		Image img = Image(imageBytes1); // Create image object using image bytes of first image
+		std::vector<unsigned char> imageBytes2 = img.asBytes(); // Get the bytes from the second image object
 
 		assert(std::memcmp(&imageBytes1, &imageBytes2, imageBytes1.size()) && "Bytes are not equal");
 	}, "Testing image byte conversion");
@@ -98,7 +98,27 @@ void imageTests(){
 	tr.run();
 }
 
+void faceCropperTests(){
+	TestRunner tr ("Runner for FaceCropper class testing");
+
+	tr.addTest([](){
+		cv::Mat mtx = cv::imread("./data/obama.bmp"); // Create a matrix from an image
+		Image img = Image(mtx); // Create Image object using a matrix
+
+		FaceCropper fc; // Create faceCropper object
+		fc.cropFaceAndSaveInTemporaryStorage(img); // Crop face and save to temporary storage
+
+		std::vector<std::string> str; // Create a string vector
+		TemporaryStorage::getImages(&str); // Load saved images from temporary storaage
+
+		assert(!str.empty() && "Bytes are not equal");
+	}, "Testing saved face in temporary storage");
+
+	tr.run();
+}
+
 void runTests() {
 	//runTemporaryStorageTests();
 	imageTests();
+	faceCropperTests();
 }
