@@ -66,7 +66,7 @@ footer{
     flex-direction: row;
     align-items: center;
     width: 100%;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 #addCustomerContainer > #webcam {
@@ -153,6 +153,7 @@ input[type=text], select {
 
 #detectedFace > img {
     flex: 0 1;
+    width: 100%;
 }
 
 #detectedFace > #savebuttons > input {
