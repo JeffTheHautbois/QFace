@@ -1,14 +1,16 @@
 // The code that runs after emscripten/db is fully loaded.
 let main = function() {
-    Module.identifyCustomer_init();
-    let photosTaken = false;
-
-    let displayMostRecentlyDetectedImage = function () {
-        let imageContainer = document.getElementById("detectedImage");
-        imageContainer.style.display = "block";
-        imageContainer.src = "data:image/png;base64," + Module.identifyCustoner_getCroppedFace();
-        imageContainer.classList.add("fadeIn");
+    let facesToDetect = Module.identifyCustomer_init();
+    let saveButton = document.getElementById("save-button");
+    let detectedFace = document.getElementById("detectedFace");
+    
+    if (!facesToDetect) {
+      alert('No faces found. Please add some faces to the database.');
+      window.location.href = '/addCustomer';
     }
+
+    let photosTaken = false;
+    let studentId = NaN;
 
     // Returns the webcam frame as a b64 string.
     let getFrame = function () {
@@ -28,51 +30,54 @@ let main = function() {
     document.getElementById("detectFace").onclick = function(){
         clearFaces();
 
-        let imagesTaken = 0;
-        let imagesToTake = 1;
         let delay = 100;
-
-        let saveButton = document.getElementById("save-button");
-        let clearButton = document.getElementById("clear-button");
 
         let imageCounter = document.getElementById("imageCounter")
         let errorDisplay = document.getElementById("errorMessages")
 
-        this.disabled = true;
+        //this.disabled = true;
         saveButton.disabled = true;
-        clearButton.disabled = true;
         imageCounter.style.display = 'block';
 
         // Display console log messages to user.
         let oldLogger = window.console.log;
         window.console.log = function(message) {
             errorDisplay.innerText = message;
+            oldLogger(message);
         }
 
-        let takePictureFromVideo = () => {
-            if (imagesTaken >= imagesToTake) {
-                window.console.log = oldLogger;
-                this.disabled = false;
-                saveButton.disabled = false;
-                clearButton.disabled = false;
-                imageCounter.style.display = 'none';
-                return;
-            }
+        let takePictureFromVideo = function() {
 
             let dataURI = getFrame();
 
             // Crop the face and save it to temporary storage.
-            let success = Module.identifyCustoner_saveFaceInTemporaryStorage(dataURI);
+            let success = Module.identifyCustomer_saveFaceInTemporaryStorage(dataURI);
 
             if (success) {
-                errorDisplay.innerText = "";
-                // Only record and display a picture when it was successfully
-                // detected.
                 photosTaken = true;
-                displayMostRecentlyDetectedImage();
+                let croppedFace = Module.identifyCustomer_getCroppedFace();
+                let customer = JSON.parse(Module.identifyCustomer_identify(croppedFace));
+                studentId = customer.studentId;
 
-                imageCounter.innerText = "Images taken: " + imagesTaken + "/" + imagesToTake;
-                imagesTaken += 1;
+
+                let previousImageOfCustomer = Module.getImagesOfUser(studentId, 1)[0];
+
+                let imageContainer = document.getElementById("detectedImage");
+                imageContainer.style.display = "block";
+                imageContainer.src = "data:image/png;base64," + previousImageOfCustomer;
+                imageContainer.classList.add("fadeIn");
+
+                document.getElementById("predictedName").innerText = "Detected: " + customer.name;
+                document.getElementById("predictedStudentId").innerText = "StudentId: " + studentId;
+
+                // Make buttons clickable.
+                this.disabled = false;
+                saveButton.disabled = false;
+                errorDisplay.innerText = "";
+                imageCounter.style.display = 'none';
+                detectedFace.style.display = 'flex';
+                window.console.log = oldLogger;
+                return;
             }
 
             setTimeout(takePictureFromVideo, 400);
@@ -83,23 +88,26 @@ let main = function() {
 
     // Ran when the "save" button is clicked.
     document.getElementById("save-button").onclick = function() {
-        Module.identifyCustoner_clean();
+        if (isNaN(studentId)) {
+            alert("Have not yet any faces.");
+            return;
+        }
+
+        Module.identifyCustomer_confirm(studentId);
+        Module.identifyCustomer_clean();
         Module.persist().then(() => {
             let nextURL =
                 window
                 .location
                 .href
-                .replace("identifyCustomer", "verify");
+                .replace("identifyCustomer", "showCustomer") + "?studentId=" + studentId;
             window.location.href = nextURL;
         });
     }
 
-    let clearFaces = function () {
+    let clearFaces = function() {
         Module.clearTemporaryStorage();
         let imageContainer = document.getElementById("detectedImage");
         imageContainer.src = "";
-        imageContainer.style.display = 'none';
     }
-
-    document.getElementById("clear-button").onclick = clearFaces();
 }

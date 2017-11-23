@@ -66,7 +66,7 @@ footer{
     flex-direction: row;
     align-items: center;
     width: 100%;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 #addCustomerContainer > #webcam {
@@ -142,11 +142,21 @@ input[type=text], select {
     text-align: center;
 }
 
-#detectedImage {
-    display: block;
+#detectedFace {
+    display: none;
     height: 100%;
     flex: 1 0 auto;
     max-width: 20%;
+    flex-direction: column;
+    text-align: center;
+}
+
+#detectedFace > img {
+    flex: 0 1;
+}
+
+#detectedFace > #savebuttons > input {
+    margin-top: 5px;
 }
 /*********************************** saveCustomer.html ***********************************/
 .faceScan{

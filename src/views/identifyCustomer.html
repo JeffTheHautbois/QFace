@@ -30,26 +30,25 @@
             </a>
             <div class="fadeIn" id="addCustomerContainer">
                 <div id="webcam">
-                     <video autoplay="true" class="fadeIn" id="videoElement"></video>
-                     <p id="imageCounter"></p>
-                     <p id="errorMessages"></p>
-                </div>
-                <img id="detectedImage">
-                </div>
-            </div>
-            <div class="fadeIn" id="controls" class="addCustomerForm">
-                <div class="takePicture">
-                    <div>
-                        <button id="detectFace" type="button" class="btn btn-primary btn-lg">Detect Face</button>
+                    <video autoplay="true" class="fadeIn" id="videoElement"></video>
+                    <p id="imageCounter"></p>
+                    <p id="errorMessages"></p>
+                    <div class="takePicture">
+                        <div>
+                            <button id="detectFace" type="button" class="btn btn-primary btn-lg">Detect Face</button>
+                        </div>
                     </div>
                 </div>
-                <div class="addCustomerFrom">
+                <div id="detectedFace">
+                    <h4 id="predictedName">  </h4>
+                    <h5 id="predictedStudentId"> </h5>
+                    <img id="detectedImage">
                     <p id="savebuttons">
-                        <input id="clear-button" type="submit" name="upload" value="Clear">
-                        <input id="save-button" type="submit" name="upload" value="Identify">
-                    </p>
+                    <input id="save-button" type="submit" name="upload" value="Confirm">
                 </div>
+                </p>
             </div>
+        </div>
         </main>
     <!-- Footer Element-->
         <footer>
