@@ -8,7 +8,7 @@
  * Runs this code synchronously after the DB is initialized.
  */
 void afterDbInit(emscripten::val) {
-  bool inTestEnv = false;
+  bool inTestEnv = true;
   if (inTestEnv) {
       runTests();
   }
