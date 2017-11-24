@@ -18,23 +18,27 @@ footer{
     top: 19vh;
 }
 #video-elem{
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-width: 100%; 
+}
+
+.videoContainer{
+  position: fixed;
+  top: 50%; 
+  left: 50%;
+  z-index: -1;
+  min-width: 100%;
   min-height: 100%;
-  width: auto; 
+  width: auto;
   height: auto;
+  transform: translate(-50%, -50%);
 }
 #logoButton{
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0vh;
+    left: -2vw;
 }
 .center{
     text-align: center;
 }
-
 .fadeIn {
     /* Fade-In Effect (CSS3 Animation) */
     -webkit-animation: fadein 1s; 
@@ -42,23 +46,17 @@ footer{
         -ms-animation: fadein 1s; 
          -o-animation: fadein 1s; 
 }
-
 /**************************************** index.html ****************************************/
 #logo{
+    flex: 1 0 auto;
     position: relative;
-    top: 4vh;
-}
-#cropped{
-    position: relative;
-    right: 17vw;
-    top: 20vh;
 }
 .btn-group{
-    top: 8vh;
-    left: 1vw;
 }
 .container, .buttons {
+    position: relative;
     text-align: center;
+    top: -6vh;
 }
 /************************************ addCustomer.html **************************************/
 #addCustomerContainer {
@@ -172,6 +170,8 @@ input[type=text], select {
 
 #addCustomerFrom > #saveButtons {
     margin-top: 30px;
+}
+#images{
 }
 /***************************** Fade-In Effect (CSS3 Animation) ******************************/
 @keyframes fadein {

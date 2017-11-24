@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/lokijs.min.js"></script>
-        <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/loki-indexed-adapter.min.js"></script>
-    </head>
-    <body>
-        <ul>
-            <li> Crop the president!</li>
-            <button id="cropper"> Crop image </button>
-        </ul>
-        <img id="obama" src="./data/obama.bmp" alt="no-goose">
-    </body>
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="QFACE Website">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- CSS -->
+	<link href="src/views/css/style.css" type="text/css" rel="stylesheet">
+	<!-- BootStrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<title>Welcome to QFACE</title>
+</head>
+<body>
+	<!-- Header Element-->
+	<header>
 
-    <script type="application/javascript" src="./Turbo.asm.js"></script>
-    <script type="application/javascript">
-    let cropper = document.getElementById("cropper");
-    let obama = document.getElementById("obama");
-
-    let cropFace = function() {
-        let ranOnce = false;
-        return function() {
-            if (!ranOnce) {
-                ranOnce = true;
-            } else {
-                return;
-            }
-
-            Module.faceCropper_detectCropFace();
-            obama.src = "data:image/jpg;base64," + db.getCollection("temporaryStorage").find()[0].image;
-        };
-    }
-
-    cropper.onclick = cropFace();
-    </script>
+	</header>
+	<!-- Main Element-->
+	<main>	
+		<!--Background Video -->
+		<div class="videoContainer">
+			<video video id="video-elem" preload="auto" autoplay="true" loop="loop" muted="muted" poster="">	
+				<source src="src/views/video/matrix.mov">
+			</video>
+		</div>
+		<!-- Logo -->
+		<div class="container">
+			<img id="logo" src="src/views/images/logo2.png" width="70%">
+		</div>
+		<!-- Buttons -->
+		<div class="buttons">
+			<div class="btn-group" style="left: -6px;">
+			<a href="/addCustomer">
+				<button type="button" class="btn btn-primary btn-lg">New</button>
+			</a>
+			<a href="/identifyCustomer">
+				<button type="button" class="btn btn-primary btn-lg">Identify</button>
+			</a>
+			<a href="/">
+				<button type="button" class="btn btn-primary btn-lg">Retrain</button>
+			</a>
+	 		</div>
+		</div>
+	</main>
+</body>	
 </html>
