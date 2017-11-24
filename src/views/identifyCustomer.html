@@ -1,44 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="description" content="QFACE Website">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- CSS -->
-	<link href="src/views/css/style.css" type="text/css" rel="stylesheet">
-	<!-- BootStrap -->
+    <meta charset="UTF-8">
+    <meta name="description" content="QFACE Website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <link href="src/views/css/style.css" type="text/css" rel="stylesheet">
+    <!-- BootStrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<title>Welcome to QFACE</title>
+
+    <!-- Include lokiJS and compiled Turbo. -->
+    <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/lokijs.min.js"></script>
+    <script type="application/javascript" src="https://cdn.rawgit.com/techfort/LokiJS/master/build/loki-indexed-adapter.min.js"></script>
+    <title>Welcome to QFACE</title>
 </head>
 <body>
-	<!-- Header Element-->
-	<header>
-	
-	</header>
-	<!-- Main Element-->
-	<main>	
-		<a href="/">
-			<img id="logoButton" src="src/views/images/logo2.png" width="150" height="100">
-		</a>
-		<div class="faceScan">
-			 <video autoplay="true" id="videoElement"></video>
-		</div>
-		<div class="takePicture">
-			<button id="idButton" type="button" class="btn btn-primary btn-lg">Verify</button>
-		</div>
-	</main>
-	<!-- Footer Element-->
-	<footer>
-		<p>Copyright 2017 by QFACE CO.</p>
-	</footer>
-	<!-- JavaScript -->
-	<script src="src/views/js/script.js"></script>
-	<script type="text/javascript">
-		var verButton = document.querySelector("#idButton");
-		verButton.onclick = function(){
-			alert("Verify!");
-		};
-	</script>
-</body>	
+    <div id="loading-overlay">
+        <div id="text">Loading...</div>
+    </div>
+    <div id="content">
+    <!-- Header Element-->
+        <header>
+        
+        </header>
+        <!-- Main Element-->
+        <main>  
+            <a href="/">
+                <img id="logoButton" class="fadeIn" src="src/views/images/logo2.png" width="150">
+            </a>
+            <div class="fadeIn" id="addCustomerContainer">
+                <div id="webcam">
+                    <video autoplay="true" class="fadeIn" id="videoElement"></video>
+                    <p id="imageCounter"></p>
+                    <p id="errorMessages"></p>
+                    <div class="takePicture">
+                        <div>
+                            <button id="detectFace" type="button" class="btn btn-primary btn-lg">Detect Face</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="detectedFace">
+                    <h4 id="predictedName">  </h4>
+                    <h5 id="predictedStudentId"> </h5>
+                    <img id="detectedImage">
+                    <p id="savebuttons">
+                    <input id="save-button" type="submit" name="upload" value="Confirm">
+                </div>
+            </div>
+        </div>
+        </main>
+    <!-- Footer Element-->
+        <footer>
+            <p>Copyright 2017 by QFACE CO.</p>
+        </footer>
+    </div>
+</body> 
+<script src="src/views/js/script.js"></script>
+<script type="text/javascript" src="src/views/js/identifyCustomer.js"></script>
+<script type="text/javascript" src="src/views/js/loading.js"></script>
+<script type="application/javascript" src="./Turbo.asm.js"></script>
 </html>
 

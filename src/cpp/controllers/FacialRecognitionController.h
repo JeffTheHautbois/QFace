@@ -22,7 +22,8 @@ public:
   // Facial Recognizer constructor
   FacialRecognizer();
 
-  // Load saved model state from database and set current model to it
+  // Load saved model state from database and set current model to it.
+  // Throws an exception if there is no previously existing data.
   void loadModel();
 
   // Save current model state to database
@@ -30,6 +31,7 @@ public:
 
   // Fetch all customer image and student ID pairs and train model for
   // identifying customers in database
+  // Throws an exception if there is no faces to train with.
   void trainModel();
 
   // Identify a customer in a given image

@@ -12,6 +12,7 @@ class TrainedRecognizerModel {
     static void update(const std::string& serializedData);
     // returns string in single document
     static std::string get();
+    static bool hasBeenCreated();
   private:
     TrainedRecognizerModel();
 };

@@ -6,6 +6,7 @@
 #include "FacialRecognitionController.h"
 #include "models/TrainedRecognizerModel.h"
 #include "models/CustomerModel.h"
+#include "controllers/FaceCropperController.h"
 
 // Default Constructor
 FacialRecognizer::FacialRecognizer() : model(cv::face::LBPHFaceRecognizer::create()),
@@ -13,6 +14,11 @@ FacialRecognizer::FacialRecognizer() : model(cv::face::LBPHFaceRecognizer::creat
 
 // Read model from database as raw YAML data and set current model to loaded model
 void FacialRecognizer::loadModel() {
+  // Throw an exception if there is no data in the model.
+  if (!TrainedRecognizerModel::hasBeenCreated()) {
+    throw FaceDetectionException("No previously persisted data. Maybe try training first?");
+  }
+
   try {
     // Create and open a cv::FileStorage object, to read the model from the persistent
     // storage. The string parameter is a "filename" which is read from MEMORY not the disk
@@ -48,6 +54,15 @@ void FacialRecognizer::trainModel() {
 
     // Image and label vectors must be of equal length
     assert(labels.size() == images.size());
+
+    // Throw an exception if there is no data in the model.
+    if (labels.size() == 0) {
+      throw FaceDetectionException("No faces found in database.");
+    }
+    else if (labels.size() == 1) {
+      throw FaceDetectionException("Not enough faces found in database.");
+    }
+
     for (unsigned int i = 0; i < labels.size(); i++) {
       // Create temporary Image object from base64String and then
       // convert to cv::Mat and push a greyscale representation of

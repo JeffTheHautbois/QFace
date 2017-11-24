@@ -28,3 +28,17 @@ std::string TrainedRecognizerModel::get() {
   val result = data.call<val>("findOne");
   return result["data"].as<std::string>();
 }
+
+bool TrainedRecognizerModel::hasBeenCreated() {
+  if (!Database::hasBeenInit()) {
+    throw DatabaseException("Database not initialized");
+  }
+
+  unsigned int entries = Database::trainedRecognizerCollection().call<val>("find")["length"].as<unsigned int>();
+
+  if (entries > 1) {
+    throw DatabaseException("Multiple entries found in TrainedRecognizerModel table.");
+  }
+
+  return entries != 0;
+}

@@ -58,7 +58,7 @@ footer{
     text-align: center;
     top: -6vh;
 }
-/************************************ addCustomer.html **************************************/
+/************************************ addCustomer.html and identifyCustomer.html **************************************/
 #addCustomerContainer {
     display: flex;
     flex-direction: row;
@@ -139,15 +139,29 @@ input[type=text], select {
 .takePicture{
     text-align: center;
 }
+
+#detectedFace {
+    display: none;
+    height: 100%;
+    flex: 1 0 auto;
+    max-width: 20%;
+    flex-direction: column;
+    text-align: center;
+}
+
+#detectedFace > img {
+    flex: 0 1;
+    width: 100%;
+}
+
+#detectedFace > #savebuttons > input {
+    margin-top: 5px;
+}
 /*********************************** saveCustomer.html ***********************************/
 .faceScan{
     text-align: center;
     position: relative;
     top: 10vh;
-}
-#identify{
-    position: relative;
-    top: -5vh;
 }
 .imageContainer{
     display: flex;
