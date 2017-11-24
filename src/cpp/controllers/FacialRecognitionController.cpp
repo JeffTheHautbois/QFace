@@ -59,6 +59,9 @@ void FacialRecognizer::trainModel() {
     if (labels.size() == 0) {
       throw FaceDetectionException("No faces found in database.");
     }
+    else if (labels.size() == 1) {
+      throw FaceDetectionException("Not enough faces found in database.");
+    }
 
     for (unsigned int i = 0; i < labels.size(); i++) {
       // Create temporary Image object from base64String and then
