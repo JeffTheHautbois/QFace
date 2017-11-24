@@ -9,6 +9,7 @@
 #include "models/TemporaryStorage.h"
 #include "models/CustomerModel.h"
 #include "models/Database.h"
+#include "controllers/FacialRecognitionController.h"
 
 #include <emscripten/val.h>
 #include "emscripten/bind.h"
@@ -52,6 +53,12 @@ namespace Common {
       jsImages.call<void>("push", images[i]);
     }
     return jsImages;
+  }
+
+  void retrainModel() {
+    FacialRecognizer fc;
+    fc.trainModel();
+    fc.saveModel();
   }
 
   emscripten::val persist() {
