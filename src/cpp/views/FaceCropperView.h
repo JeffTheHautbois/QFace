@@ -4,6 +4,6 @@
 #include <iostream>
 #include <string>
 
-std::string detectCropFace();
+void detectCropFace();
 
 #endif  // SRC_CPP_VIEWS_DUCKCROPPERVIEW_H_

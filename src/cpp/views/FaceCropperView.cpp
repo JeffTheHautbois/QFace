@@ -6,13 +6,15 @@
 #include "controllers/FaceCropperController.h"
 #include "views/FaceCropperView.h"
 #include "opencv2/imgcodecs.hpp"
+#include "models/TemporaryStorage.h"
 
-std::string detectCropFace() {
+void detectCropFace() {
+  TemporaryStorage::clearStorage();
   Image passThisImage = Image(cv::imread("./data/obama.bmp"));
   FaceCropper fcc;
-	return fcc.cropFaceAndSaveInTemporaryStorage(passThisImage); // Crop the face
+  fcc.cropFaceAndSaveInTemporaryStorage(passThisImage); // Crop the face
 }
 
 EMSCRIPTEN_BINDINGS(Turbo) {
-	emscripten::function("faceCropper_detectCropFace", &detectCropFace);
+  emscripten::function("faceCropper_detectCropFace", &detectCropFace);
 }

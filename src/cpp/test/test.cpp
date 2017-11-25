@@ -6,11 +6,39 @@
 #include "test/test.h"
 #include "test/TestRunner.h"
 #include "models/TemporaryStorage.h"
+<<<<<<< HEAD
 #include "models/Image.h"
 #include "models/base64.h"
 #include "controllers/FaceCropperController.h"
 #include "opencv2/imgcodecs.hpp"
 
+=======
+#include "models/TrainedRecognizerModel.h"
+
+void runTrainedRecognizerModelTests() {
+  TestRunner tr("Runner for trained recognizer model");
+
+  tr.addTest([]() {
+
+   TrainedRecognizerModel::update("TEST1");
+   std::string data2 = TrainedRecognizerModel::get();
+   assert("TEST1" == data2 && "Saved string can be accessed.");
+
+   TrainedRecognizerModel::update("one");
+   TrainedRecognizerModel::update("two");
+   TrainedRecognizerModel::update("three");
+   std::string data3 = TrainedRecognizerModel::get();
+   assert(data3 == "three" && "Multiple updates in a row, get returns last update.");
+
+   TrainedRecognizerModel::update("");
+   std::string data4 = TrainedRecognizerModel::get();
+   assert(data4 == "" && "Update and get on empty string works.");
+
+  }, "Tests is document in TrainedRecognizerModel can be updated and accessed.");
+   tr.run();
+
+}
+>>>>>>> 0b8887f9752d70851bb2950085ec54e1f84c54e0
 
 void runTemporaryStorageTests() {
   TestRunner tr("Runner for testing temporary storage");
@@ -99,7 +127,7 @@ void imageTests(){
 }
 
 void faceCropperTests(){
-	TestRunner tr ("Runner for FaceCropper class testing");
+  TestRunner tr ("Runner for FaceCropper class testing");
 
 	tr.addTest([](){
 		cv::Mat mtx = cv::imread("./data/obama.bmp"); // Create a matrix from an image
@@ -118,7 +146,8 @@ void faceCropperTests(){
 }
 
 void runTests() {
-	//runTemporaryStorageTests();
 	imageTests();
 	faceCropperTests();
+  runTrainedRecognizerModelTests();
+  runTemporaryStorageTests();
 }

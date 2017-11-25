@@ -1,3 +1,7 @@
+//
+//  base64 encoding and decoding with C++.
+//  Version: 1.01.00
+//
 /* 
    base64.cpp and base64.h
 
@@ -28,10 +32,14 @@
    René Nyffenegger rene.nyffenegger@adp-gmbh.ch
 
 */
-#include "base64.h"
+
+#ifndef BASE64_H
+#define BASE64_H
+
 #include <string>
 #include <vector>
 #include <iostream>
+typedef unsigned char BYTE;
 
 using namespace std;
 
@@ -125,3 +133,6 @@ static inline bool is_base64(BYTE c) {
   
     return ret;
   }
+
+
+#endif /* BASE64_H */

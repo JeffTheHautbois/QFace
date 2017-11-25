@@ -6,6 +6,9 @@ body{
     margin: 0;
     padding: 0;
 }
+header {
+    height: 100px;
+}
 main{
     
 }
@@ -15,122 +18,174 @@ footer{
     top: 19vh;
 }
 #video-elem{
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-width: 100%; 
+}
+
+.videoContainer{
+  position: fixed;
+  top: 50%; 
+  left: 50%;
+  z-index: -1;
+  min-width: 100%;
   min-height: 100%;
-  width: auto; 
+  width: auto;
   height: auto;
+  transform: translate(-50%, -50%);
 }
 #logoButton{
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0vh;
+    left: -2vw;
 }
-/**************************************** index.html ****************************************/
-#logo{
-    position: relative;
-    top: 4vh;
-}
-#cropped{
-    position: relative;
-    right: 17vw;
-    top: 20vh;
-}
-.btn-group{
-    top: 8vh;
-    left: 1vw;
-}
-.container, .buttons {
+.center{
     text-align: center;
+}
+.fadeIn {
     /* Fade-In Effect (CSS3 Animation) */
     -webkit-animation: fadein 1s; 
        -moz-animation: fadein 1s;
         -ms-animation: fadein 1s; 
          -o-animation: fadein 1s; 
-            animation: fadein 1s;
 }
-/************************************ addCustomer.html **************************************/
+/**************************************** index.html ****************************************/
+#logo{
+    flex: 1 0 auto;
+    position: relative;
+}
+.btn-group{
+}
+.container, .buttons {
+    position: relative;
+    text-align: center;
+    top: -6vh;
+}
+/************************************ addCustomer.html and identifyCustomer.html **************************************/
+#addCustomerContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+#addCustomerContainer > #webcam {
+    flex: 1 0 auto;
+    width: 40%;
+    max-width: 40%;
+    position: relative;
+}
+
+#addCustomerContainer > #webcam > #imageCounter {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #333;
+    color: white;
+    display: none;
+}
+
+#addCustomerContainer > #webcam > #errorMessages {
+    position: absolute;
+    right: 0%;
+    top: 0;
+    background-color: #333;
+    color: white;
+}
+
+#addCustomerContainer > #webcam > video {
+    width: 100%;
+    border: 10px #333 solid;
+}
+
+#addCustomerContainer > #images  {
+    flex: 1 0 auto;
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 40%;
+}
+
+#addCustomerContainer > #images > .croppedImage  {
+    flex-shrink: 1;
+}
+
+#controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#controls > .takePicture {
+    width: 30%;
+    text-align: left;
+}
+
+#controls > .addCustomerForm {
+    text-align: left;
+    width: 30%;
+}
+
 input[type=text], select {
-    width: 20%;
     padding: 6px 10px;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
 }
-#uploadimg{
-    position: relative;
-    top: 15vh;   
-    left: 22vw;
-}
-#customerForm{
-    position: relative;
-    left: 18vw;
-    bottom: 35vh;
-}
-#StudentId{
-    /*color:white;*/
-}
-#tpButton{
-    position: relative;
-    right: 22vw;
-    top: 12vh;
-}
-#savebuttons{
-    position: relative;
-    left: 2vw;
-}
-/* Video Stream*/
-#videoElement{
-    text-align: center;
-    width: 600px;
-    height: 475px;
-    background-color: #666;
-}
-#webcam{
-    width: 600px;
-    height: 475px;
-    border: 10px #333 solid;
-    position: relative;
-    top: 10vh;
-    left: 10vw;
-    -webkit-animation: fadein 1s; 
-       -moz-animation: fadein 1s;
-        -ms-animation: fadein 1s; 
-         -o-animation: fadein 1s; 
-            animation: fadein 1s;
-}
-.addCustomerFrom{
-    text-align: center;
-    position: relative;
-    top: 6vh;
-    left: 3vw;
-    /* Fade-In Effect (CSS3 Animation) */
-    -webkit-animation: fadein 1s; 
-       -moz-animation: fadein 1s;
-        -ms-animation: fadein 1s; 
-         -o-animation: fadein 1s; 
-            animation: fadein 1s;
-}
 /********************************** identifyCustomer.html ***********************************/
-#identify{
+#idButton{
     position: relative;
-    top: 15vh;
+    top: 13vh;
 }
 .takePicture{
     text-align: center;
 }
+
+#detectedFace {
+    display: none;
+    height: 100%;
+    flex: 1 0 auto;
+    max-width: 20%;
+    flex-direction: column;
+    text-align: center;
+}
+
+#detectedFace > img {
+    flex: 0 1;
+    width: 100%;
+}
+
+#detectedFace > #savebuttons > input {
+    margin-top: 5px;
+}
+/*********************************** saveCustomer.html ***********************************/
 .faceScan{
     text-align: center;
     position: relative;
-    top: 8vh;
+    top: 10vh;
 }
-/*********************************** retrainCustomer.html ***********************************/
-#idButton{
-    position: relative;
-    top: 13vh;
+.imageContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 5px;
+}
+.imageContainer > #newImages{
+    width: 40%;
+}
+
+.imageContainer > #oldImages {
+    display: none;
+    width: 40%;
+}
+
+.imageContainer > #oldImages > img {
+    width: 40%;
+}
+
+#addCustomerFrom > #saveButtons {
+    margin-top: 30px;
+}
+#images{
 }
 /***************************** Fade-In Effect (CSS3 Animation) ******************************/
 @keyframes fadein {

@@ -20,6 +20,16 @@ class TurboServer(http.server.SimpleHTTPRequestHandler):
             "filename": "src/views/identifyCustomer.html",
             "response_code": 200
         },
+        "/saveCustomer": {
+            "content-type": "html",
+            "filename": "src/views/saveCustomer.html",
+            "response_code": 200
+        },
+        "/showCustomer": {
+            "content-type": "html",
+            "filename": "src/views/showCustomer.html",
+            "response_code": 200
+        },
         "/Turbo.asm.js": {
             "content-type": "application/javascript",
             "filename": "bin/Turbo.asm.js",
@@ -28,6 +38,11 @@ class TurboServer(http.server.SimpleHTTPRequestHandler):
         "/Turbo.asm.data": {
             "content-type": "application/javascript",
             "filename": "bin/Turbo.asm.data",
+            "response_code": 200
+        },
+        "/Turbo.asm.wasm": {
+            "content-type": "application/javascript",
+            "filename": "bin/Turbo.asm.wasm",
             "response_code": 200
         },
         # Custom routes for tests
@@ -54,9 +69,9 @@ class TurboServer(http.server.SimpleHTTPRequestHandler):
     }
 
     def do_GET(self):
-        if self.path in TurboServer.paths:
-            print(self.path)
-            route_options = TurboServer.paths[self.path]
+        raw_path = self.path.split("?")[0]
+        if raw_path in TurboServer.paths:
+            route_options = TurboServer.paths[raw_path]
 
             self.send_response(route_options["response_code"])
             self.send_header('content-type', route_options["content-type"])
