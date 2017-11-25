@@ -6,14 +6,12 @@
 #include "test/test.h"
 #include "test/TestRunner.h"
 #include "models/TemporaryStorage.h"
-<<<<<<< HEAD
 #include "models/Image.h"
-#include "models/base64.h"
+#include "models/TrainedRecognizerModel.h"
 #include "controllers/FaceCropperController.h"
 #include "opencv2/imgcodecs.hpp"
 
-=======
-#include "models/TrainedRecognizerModel.h"
+
 
 void runTrainedRecognizerModelTests() {
   TestRunner tr("Runner for trained recognizer model");
@@ -38,12 +36,13 @@ void runTrainedRecognizerModelTests() {
    tr.run();
 
 }
->>>>>>> 0b8887f9752d70851bb2950085ec54e1f84c54e0
 
 void runTemporaryStorageTests() {
   TestRunner tr("Runner for testing temporary storage");
 
   tr.addTest([]() {
+    TemporaryStorage::clearStorage();
+
     std::string image1 = "TEST1";
     TemporaryStorage::addImage(image1);
 
