@@ -13,7 +13,7 @@ void afterDbInit(emscripten::val) {
       runTests();
   }
 
-  std::cout << "It worked!" << "\n";
+  std::cout << "Database successfully initialized, QFACE is ready to recognize!" << "\n";
 }
 
 int main() {
